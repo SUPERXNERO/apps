@@ -1,0 +1,552 @@
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<div id="realPage">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <style class="realStyle" id="importStyle">
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cairo:slnt,wght@-11..11,200..1000&display=swap');
+  </style>
+  <style class="realStyle" id="keyFramesStyle">
+  </style>
+  <style class="realStyle">
+    *,
+    *::before,
+    *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      color: var(--theme-lightcolor);
+      fill: var(--theme-lightcolor);
+    }
+    body {
+      background: var(--theme-background);
+    }
+    .ds-none {
+      display: none;
+    }
+    #realPage {
+      display: grid;
+      place-items: center;
+      width: 100%;
+      height: 100%;
+    }
+    #container {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      max-width: 1200px;
+    }
+    #calculator-models {
+      max-width: 100%;
+    }
+    #models {
+      background: var(--theme-darkbox);
+    }
+    #modelsHeader {
+      display: flex;
+    }
+    #searchBar {
+      flex-grow: 1;
+    }
+    #modelsSearchFeild {
+      width: 100%;
+      height: 100%;
+      border: none;
+      outline: none;
+      padding: 2px 4px;
+      background: var(--theme-lightbox);
+      font-size: 1.2rem;
+    }
+    #modelsSearchFeild:placeholder {
+      color: var(--theme-lightcolor);
+    }
+    #modelsContainer {
+      overflow: scroll;
+    }
+    .modelItem {
+      padding: 4px;
+      background: var(--theme-darkbox);
+      transition: .1s;
+    }
+    .modelItem:not(:last-child) {
+      border-bottom: 1.5px solid var(--theme-lightbox);
+    }
+    .modelItem:active {
+      filter: brightness(1.5);
+    }
+    .modelName, .modelDescription {
+      padding: 0 4px;
+      transition: .1s;
+    }
+    .modelName {
+      font-weight: bold;
+    }
+    .modelDescription {
+      color: var(--theme-darkcolor);
+    }
+    .modelItem:active :is(.modelName, .modelDescription) {
+      transform: scale(1.02);
+    }
+    #calculator {
+      max-width: 100%;
+    }
+    #calculatorViewer {
+      background: var(--theme-lightbox);
+      display: flex;
+      align-items: center;
+      max-width: 100%;
+      height: 60px;
+      padding: 0 10px;
+      border-radius: 10px;
+      font-size: 1.4rem;
+      overflow: scroll;
+    }
+    #calculatorButtons {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      grid-template-rows: repeat(5, 1fr);
+      margin-top: 30px;
+      width: 100%;
+      aspect-ratio: 4/5;
+      gap: 10px;
+    }
+    .button {
+      display: grid;
+      place-items: center;
+      background: var(--theme-darkbox);
+      border-radius: 50%;
+      font-size: 1.8rem;
+      transition: .2s;
+      box-shadow: .5px 2px 0 2px var(--theme-lightbox);
+    }
+    .button:active {
+      font-size: 1.4rem;
+      border-radius: 20px;
+      filter: brightness(1.5);
+      transform: translate(.5px, 2px);
+      box-shadow: 0 0 0 0;
+      border: 2px solid var(--theme-lightcolor);
+    }
+    .button.clear {
+      background: var(--theme-red);
+    }
+    .button.symbol {
+      background: var(--theme-lightbox);
+      box-shadow: .5px 2px 0 2px var(--theme-darkbox);
+    }
+    .button.equal {
+      background: var(--theme-blue);
+    }
+    .button svg {
+      width: 50%;
+      height: 50%;
+    }
+  </style>
+  <style class="realStyle" id="mediaStyle">
+@media (min-width: 600px) {
+    #container {
+      display: grid;
+      align-items: center;
+    }
+    #openModels {
+      display: none;
+    }
+    #calculator-models {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      margin: 0 5.15%;
+      column-gap: 5%;
+    }
+    #models {
+      border-radius: 4px;
+    }
+    #closeModels {
+      display: none;
+    }
+  }
+@media (max-width: 499px) {
+    #container {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 15px;
+    }
+    #openModels {
+      display: inline-block;
+      padding: 8px;
+      margin-bottom: 12px;
+      border-radius: 4px;
+      width: fit-content;
+      background: var(--theme-darkbox);
+      box-shadow: .5px 2px 0 2px var(--theme-lightbox);
+      transition: .1s;
+    }
+    #openModels:active {
+      filter: brightness(1.5);
+      transform: translate(.5px, 2px);
+      box-shadow: 0 0 0 0;
+    }
+    #models {
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      margin-inline-end: 0px;
+      opacity: 0;
+      pointer-events: none;
+      transition: .2s;
+    }
+    #models.open {
+      opacity: 1;
+      pointer-events: auto;
+      left: 0;
+    }
+    #closeModels {
+      display: grid;
+      place-items: center;
+      padding: 8px;
+      font-size: 1.2rem;
+      width: 40px;
+      aspect-ratio: 1/1;
+      background: var(--theme-darkbox);
+      transition: .1s;
+    }
+    #closeModels:active {
+      filter: brightness(1.5);
+    }
+  }
+    /*@media (max-width: 499px) {
+  }*/
+  </style>
+  <div id="container">
+    <div id="openModels">
+      <span data-textoptions="openModels"></span>
+      <i class="fas fa-chevron-down"></i>
+    </div>
+    <div id="calculator-models">
+      <div id="models">
+        <div id="modelsHeader">
+          <div id="closeModels">
+            <i class="fas fa-arrow-left"></i>
+          </div>
+          <div id="searchBar">
+            <input data-textoptions="modelsSearchFeild,,,placeholder" type="text" id="modelsSearchFeild" />
+            <div id="modelNameViewer"></div>
+          </div>
+        </div>
+        <div id="modelsMain">
+          <div id="modelsContainer">
+          </div>
+          <div id="modelViewer"></div>
+        </div>
+      </div>
+      <div id="calculator">
+        <div id="calculatorViewer"></div>
+        <div id="calculatorButtons">
+          <div class="button clear" data-id="clear">
+            AC
+          </div>
+          <div class="button symbol" data-id="()">
+            ()
+          </div>
+          <div class="button symbol" data-id="%">
+            %
+          </div>
+          <div class="button symbol" data-id="/">
+            ÷
+          </div>
+          <div class="button" data-id="7">
+            7
+          </div>
+          <div class="button" data-id="8">
+            8
+          </div>
+          <div class="button" data-id="9">
+            9
+          </div>
+          <div class="button symbol" data-id="*">
+            ×
+          </div>
+          <div class="button" data-id="4">
+            4
+          </div>
+          <div class="button" data-id="5">
+            5
+          </div>
+          <div class="button" data-id="6">
+            6
+          </div>
+          <div class="button symbol" data-id="-">
+            -
+          </div>
+          <div class="button" data-id="1">
+            1
+          </div>
+          <div class="button" data-id="2">
+            2
+          </div>
+          <div class="button" data-id="3">
+            3
+          </div>
+          <div class="button symbol" data-id="+">
+            +
+          </div>
+          <div class="button" data-id="0">
+            0
+          </div>
+          <div class="button symbol" data-id=".">
+            .
+          </div>
+          <div id="deleteButton" class="button symbol" data-id="delete">
+
+          </div>
+          <div class="button equal" data-id="=">
+            =
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script class="realScript" type="module" defer>
+    import {
+      OnChange
+    } from "https://superxnero.github.io/assets/libs/OnChange.js";
+    import {
+      LanguageManager
+    } from "https://superxnero.github.io/assets/libs/LanguageManager.js";
+    import {
+      GitHubManager
+    } from "https://superxnero.github.io/assets/libs/GitHubManager.js";
+    const q = (e)=> document.querySelector(e);
+    const qA = (e)=> document.querySelectorAll(e);
+    const root = document.documentElement;
+    const head = document.head;
+    const body = document.body;
+    const realPage = q("#realPage");
+
+    /* start real code */
+    async function realCode() {
+      await startClean();
+      const themes = {
+        0: {
+          "background": "#1C2127",
+          "lightbox": "#444750",
+          "darkbox": "#31353E",
+          "lightcolor": "#E2E2E6",
+          "darkcolor": "#A2A2A6",
+          "blue": "#3C86BD",
+          "red": "#B31E21"
+        }
+      }
+      const languageManager = new LanguageManager({
+        saveAll: true,
+        baseUrl: "https://superxnero.github.io/languages-content/calculator app/"
+      });
+      languageManager.setLanguage("ar");
+      var mainData = {
+        theme: new OnChange(onThemeChange),
+        calculatorView: new OnChange(onCalculatorViewChange, ""),
+        /*{
+          "front": "",
+          "back": ""
+        }),*/
+        models: new OnChange(onModelsChange)
+      };
+      setDatum("theme", 0);
+
+      const openModels = q("#openModels");
+      const models = q("#models");
+      const closeModels = q("#closeModels");
+      const modelsContainer = q("#modelsContainer");
+      const calculatorViewer = q("#calculatorViewer");
+      const calculatorButtons = q("#calculatorButtons");
+
+      body.onselectstart = ()=> false;
+
+      openModels.onclick = function() {
+        models.classList.add("open");
+      }
+
+      closeModels.onclick = function() {
+        models.classList.remove("open");
+      }
+
+      Object.values(calculatorButtons.children).forEach(button=>button.onclick = function() {
+        const id = button.dataset.id;
+        const value = button.textContent.trim();
+        const calculatorView = getDatum("calculatorView").trim();
+        const length = calculatorView.length;
+        const lastChar = length > 0 ? calculatorView.slice(-1): "";
+        var newValue = calculatorView;
+        //var newValueBack;
+        if (id === "clear") {
+          newValue = "";
+        } else if (id === "=") {
+          newValue = `${evaluateExpression(calculatorView)}`;
+        } else if (id === "()") {
+          newValue = addParenthesis(calculatorView);
+        } else if (id === "delete") {
+          if (length > 0) {
+            newValue = newValue.slice(0, length-1);
+          }
+        } else if (['+', '-', '*', '/', "%"].includes(id) && ['+', '-', '×', '÷', "%"].includes(lastChar)) {
+          if (id === "-" && lastChar !== "-") {
+            newValue += "-";
+          } else {
+            const beforeLastChar = calculatorView.slice(-2)[0];
+            if (beforeLastChar !== "(" || beforeLastChar === "(" && ["+", "-"].includes(id)) {
+              newValue = newValue.slice(0, length-1) + value;
+            } else {
+              newValue = newValue;
+            }
+          }
+        } else if (['*', '/', "%"].includes(id) && length < 1) {
+          newValue = newValue;
+        } else if (['*', '/', "%"].includes(id) && lastChar === "(") {
+          newValue = newValue;
+        } else {
+          //newValueBack = newValue + id;
+          newValue += value;
+        }
+
+        setDatum("calculatorView", newValue)/*{
+          "front": newValue,
+          "back": newValueBack
+        })*/
+      });
+
+      function addParenthesis(currentDisplay, closeIt) {
+        currentDisplay = currentDisplay.trim();
+        const openParenthesisCount = (currentDisplay.match(/\(/g) || []).length;
+        const closeParenthesisCount = (currentDisplay.match(/\)/g) || []).length;
+        const lastChar = currentDisplay.slice(-1);
+        if (!closeIt) {
+          if (openParenthesisCount > closeParenthesisCount) {
+            if (lastChar !== '(' && !['+', '-', '×', '÷', "%"].includes(lastChar)) {
+              currentDisplay += ')';
+            } else if (lastChar === '(') {
+              currentDisplay += '(';
+            }
+          } else {
+            currentDisplay += (lastChar === ')' || (!isNaN(lastChar) && lastChar !== '')) ? '×(': '(';
+          }
+        } else {
+          if (openParenthesisCount > closeParenthesisCount) {
+            if (lastChar !== '(' && !['+', '-', '×', '÷', "%"].includes(lastChar)) {
+              currentDisplay += ')';
+            }
+          }
+        }
+        return currentDisplay;
+      }
+
+      function evaluateExpression(expression) {
+        expression = expression.trim();
+        if (expression === "") return "";
+        expression = expression.replace(/×/g, "*")
+        .replace(/÷/g, "/")
+        .replace(/\^/g, "**")
+
+        expression = addParenthesis(expression, true);
+        expression = eval(expression);
+        return expression;
+      }
+
+      function onModelsChange(value) {
+        //
+        `
+        <div class="modelItem">
+        <div class="modelName" data-textid="modelCalcTime"></div>
+        <div class="modelDescription" data-textid="modelCalcTimeD"></div>
+        </div>
+        `
+      }
+
+      function onCalculatorViewChange(value) {
+        calculatorViewer.textContent = value;
+      }
+
+      function onThemeChange(value) {
+        var currentTheme = themes[value];
+        if (!currentTheme) {
+          currentTheme = themes[0];
+        }
+        const keys = Object.keys(currentTheme);
+        keys.forEach(function(key, index) {
+          const values = Object.values(currentTheme);
+          root.style.setProperty(`--theme-${key}`, values[index]);
+        });
+      }
+
+      function getDatum(datum) {
+        return mainData[datum].value;
+      }
+
+      function setDatum(datum, value) {
+        mainData[datum].change(value);
+      }
+    }
+    /* run real code */
+    realCode();
+
+    /* remove default elements on template */
+    function deepClean(element) {
+      if (element.contains(realPage) && element !== realPage) {
+        element.removeAttribute("class");
+        element.removeAttribute("id");
+        element.removeAttribute("style");
+        return;
+      }
+      if (realPage.contains(element) || element === realPage) {
+        return;
+      }
+      element.remove();
+    }
+
+    function deleteStyles_Scripts() {
+      const scripts = qA("script");
+      scripts.forEach(script => {
+        if (!script.classList.contains("realScript")) {
+          script.remove();
+        }
+      });
+      const styles = qA("style");
+      styles.forEach(style => {
+        if (!style.classList.contains("realStyle")) {
+          style.remove();
+        }
+      });
+    }
+
+    function deleteElements() {
+      const allElements = Array.from(body.querySelectorAll("*"));
+      allElements.forEach(deepClean);
+    }
+
+    function startClean() {
+      return new Promise((resolve, rejected)=> {
+        deleteStyles_Scripts();
+        body.classList.add("ds-none");
+        setTimeout(function() {
+          deleteStyles_Scripts();
+          setTimeout(function() {
+            deleteElements();
+            body.classList.remove("ds-none");
+            body.removeAttribute("dir");
+            body.removeAttribute("lang");
+            const metaCharset = document.createElement("meta");
+            metaCharset.setAttribute("charset", "UTF-8");
+            head.appendChild(metaCharset);
+            resolve();
+          },
+            100);
+        }, 0);
+      });
+    }
+  </script>
+</div>
