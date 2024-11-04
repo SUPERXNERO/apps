@@ -347,7 +347,6 @@
         saveAll: true,
         baseUrl: "https://superxnero.github.io/languages-content/calculator-app/"
       });
-      //languageManager.setLanguage("ar");
       var mainData = {
         theme: new OnChange(onThemeChange),
         calculatorView: new OnChange(onCalculatorViewChange, ""),
@@ -395,7 +394,7 @@
             newValue = newValue.slice(0, length-1);
           }
           // .. or 49.5.6.5 is not allowed
-        } else if (['+', '-', '*', '/', "%", "."].includes(id) && ['+', '-', '×', '÷', "%", "."].includes(lastChar)) {
+        } else if (['+', '-', '*', '/', "%"].includes(id) && ['+', '-', '×', '÷', "%"].includes(lastChar)) {
           if (id === "-" && lastChar !== "-") {
             newValue += "-";
           } else {
@@ -409,6 +408,10 @@
         } else if (['*', '/', "%"].includes(id) && length < 1) {
           newValue = newValue;
         } else if (['*', '/', "%"].includes(id) && lastChar === "(") {
+          newValue = newValue;
+        } else if (id === "." && lastChar === ".") {
+          newValue = newValue;
+        } else if ((/[0-9]+\.[0-9]+$/).test(newValue) && id === ".") {
           newValue = newValue;
         } else {
           //newValueBack = newValue + id;
