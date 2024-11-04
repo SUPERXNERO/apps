@@ -302,8 +302,7 @@
           <div class="button symbol" data-id=".">
             .
           </div>
-          <div id="deleteButton" class="button symbol" data-id="delete">
-
+          <div id="deleteButton" class="button symbol" data-id="delete" data-fetch="https://superxnero.github.io/assets/svgs/delete_522091.svg">
           </div>
           <div class="button equal" data-id="=">
             =
@@ -322,6 +321,9 @@
     import {
       GitHubManager
     } from "https://superxnero.github.io/assets/libs/GitHubManager.js";
+    import {
+      FetchToElement
+    } from "https://superxnero.github.io/assets/libs/FetchToElement.js";
     const q = (e)=> document.querySelector(e);
     const qA = (e)=> document.querySelectorAll(e);
     const root = document.documentElement;
@@ -343,10 +345,6 @@
           "red": "#B31E21"
         }
       }
-      const languageManager = new LanguageManager({
-        saveAll: true,
-        baseUrl: "https://superxnero.github.io/languages-content/calculator-app/"
-      });
       var mainData = {
         theme: new OnChange(onThemeChange),
         calculatorView: new OnChange(onCalculatorViewChange, ""),
@@ -357,6 +355,11 @@
         models: new OnChange(onModelsChange)
       };
       setDatum("theme", 0);
+      const languageManager = new LanguageManager({
+        saveAll: true,
+        baseUrl: "https://superxnero.github.io/languages-content/calculator-app/"
+      });
+      const fetchToElement = new FetchToElement(true);
 
       const openModels = q("#openModels");
       const models = q("#models");
@@ -411,7 +414,7 @@
           newValue = newValue;
         } else if (id === "." && lastChar === ".") {
           newValue = newValue;
-        } else if ((/[0-9]+\.[0-9]+$/).test(newValue) && id === ".") {
+        } else if (id === "." && /(\d*\.\d+|\.\d+)$/.test(newValue)) {
           newValue = newValue;
         } else {
           //newValueBack = newValue + id;
@@ -457,8 +460,12 @@
         .replace(/\^/g, "**")
 
         expression = addParenthesis(expression, true);
-        expression = eval(expression);
-        return expression;
+        try {
+          expression = eval(expression);
+          return expression;
+        } catch(error) {
+          //
+        }
       }
 
       function onModelsChange(value) {
