@@ -84,6 +84,29 @@
         .future .glitch {
             animation: glitch 0.5s infinite;
         }
+
+        /* إعدادات الرموز */
+        #icons-container {
+            font-size: 2rem;
+            margin-top: 20px;
+            display: flex;
+            gap: 10px;
+            opacity: 0;
+            transition: opacity 1s;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        /* تأثير النبض */
+        .future #icons-container span {
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
     </style>
 </head>
 <body class="present">
@@ -94,24 +117,39 @@
         <button onclick="stayInPresent()">البقاء في الوقت الحالي</button>
         <button onclick="travelToFuture()">١٠٠ سنة إلى المستقبل</button>
     </div>
+    <div id="icons-container"></div>
 
     <script>
+        const iconsContainer = document.getElementById('icons-container');
+
         function travelToPast() {
             document.body.className = "past";
             document.querySelector("h1").textContent = "أنت الآن في عام ١٩٢٣";
-            document.querySelector("p").textContent = "مرحبًا بك في الماضي، حيث التكنولوجيا بدائية والعالم بسيط.";
+            document.querySelector("p").textContent = "مرحبًا بك في الماضي، حيث السفر بالجمال والخيول.";
+            
+            // إظهار أيقونات الجمال والأحصنة
+            iconsContainer.innerHTML = "🐪 🐎 🏰 🌞";
+            iconsContainer.style.opacity = "1";
         }
 
         function stayInPresent() {
             document.body.className = "present";
             document.querySelector("h1").textContent = "أنت في الوقت الحالي";
-            document.querySelector("p").textContent = "هذا هو الحاضر، حيث تعيش جميع مغامراتك الحالية.";
+            document.querySelector("p").textContent = "هذا هو الحاضر، حيث التكنولوجيا الحديثة بين يديك.";
+            
+            // إظهار أيقونات الحاضر مثل الهواتف والكمبيوترات
+            iconsContainer.innerHTML = "📱 💻 📷 🏙️";
+            iconsContainer.style.opacity = "1";
         }
 
         function travelToFuture() {
             document.body.className = "future";
             document.querySelector("h1").innerHTML = '<span class="glitch">أنت الآن في عام ٢١٢٣</span>';
-            document.querySelector("p").textContent = "مرحبًا بك في المستقبل! عالم من التكنولوجيا المتقدمة والابتكارات.";
+            document.querySelector("p").textContent = "مرحبًا بك في المستقبل! عالم من الروبوتات والتكنولوجيا المتقدمة.";
+            
+            // إظهار أيقونات المستقبل مثل الروبوتات والصواريخ
+            iconsContainer.innerHTML = "🤖 🚀 🌌 🛰️";
+            iconsContainer.style.opacity = "1";
         }
     </script>
 </body>
