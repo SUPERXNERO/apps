@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>آلة الزمن</title>
+    <style>
+        /* إعدادات الصفحة الأساسية */
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            transition: background-color 1s, color 1s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            transition: color 1s;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        button {
+            padding: 15px 25px;
+            font-size: 1.2rem;
+            border: none;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: background-color 0.5s, color 0.5s, transform 0.3s;
+        }
+
+        button:hover {
+            transform: scale(1.1);
+        }
+
+        /* أنماط مخصصة للأزمنة */
+        .past {
+            background-color: #2f1e1e;
+            color: #ffedbc;
+        }
+
+        .past h1 {
+            color: #ffedbc;
+        }
+
+        .future {
+            background-color: #000d1a;
+            color: #00ffcc;
+        }
+
+        .future h1 {
+            color: #00ffcc;
+        }
+
+        .present {
+            background-color: #f0f0f0;
+            color: #333;
+        }
+
+        .present h1 {
+            color: #333;
+        }
+
+        /* تأثيرات بصرية */
+        @keyframes glitch {
+            0% { text-shadow: 2px 2px red; }
+            25% { text-shadow: -2px -2px lime; }
+            50% { text-shadow: 2px -2px blue; }
+            75% { text-shadow: -2px 2px yellow; }
+            100% { text-shadow: 2px 2px red; }
+        }
+
+        .future .glitch {
+            animation: glitch 0.5s infinite;
+        }
+    </style>
+</head>
+<body class="present">
+    <h1>أهلاً بك في آلة الزمن</h1>
+    <p>اختر وجهتك الزمنية:</p>
+    <div class="buttons">
+        <button onclick="travelToPast()">١٠٠ سنة إلى الماضي</button>
+        <button onclick="stayInPresent()">البقاء في الوقت الحالي</button>
+        <button onclick="travelToFuture()">١٠٠ سنة إلى المستقبل</button>
+    </div>
+
+    <script>
+        function travelToPast() {
+            document.body.className = "past";
+            document.querySelector("h1").textContent = "أنت الآن في عام ١٩٢٣";
+            document.querySelector("p").textContent = "مرحبًا بك في الماضي، حيث التكنولوجيا بدائية والعالم بسيط.";
+        }
+
+        function stayInPresent() {
+            document.body.className = "present";
+            document.querySelector("h1").textContent = "أنت في الوقت الحالي";
+            document.querySelector("p").textContent = "هذا هو الحاضر، حيث تعيش جميع مغامراتك الحالية.";
+        }
+
+        function travelToFuture() {
+            document.body.className = "future";
+            document.querySelector("h1").innerHTML = '<span class="glitch">أنت الآن في عام ٢١٢٣</span>';
+            document.querySelector("p").textContent = "مرحبًا بك في المستقبل! عالم من التكنولوجيا المتقدمة والابتكارات.";
+        }
+    </script>
+</body>
+</html>
