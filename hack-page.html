@@ -55,6 +55,20 @@
         @keyframes blink-caret {
             50% { border-color: transparent; }
         }
+
+        #emoji-container {
+            font-size: 3rem;
+            margin-top: 20px;
+            animation: pulse 1s infinite;
+            opacity: 0;
+            transition: opacity 0.5s;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
     </style>
 </head>
 <body>
@@ -62,17 +76,22 @@
     <h2>All your data is now being accessed...</h2>
     <p class="hack-text">Initiating data transfer...</p>
     <p id="countdown">00:10</p>
+    <div id="emoji-container">☠️💀😈</div>
 
     <script>
         // مؤقت عد تنازلي
         let seconds = 10;
         const countdownElement = document.getElementById('countdown');
+        const emojiContainer = document.getElementById('emoji-container');
+        emojiContainer.style.opacity = "0"; // إخفاء الإيموجيات في البداية
+
         const interval = setInterval(() => {
             seconds--;
             countdownElement.textContent = `00:${seconds.toString().padStart(2, '0')}`;
             if (seconds <= 0) {
                 clearInterval(interval);
                 countdownElement.textContent = "Data Transferred!";
+                emojiContainer.style.opacity = "1"; // إظهار الإيموجيات
             }
         }, 1000);
     </script>
