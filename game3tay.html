@@ -92,10 +92,7 @@
       const languageManager = new LanguageManager({
         saveAll: true,
         baseUrl: "https://superxnero.github.io/languages-content/game3tay/",
-        defaultLanguage: "ar",
-        changeEvents: {
-          "languagesContent": onLanguagesContentChange
-        }
+        defaultLanguage: "ar"
       });
       const themeManager = new ThemeManager({
         saveAll: true,
@@ -131,10 +128,6 @@
             window.location.href = item.dataset.url;
           }
         });
-      }
-      
-      function onLanguagesContentChange() {
-        //
       }
 
       function getDatum(datum) {
