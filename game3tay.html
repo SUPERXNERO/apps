@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>game3tay</title>
+
+  <style class="realStyle" id="importStyle">
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cairo:slnt,wght@-11..11,200..1000&display=swap');
+  </style>
+  <style class="realStyle">
+    *,
+    *::before,
+    *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      color: var(--theme-color);
+      font-family: inherit;
+    }
+    body {
+      background: var(--theme-background);
+    }
+    .ds-none {
+      display: none;
+    }
+    #h1Title {
+      margin-top: 6px;
+      text-align: center;
+      background: var(--theme-box);
+      width: 90%;
+      margin-left: auto;
+      margin-right: auto;
+      padding: 6px;
+    }
+    #container {
+      width: 90%;
+      margin-left: auto;
+      margin-right: auto;
+      margin-block-start: 30px;
+      padding: 10px;
+      background: var(--theme-box);
+      min-height: 200px;
+    }
+    .containerItem {
+      margin: 10px 0;
+      padding: 10px;
+      text-align: center;
+      background: var(--theme-box3);
+      border: 2px solid transparent;
+      transition: .2s;
+    }
+    .containerItem:active {
+      filter: brightness(1.5);
+      border-color: var(--theme-color2);
+      transform: scale(.95);
+    }
+  </style>
+</head>
+<body>
+
+  <div id="realPage">
+    <header>
+      <h1 id="h1Title" data-textoptions="title"></h1>
+    </header>
+    <div id="container">
+    </div>
+  </div>
+
+  <script class="realScript" type="module" defer>
+    import {
+      OnChange
+    } from "https://superxnero.github.io/assets/libs/OnChange.js";
+    import {
+      LanguageManager
+    } from "https://superxnero.github.io/assets/libs/LanguageManager.js";
+    import {
+      ThemeManager
+    } from "https://superxnero.github.io/assets/libs/ThemeManager.js";
+    const q = (e)=> document.querySelector(e);
+    const qA = (e)=> document.querySelectorAll(e);
+    const root = document.documentElement;
+    const head = document.head;
+    const body = document.body;
+    const realPage = q("#realPage");
+
+    /* start real code */
+    async function realCode() {
+      const container = q("#container");
+
+      const languageManager = new LanguageManager({
+        saveAll: true,
+        baseUrl: "https://superxnero.github.io/languages-content/game3tay/",
+        defaultLanguage: "ar",
+        changeEvents: {
+          "languagesContent": onLanguagesContentChange
+        }
+      });
+      const themeManager = new ThemeManager({
+        saveAll: true,
+        baseUrl: "https://superxnero.github.io/themes-content/public/",
+        defaultTheme: "dark"
+      });
+
+      let mainData = {
+        items: new OnChange(onItemsChange)
+      };
+      setDatum("items", [{
+        "title": "preparatoryTitle",
+        "description": "preparatoryDescription",
+        "url": "https://drive.google.com/drive/folders/1-ZVaz41rZVR1eSVworIKpR7nX0qMtnBU"
+      }])
+
+      function onItemsChange(items) {
+        container.innerHTML = "";
+        items.forEach((item)=> {
+          container.innerHTML += `
+          <div>
+          <div data-url="${item.url}" class="containerItem">
+          <h3 data-textoptions="${item.title}"></h3>
+          <p data-textoptions="${item.description}"></p>
+          </div>
+          </div>`;
+        });
+        if (Object.keys(languageManager.languagesContent).length > 1) {
+          languageManager.updateElements();
+        }
+        Object.values(container.querySelectorAll("& .containerItem")).forEach((item)=>{
+          item.onclick = function() {
+            window.location.href = item.dataset.url;
+          }
+        });
+      }
+      
+      function onLanguagesContentChange() {
+        //
+      }
+
+      function getDatum(datum) {
+        return mainData[datum].value;
+      }
+
+      function setDatum(datum, value) {
+        mainData[datum].change(value);
+      }
+    }
+    /* run real code */
+    realCode();
+  </script>
+</body>
+</html>
