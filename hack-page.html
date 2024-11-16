@@ -1,99 +1,117 @@
 <!DOCTYPE html>
 <html lang="ar">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Warning: System Compromised</title>
-    <style>
-        body {
-            background-color: black;
-            color: lime;
-            font-family: "Courier New", Courier, monospace;
-            text-align: center;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Warning: System Compromised</title>
+  <style>
+    body {
+      background-color: black;
+      color: lime;
+      font-family: "Courier New", Courier, monospace;
+      text-align: center;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
 
-        h1, h2, p {
-            text-shadow: 0 0 10px red;
-            animation: flicker 1.5s infinite;
-        }
+    h1, h2, p {
+      text-shadow: 0 0 10px red;
+      animation: flicker 1.5s infinite;
+    }
 
-        @keyframes flicker {
-            0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
-                opacity: 1;
-            }
-            20%, 24%, 55% {
-                opacity: 0.4;
-            }
-        }
+@keyframes flicker {
+      0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+        opacity: 1;
+      }
+      20%, 24%, 55% {
+        opacity: 0.4;
+      }
+    }
 
-        #countdown {
-            font-size: 2rem;
-            color: red;
-            text-shadow: 0 0 15px lime;
-        }
+    #countdown {
+      font-size: 2rem;
+      color: red;
+      text-shadow: 0 0 15px lime;
+    }
 
-        .hack-text {
-            animation: typing 3s steps(30, end), blink-caret 0.75s step-end infinite;
-            white-space: nowrap;
-            overflow: hidden;
-            border-right: 3px solid red;
-            width: 0;
-        }
+    .hack-text {
+      animation: typing 3s steps(30, end), blink-caret 0.75s step-end infinite;
+      white-space: nowrap;
+      overflow: hidden;
+      border-right: 3px solid red;
+      width: 0;
+    }
 
-        @keyframes typing {
-            from { width: 0; }
-            to { width: 100%; }
-        }
+@keyframes typing {
+      from {
+        width: 0;
+      }
+      to {
+        width: 100%;
+      }
+    }
 
-        @keyframes blink-caret {
-            50% { border-color: transparent; }
-        }
+@keyframes blink-caret {
+      50% {
+        border-color: transparent;
+      }
+    }
 
-        #emoji-container {
-            font-size: 3rem;
-            margin-top: 20px;
-            animation: pulse 1s infinite;
-            opacity: 0;
-            transition: opacity 0.5s;
-        }
+    #emoji-container {
+      font-size: 3rem;
+      margin-top: 20px;
+      animation: pulse 1s infinite;
+      opacity: 0;
+      transition: opacity 0.5s;
+    }
 
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.2); }
-            100% { transform: scale(1); }
-        }
-    </style>
+@keyframes pulse {
+      0% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.2);
+      }
+      100% {
+        transform: scale(1);
+      }
+    }
+  </style>
 </head>
 <body>
-    <h1>System Compromised!</h1>
-    <h2>All your data is now being accessed...</h2>
-    <p class="hack-text">Initiating data transfer...</p>
-    <p id="countdown">00:10</p>
-    <div id="emoji-container">☠️💀😈</div>
+  <h1>System Compromised!</h1>
+  <h2>All your data is now being accessed...</h2>
+  <p class="hack-text">
+    Initiating data transfer...
+  </p>
+  <p id="countdown">
+    00:10
+  </p>
+  <div id="emoji-container">
+    ☠️💀😈
+  </div>
 
-    <script>
-        // مؤقت عد تنازلي
-        let seconds = 10;
-        const countdownElement = document.getElementById('countdown');
-        const emojiContainer = document.getElementById('emoji-container');
-        emojiContainer.style.opacity = "0"; // إخفاء الإيموجيات في البداية
+  <script>
+    // مؤقت عد تنازلي
+    let seconds = 10;
+    const countdownElement = document.getElementById('countdown');
+    const emojiContainer = document.getElementById('emoji-container');
+    emojiContainer.style.opacity = "0"; // إخفاء الإيموجيات في البداية
 
-        const interval = setInterval(() => {
-            seconds--;
-            countdownElement.textContent = `00:${seconds.toString().padStart(2, '0')}`;
-            if (seconds <= 0) {
-                clearInterval(interval);
-                countdownElement.textContent = "Data Transferred!";
-                emojiContainer.style.opacity = "1"; // إظهار الإيموجيات
-            }
-        }, 1000);
-    </script>
+    const interval = setInterval(() => {
+      seconds--;
+      countdownElement.textContent = `00:${seconds.toString().padStart(2, '0')}`;
+      if (seconds <= 0) {
+        clearInterval(interval);
+        countdownElement.textContent = "Data Transferred!";
+        emojiContainer.style.opacity = "1"; // إظهار الإيموجيات
+      }
+    }, 1000);
+  </script>
 </body>
 </html>
