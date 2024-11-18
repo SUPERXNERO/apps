@@ -152,16 +152,16 @@
   <script class="realScript" type="module" defer>
     import {
       OnChange
-    } from "https://superxnero.github.io/assets/libs/OnChange.js";
+    } from "/storage/5A67-DF85/GitHub/assets/libs/OnChange.js";
     import {
       LanguageManager
-    } from "https://superxnero.github.io/assets/libs/LanguageManager.js";
+    } from "/storage/5A67-DF85/GitHub/assets/libs/LanguageManager.js";
     import {
       ThemeManager
-    } from "https://superxnero.github.io/assets/libs/ThemeManager.js";
+    } from "/storage/5A67-DF85/GitHub/assets/libs/ThemeManager.js";
     import {
       FetchToElement
-    } from "https://superxnero.github.io/assets/libs/FetchToElement.js";
+    } from "/storage/5A67-DF85/GitHub/assets/libs/FetchToElement.js";
     const q = (e)=> document.querySelector(e);
     const qA = (e)=> document.querySelectorAll(e);
     const root = document.documentElement;
@@ -171,18 +171,18 @@
 
     /* start real code */
     async function realCode() {
+      // element variables
       const container = q("#container");
       const openPhoneNumbers = q("#openPhoneNumbers");
       const phoneNumbersList = q("#phoneNumbersList");
 
       const languageManager = new LanguageManager({
         saveAll: true,
-        baseUrl: "https://superxnero.github.io/languages-content/game3tay/"
+        baseUrl: "/storage/5A67-DF85/GitHub/languages-content/game3tay/"
       });
       const themeManager = new ThemeManager({
         saveAll: true,
-        baseUrl: "https://superxnero.github.io/themes-content/public/",
-        defaultTheme: "dark"
+        baseUrl: "/storage/5A67-DF85/GitHub/themes-content/public/"
       });
       const fetchToElement = new FetchToElement(true);
 
@@ -190,18 +190,101 @@
         items: new OnChange(onItemsChange),
         contacts: new OnChange(onContactsChange)
       };
-      setDatum("items", [{
-        "title": "preparatoryTitle",
-        "description": "preparatoryDescription",
+      const items = [{
+        "title": "preparatory",
         "url": "https://drive.google.com/drive/folders/1-ZVaz41rZVR1eSVworIKpR7nX0qMtnBU"
-      }]);
-      setDatum("contacts", [{
+      },
+        {
+          "title": "mechanicalEngineering",
+          "more": {
+            "firstYear": "https://drive.google.com/drive/folders/1-Sm3ZpvzK7JpFQ434NKOG5UuOO4R-xYl",
+            "secondYear": "https://drive.google.com/drive/folders/1-Vfk8ncXtZZpoUBLWbj4hns3StbRE5I2",
+            "thirdYear": "https://drive.google.com/drive/folders/1-YCIUUaE4RSdeulq3RZDHY5UU2fjL_Zc",
+            "fourthYear": "https://drive.google.com/drive/folders/1-Z0WLyQ4mN5Y5C6kC3cacoPux4sNozMi",
+            "fifthYear": "https://drive.google.com/drive/folders/1-aw5QJnAMOl9yOWpdCRatijEDoqpuSVA"
+          }
+        },
+        {
+          "title": "civilEngineering",
+          "more": {
+            "firstYear": "https://drive.google.com/drive/folders/1-RMsdEUDTKI9qvylU8OnJSoztaUMSk3_",
+            "secondYear": "https://drive.google.com/drive/folders/1-kc2NC46BmZYFZPHmDQ54ruj4w6I2NpE",
+            "thirdYear": "https://drive.google.com/drive/folders/1-cgapQ4atrU1TX4lbBxZe5M5O8-h6W7L",
+            "fourthYear": "https://drive.google.com/drive/folders/1-ojk_E06gMMI7ZSE0GjCB0NxcgSak5m6",
+            "fifthYear": "https://drive.google.com/drive/folders/1-uu_JLiiWTXq4LgupHv0Y2BmcCJavtnQ"
+          }
+        },
+        {
+          "title": "architecturalEngineering",
+          "more": {
+            "firstYear": "https://drive.google.com/drive/folders/1-NWeN1sekzcOdUeiwStSRXjQzkso5n1G",
+            "secondYear": "https://drive.google.com/drive/folders/1-QFW0H8034rr-VLfXBdadnZAYo7J0_B2",
+            "thirdYear": "https://drive.google.com/drive/folders/1-U8pmk5qT2mIFUmhWFXcq37MVk2CCGM3",
+            "fourthYear": "https://drive.google.com/drive/folders/1-Tzpjc9tGImPUdlh-NafYSSUzG5_HnDE",
+            "fifthYear": "https://drive.google.com/drive/folders/1-YxkU6xUnzCrxera_50veDofIxbE1x7s"
+          }
+        },
+        {
+          "title": "computerScienceAndEngineering",
+          "more": {
+            "firstYear": "https://drive.google.com/drive/folders/1-V0INTyq3mccaLFeS7QRSz95ey92qgTu",
+            "secondYear": "https://drive.google.com/drive/folders/1-XL84aXIo4mVn5SqXWOHbKcupMlFpzov",
+            "thirdYear": "https://drive.google.com/drive/folders/1-dh_UqkMtU6XoTeEn1DULMWE9NlobQHh",
+            "fourthYear": "https://drive.google.com/drive/folders/1-fPTUdJUxsZZl9MQ9XRWgPp5HeV6-6es",
+            "fifthYear": "https://drive.google.com/drive/folders/1-pDyqZAvqy-OBZyAZXlHHKTwJDyGbkd8"
+          }
+        },
+        {
+          "title": "electronicsAndCommunicationEngineering",
+          "more": {
+            "firstYear": "https://drive.google.com/drive/folders/1-qZVJpLYmuT4zcobs_hRrT-DxFQph4sy",
+            "secondYear": "https://drive.google.com/drive/folders/1-yCYgFG_LiPj-RLy0KgR-E-FfjyzAVm1",
+            "thirdYear": "https://drive.google.com/drive/folders/1-zSSOdi-OmmKtWTQUmtjjWtk6xXzxruL",
+            "fourthYear": "https://drive.google.com/drive/folders/100iug3X4DkbkSbnXr_nDNTJwnomNlMtX",
+            "fifthYear": "https://drive.google.com/drive/folders/104CnQd2xM4Ag9NFR73HH8QCVONWUh8ng"
+          }
+        },
+        {
+          "title": "informationTechnology",
+          "more": {
+            "firstYear": "https://drive.google.com/drive/folders/13w0dGd8MWoRLBObD2AtdHZtueSwVz9qr",
+            "secondYear": "https://drive.google.com/drive/folders/18FzuIPlnf0D7L5DV59GEG9YupUvoea9T",
+            "thirdYear": "https://drive.google.com/drive/folders/1UwAnYyR1dDFy2YeQy6cdOFi53xleObbR",
+            "fourthYear": "https://drive.google.com/drive/folders/1qqzeeTKoM2zx33vuaIWF827N3l8hS-g8",
+            "fifthYear": "https://drive.google.com/drive/folders/1qwthCM1YVTX9JzCd-4V_bcMkakVciAE8"
+          }
+        },
+        {
+          "title": "marineEngineering",
+          "more": {
+            "firstYear": "https://drive.google.com/drive/folders/1-_ZWPaYqyyqDzG7Xjx3uS87qiJiPuCFu",
+            "secondYear": "https://drive.google.com/drive/folders/1-gMVZwniTo40jABRO2VCqTpLngeS84Y-",
+            "thirdYear": "https://drive.google.com/drive/folders/1-doXP8U6Lzt7UoPHvCgmIYgn10l9eysT",
+            "fourthYear": "https://drive.google.com/drive/folders/1-dnDcMX5x2iHwwkqN3SzVqivtEyc1Zgb",
+            "fifthYear": "https://drive.google.com/drive/folders/1-ia8lwmWqIRlmhvagOVrpXbhirwOSl_X"
+          }
+        },
+        {
+          "title": "mechatronicsAndEngineering",
+          "more": {
+            "firstYear": "https://drive.google.com/drive/folders/1-Ig1ydWGmJj1x8su0jWh7AaLbVSdufTX",
+            "secondYear": "https://drive.google.com/drive/folders/1-c_LIfkgj5iAj2o1_IyWhUvGvZXeDXF1",
+            "thirdYear": "https://drive.google.com/drive/folders/1-US6_aJmqNrFF8KnYuURsO0FH6RM-Dp-",
+            "fourthYear": "https://drive.google.com/drive/folders/1-Swt5FGSaXsKOUA8MdHbJh0lJfRyYcHO",
+            "fifthYear": "https://drive.google.com/drive/folders/1-f32FdI6-fCARdFD2fbw5hId1QxB7pVs"
+          }
+        }];
+      setDatum("items", items);
+
+      const contacts = [{
         "name": "developer",
         "phone": "967718177515"
-      }, {
-        "name": "zaid",
-        "phone": "967770209751"
-      }]);
+      },
+        {
+          "name": "zaid",
+          "phone": "967770209751"
+        }];
+      setDatum("contacts", contacts);
 
       openPhoneNumbers.onclick = function() {
         phoneNumbersList.classList.add("show");
@@ -213,17 +296,45 @@
       function onItemsChange(items) {
         container.innerHTML = "";
         items.forEach((item)=> {
+          let more;
+          if (item.more?.constructor === Object) {
+            if (Object.keys(item.more).length > 0) {
+              more = Object.keys(item.more).map(function(moreItem, index) {
+                return `
+                <div style="--iMoreItem: ${index};" class="moreItem" data-textoptions="${moreItem}" data-url="${item.more[moreItem]}"></div>`;
+              });
+              more = more.join("");
+            }
+          }
+
           container.innerHTML += `
-          <div data-url="${item.url}" class="containerItem">
+          <div data-open="${more ? "true": "false"}" data-url="${item.url}" class="containerItem">
           <h3 data-textoptions="${item.title}"></h3>
-          <p data-textoptions="${item.description}"></p>
+          ${
+          more ? `
+          <div class="moreItems" style="--openMore:0px;">
+          ${more}
+          </div>`: ""
+          }
           </div>`;
         });
+
         if (Object.keys(languageManager.languagesContent).length > 1) {
           languageManager.updateElements();
         }
-        Object.values(container.querySelectorAll("& .containerItem")).forEach((item)=> {
-          item.onclick = function() {
+        Object.values(container.querySelectorAll("& .containerItem, & .moreItem")).forEach((item)=> {
+          item.onclick = function(event) {
+            event.stopPropagation();
+            if (item.dataset.open === "true") {
+              item.classList.toggle("opened");
+              const moreItems = item.querySelector("& > .moreItems");
+              if (item.classList.contains("opened")) {
+                moreItems.style.setProperty("--openMore", moreItems.scrollHeight + "px");
+              } else {
+                moreItems.style.setProperty("--openMore", "0px");
+              }
+              return;
+            }
             window.location.href = item.dataset.url;
           }
         });
