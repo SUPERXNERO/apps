@@ -36,60 +36,30 @@
       padding: 6px;
       display: flex;
       align-items: center;
-      justify-content: center;
+      justify-content: space-between;
     }
-    #phoneNumbers {
-      position: absolute;
-      top: 50%;
-      left: 15px;
-      transform: translateY(-50%);
+    .arLanguage header {
+      flex-direction: row-reverse;
     }
-    #openPhoneNumbers {
-      transition: .2s;
-    }
-    #openPhoneNumbers svg {
-      width: 25px;
-      height: 25px;
-    }
-    #openPhoneNumbers:active {
-      transform: scale(.85);
-    }
-    .arLanguage #phoneNumbers {
-      left: auto;
-      right: 15px;
-    }
-    #phoneNumbersList {
-      position: absolute;
-      top: 0;
-      left: 0;
-      opacity: 0;
-      pointer-events: none;
-      overflow: scroll;
-      max-height: 400px;
-      transition: .2s;
-    }
-    .arLanguage #phoneNumbersList {
-      left: auto;
-      right: 0;
-    }
-    #phoneNumbersList.show {
-      opacity: 1;
-      pointer-events: auto;
-    }
-    .phoneNumber {
-      padding: 8px;
-      width: 100%;
+    #openSidebar {
+      border-radius: 50%;
+      background: var(--theme-box2);
       border: 2px solid transparent;
-      background: var(--theme-box3);
-      text-wrap: nowrap;
+      padding: 6px;
       transition: .2s;
     }
-    .phoneNumber:active {
+    #openSidebar:active {
       filter: brightness(1.5);
       border-color: var(--theme-color2);
       transform: scale(.9);
     }
+    #openSidebar svg {
+      stroke: var(--theme-color);
+      width: 25px;
+      height: 25px;
+    }
     #h1Title {
+      flex-grow: 1;
       text-align: center;
       font-size: 21px;
     }
@@ -118,7 +88,7 @@
       background: var(--theme-box3);
       transition: .2s calc(.5s / (var(--iMoreItem) + 1));
     }
-:is(.containerItem:not(.opened), .moreItem):active {
+    :is(.containerItem:not(.opened), .moreItem):active {
       filter: brightness(1.5);
       border-color: var(--theme-color2);
       transform: scale(.95);
@@ -131,6 +101,70 @@
       height: var(--openMore);
       overflow: hidden;
       transition: .7s;
+    }
+    #sidebar {
+      --leftSidebar: -100%;
+      position: fixed;
+      top: 0;
+      left: var(--leftSidebar);
+      height: 100%;
+      min-width: 160px;
+      background: var(--theme-box4);
+      transition: .2s;
+    }
+    .arLanguage #sidebar {
+      left: auto;
+      right: var(--leftSidebar);
+    }
+    #sidebar.show {
+      --leftSidebar: 0;
+    }
+    #sidebar .item {
+      position: relative;
+    }
+    #sidebar .itemShow {
+      padding: 6px;
+      border: 2px solid transparent;
+      background: var(--theme-box4);
+      transition: .2s;
+    }
+    #sidebar .itemShow:active {
+      filter: brightness(1.5);
+    }
+    #sidebar .itemList {
+      position: absolute;
+      top: 0;
+      left: 100%;
+      opacity: 0;
+      pointer-events: none;
+      background: var(--theme-box4);
+      min-width: 100px;
+      border-left: 2px solid var(--theme-box3);
+      overflow: scroll;
+      max-height: 400px;
+      transition: .2s;
+    }
+    #sidebar .itemList.show {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .arLanguage #sidebar .itemList {
+      left: auto;
+      right: 100%;
+      border-right: 2px solid var(--theme-box3);
+    }
+    #sidebar .itemList > div {
+      width: 100%;
+      border: 2px solid transparent;
+      text-wrap: nowrap;
+      padding: 6px;
+      background: var(--theme-box3);
+      transition: .2s;
+    }
+    #sidebar .itemList > div:active {
+      filter: brightness(1.5);
+      border-color: var(--theme-color2);
+      transform: scale(.95);
     }
   </style>
 </head>
