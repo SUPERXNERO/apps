@@ -341,20 +341,20 @@
           "phone": "967770209751"
         }];
       setDatum("contacts", contacts);
-      
+
       openSidebar.onclick = function() {
         sidebar.classList.add("show");
-        sidebar.offclick(()=>{
+        sidebar.offclick(()=> {
           sidebar.classList.remove("show");
         });
       }
-      
-      sidebar.querySelectorAll("& > .item").forEach((item)=>{
+
+      sidebar.querySelectorAll("& > .item").forEach((item)=> {
         const itemShow = item.querySelector("& > .itemShow");
         const itemList = item.querySelector("& > .itemList");
         itemShow.onclick = function() {
           itemList.classList.add("show");
-          itemList.offclick(()=>{
+          itemList.offclick(()=> {
             itemList.classList.remove("show");
           });
         }
@@ -375,17 +375,17 @@
           }
 
           container.innerHTML += `
-          <div data-open="${more ? "true" : "false"}" data-url="${item.url}" class="containerItem">
+          <div data-open="${more ? "true": "false"}" data-url="${item.url}" class="containerItem">
           <h3 data-textoptions="${item.title}"></h3>
           ${
-            more ? `
-            <div class="moreItems" style="--openMore:0px;">
-            ${more}
-            </div>` : ""
+          more ? `
+          <div class="moreItems" style="--openMore:0px;">
+          ${more}
+          </div>`: ""
           }
           </div>`;
         });
-        
+
         if (Object.keys(languageManager.languagesContent).length > 1) {
           languageManager.updateElements();
         }
@@ -423,10 +423,10 @@
           }
         });
       }
-      
+
       function onAvailableLanguagesChange(languages) {
         availableLanguages.innerHTML = "";
-        languages.forEach((language)=>{
+        languages.forEach((language)=> {
           availableLanguages.innerHTML += `
           <div class="languageItem" data-id="${language}" data-textoptions="${language}"></div>`;
         });
@@ -440,10 +440,10 @@
           }
         });
       }
-      
+
       function onAvailableThemesChange(themes) {
         availableThemes.innerHTML = "";
-        themes.forEach((theme)=>{
+        themes.forEach((theme)=> {
           availableThemes.innerHTML += `
           <div class="themeItem" data-id="${theme}" data-textoptions="${theme}"></div>`;
         });
