@@ -386,7 +386,7 @@
           </div>`;
         });
 
-        if (Object.keys(languageManager.languagesContent).length > 1) {
+        if (Object.keys(languageManager.languagesContent).length > 0) {
           languageManager.updateElements();
         }
         Object.values(container.querySelectorAll("& .containerItem, & .moreItem")).forEach((item)=> {
@@ -413,7 +413,7 @@
           phoneNumbersList.innerHTML += `
           <div class="phoneNumber" data-phone="${contact.phone}" data-textoptions="${contact.name}"></div>`;
         });
-        if (Object.keys(languageManager.languagesContent).length > 1) {
+        if (Object.keys(languageManager.languagesContent).length > 0) {
           languageManager.updateElements();
         }
         Object.values(phoneNumbersList.querySelectorAll("& .phoneNumber")).forEach((item)=> {
@@ -430,7 +430,7 @@
           availableLanguages.innerHTML += `
           <div class="languageItem" data-id="${language}" data-textoptions="${language}"></div>`;
         });
-        if (Object.keys(languageManager.languagesContent).length > 1) {
+        if (Object.keys(languageManager.languagesContent).length > 0) {
           languageManager.updateElements();
         }
         Object.values(availableLanguages.querySelectorAll("& .languageItem")).forEach((item)=> {
