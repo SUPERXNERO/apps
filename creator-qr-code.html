@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Creator QR Code</title>
+  <script src="https://cdn.jsdelivr.net/npm/qrcodejs/qrcode.min.js"></script>
+  <style class="realStyle" id="importStyle">
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cairo:slnt,wght@-11..11,200..1000&display=swap');
+  </style>
+  <style class="realStyle">
+    *,
+    *::before,
+    *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      color: var(--theme-color);
+      font-family: inherit;
+      user-select: none;
+    }
+    body {
+      background: var(--theme-background);
+    }
+    .ds-none {
+      display: none;
+    }
+    .disable {
+      filter: opacity(.6);
+      pointer-events: none;
+    }
+    header {
+      position: relative;
+      margin-top: 6px;
+      background: var(--theme-box);
+      width: 90%;
+      margin-left: auto;
+      margin-right: auto;
+      padding: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .arLanguage header {
+      flex-direction: row-reverse;
+    }
+    #openSidebar {
+      border-radius: 50%;
+      background: var(--theme-box2);
+      border: 2px solid transparent;
+      padding: 6px;
+      aspect-ratio: 1/1;
+      transition: .2s;
+    }
+    #openSidebar:active {
+      filter: brightness(1.5);
+      border-color: var(--theme-color2);
+      transform: scale(.9);
+    }
+    #openSidebar svg {
+      stroke: var(--theme-color);
+      width: 25px;
+      height: 25px;
+    }
+    #h1Title {
+      flex-grow: 1;
+      text-align: center;
+      font-size: 18px;
+    }
+    #container {
+      width: 90%;
+      margin-left: auto;
+      margin-right: auto;
+      margin-block-start: 30px;
+      padding: 10px;
+      background: var(--theme-box);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    #inputContainer label {
+      display: block;
+      margin: 10px 0 5px;
+      font-weight: bold;
+      color: var(--theme-color);
+    }
+    #inputContainer input,#generateButton,#downloadButton {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 1px solid var(--theme-box4);
+      outline-color: var(--theme-box4);
+      border-radius: 4px;
+      font-size: 16px;
+      background: var(--theme-box3);
+    }
+:placeholder {
+      color: var(--theme-color2);
+    }
+    #generateButton,#downloadButton {
+      background: var(--theme-box2);
+      border: 2px solid transparent;
+      padding: 6px;
+      margin-top: 40px;
+      border-radius: 2px;
+      transition: .2s;
+    }
+:is(#generateButton,#downloadButton):active {
+      filter: brightness(1.5);
+      border-color: var(--theme-color2);
+      transform: scale(.95);
+    }
+    #result {
+      display: grid;
+      place-items: center;
+      width: 150px;
+      height: 150px;
+      background: var(--theme-white);
+      color: var(--theme-black);
+      margin: 40px auto 0 auto;
+    }
+    #result canvas {
+      width: 100%;
+      height: 100%;
+    }
+    #result img {
+      width: 100%;
+      height: 100%;
+    }
+    #sidebar {
+      --leftSidebar: -100%;
+      position: fixed;
+      top: 0;
+      left: var(--leftSidebar);
+      height: 100%;
+      min-width: 160px;
+      background: var(--theme-box4);
+      transition: .2s;
+    }
+    .arLanguage #sidebar {
+      left: auto;
+      right: var(--leftSidebar);
+    }
+    #sidebar.show {
+      --leftSidebar: 0;
+    }
+    #sidebar .item {
+      position: relative;
+    }
+    #sidebar .itemShow {
+      padding: 6px;
+      border: 2px solid transparent;
+      background: var(--theme-box4);
+      transition: .2s;
+    }
+    #sidebar .itemShow:active {
+      filter: brightness(1.5);
+    }
+    #sidebar .itemList {
+      position: absolute;
+      top: 0;
+      left: 100%;
+      opacity: 0;
+      pointer-events: none;
+      background: var(--theme-box4);
+      min-width: 100px;
+      border: 2px solid var(--theme-color2);
+      border-left-width: 0;
+      overflow: scroll;
+      max-height: 400px;
+      transition: .2s;
+    }
+    #sidebar .itemList.show {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .arLanguage #sidebar .itemList {
+      left: auto;
+      right: 100%;
+      border-left-width: 2px;
+      border-right-width: 0;
+    }
+    #sidebar .itemList > div {
+      width: 100%;
+      border: 2px solid transparent;
+      text-wrap: nowrap;
+      padding: 6px;
+      background: var(--theme-box3);
+      transition: .2s;
+    }
+    #sidebar .itemList > div:active {
+      filter: brightness(1.5);
+      border-color: var(--theme-color2);
+      transform: scale(.95);
+    }
+  </style>
+</head>
+<body>
+
+  <div id="realPage">
+    <div id="main-sidebar">
+      <div id="main">
+        <header>
+          <div id="openSidebar" data-fetch="/storage/5A67-DF85/GitHub/assets/svgs/burger-menu_506800.svg"></div>
+          <h1 id="h1Title" data-textoptions="title"></h1>
+        </header>
+        <div id="container">
+          <div id="inputContainer">
+            <label for="inputText" data-textoptions="enterTextKeyword"></label>
+            <input type="text" id="inputText" data-textoptions>
+          </div>
+          <button id="generateButton" data-textoptions="generateKeyword"></button>
+          <div id="result" data-textoptions="QRBox">
+          </div>
+          <button id="downloadButton" data-textoptions="downloadKeyword"></button>
+        </div>
+      </div>
+      <div id="sidebar">
+        <div class="item">
+          <div class="itemShow" data-textoptions="language"></div>
+          <div id="availableLanguages" class="itemList">
+          </div>
+        </div>
+        <div class="item">
+          <div class="itemShow" data-textoptions="themeText"></div>
+          <div id="availableThemes" class="itemList">
+          </div>
+        </div>
+        <div class="item">
+          <div class="itemShow" data-textoptions="contact"></div>
+          <div id="phoneNumbersList" class="itemList">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script class="realScript" type="module" defer>
+    import {
+      OnChange
+    } from "/storage/5A67-DF85/GitHub/assets/libs/OnChange.js";
+    import {
+      LanguageManager
+    } from "/storage/5A67-DF85/GitHub/assets/libs/LanguageManager.js";
+    import {
+      ThemeManager
+    } from "/storage/5A67-DF85/GitHub/assets/libs/ThemeManager.js";
+    import {
+      FetchToElement
+    } from "/storage/5A67-DF85/GitHub/assets/libs/FetchToElement.js";
+    import * as an from "/storage/5A67-DF85/GitHub/assets/libs/another.js";
+    const q = (e)=> document.querySelector(e);
+    const qA = (e)=> document.querySelectorAll(e);
+    const root = document.documentElement;
+    const head = document.head;
+    const body = document.body;
+    const realPage = q("#realPage");
+
+    /* start real code */
+    async function realCode() {
+      // element variables
+      const openSidebar = q("#openSidebar");
+      const container = q("#container");
+      const sidebar = q("#sidebar");
+      const availableLanguages = q("#availableLanguages");
+      const availableThemes = q("#availableThemes");
+      const phoneNumbersList = q("#phoneNumbersList");
+      const inputText = q("#inputText");
+      const generateButton = q("#generateButton");
+      const downloadButton = q("#downloadButton");
+      const result = q("#result");
+      const canvas = q("#canvas");
+
+      const languageManager = new LanguageManager({
+        saveAll: true,
+        baseUrl: "/storage/5A67-DF85/GitHub/languages-content/creator-qr-code/",
+        defaultLanguage: localStorage.getItem("language"),
+        changeEvents: {
+          "language": onLanguageChange
+        }
+      });
+      const themeManager = new ThemeManager({
+        saveAll: true,
+        baseUrl: "/storage/5A67-DF85/GitHub/themes-content/public/",
+        defaultTheme: localStorage.getItem("theme"),
+        changeEvents: {
+          "theme": onThemeChange
+        }
+      });
+      const fetchToElement = new FetchToElement(true);
+
+      let mainData = {
+        availableLanguages: new OnChange(onAvailableLanguagesChange),
+        availableThemes: new OnChange(onAvailableThemesChange),
+        contacts: new OnChange(onContactsChange),
+        inputText: new OnChange(onInputTextChange),
+        options: new OnChange(onOptionsChange),
+        isQRCode: new OnChange(onIsQRCodeChange),
+        padding: new OnChange(onPaddingChange)
+      };
+      setDatum("availableLanguages", ["ar", "en"]);
+      setDatum("availableThemes", ["light", "dark"]);
+
+      const contacts = [{
+        "name": "developer",
+        "phone": "967718177515"
+      }];
+      setDatum("contacts", contacts);
+
+      setDatum("inputText", inputText.value);
+
+      const options = {
+        width: 3900,
+        height: 3900,
+        colorDark: "#000000",
+        colorLight: "#ffffff",
+        correctLevel: QRCode.CorrectLevel.H
+      };
+      setDatum("options", options);
+
+      setDatum("isQRCode", false);
+      setDatum("padding", 50);
+
+      let qrCode;
+
+      openSidebar.onclick = function() {
+        sidebar.classList.add("show");
+        sidebar.offclick(()=> {
+          sidebar.classList.remove("show");
+        });
+      }
+
+      sidebar.querySelectorAll("& > .item").forEach((item)=> {
+        const itemShow = item.querySelector("& > .itemShow");
+        const itemList = item.querySelector("& > .itemList");
+        itemShow.onclick = function() {
+          itemList.classList.add("show");
+          itemList.offclick(()=> {
+            itemList.classList.remove("show");
+          });
+        }
+      });
+
+      inputText.oninput = function() {
+        setDatum("inputText", inputText.value);
+      }
+
+      generateButton.onclick = generateQRCode;
+      downloadButton.onclick = downloadQRCode;
+
+      function generateQRCode() {
+        const text = getDatum("inputText");
+        const options = getDatum("options");
+
+        result.innerHTML = "";
+
+        qrCode = new QRCode(result, {
+          text: text,
+          width: options.width,
+          height: options.height,
+          colorDark: options.colorDark,
+          colorLight: options.colorLight,
+          correctLevel: options.correctLevel
+        });
+        generateQRCodeWithPadding();
+
+        setDatum("isQRCode", true);
+        generateButton.classList.add("disable");
+      }
+
+      function generateQRCodeWithPadding(canvas) {
+        if (!canvas) {
+          canvas = result.querySelector("canvas");
+        }
+        const ctx = canvas.getContext("2d");
+        
+        const padding = getDatum("padding");
+
+        const newCanvas = document.createElement("canvas");
+        newCanvas.width = canvas.width + (padding * 2);
+        newCanvas.height = canvas.height + (padding * 2);
+        const newCtx = newCanvas.getContext("2d");
+
+        newCtx.fillStyle = "white";
+        newCtx.fillRect(0, 0, newCanvas.width, newCanvas.height);
+
+        const offsetX = padding;
+        const offsetY = padding;
+
+        newCtx.drawImage(canvas, offsetX, offsetY);
+        
+        canvas.width = canvas.width + 100;
+        canvas.height = canvas.height + 100;
+
+        ctx.drawImage(newCanvas, 0, 0);
+        newCanvas.remove();
+      }
+
+      function downloadQRCode() {
+        if (!qrCode) {
+          return;
+        }
+        
+        const canvas = result.querySelector("canvas");
+        
+        const date = new Date();
+        const formattedDate = date.toISOString().split('T')[0];
+        const formattedTime = date.toTimeString().split(' ')[0].replace(/:/g, '-');
+
+        const link = document.createElement('a');
+        link.href = canvas.toDataURL('image/png');
+        link.download = `QRCode-${formattedDate}-${formattedTime}.png`;
+        link.click();
+      }
+
+      function onInputTextChange(value) {
+        if (typeof value === "string" && value.trim().length > 0) {
+          generateButton.classList.remove("disable");
+        } else {
+          generateButton.classList.add("disable");
+        }
+      }
+
+      function onOptionsChange(options) {
+        //
+      }
+
+      function onIsQRCodeChange(isQRCode) {
+        if (isQRCode === true) {
+          result.removeAttribute("data-textoptions");
+          downloadButton.classList.remove("disable");
+        } else {
+          downloadButton.classList.add("disable");
+        }
+      }
+      
+      function onPaddingChange(padding) {
+        //
+      }
+
+      function onContactsChange(contacts) {
+        phoneNumbersList.innerHTML = "";
+        contacts.forEach((contact)=> {
+          phoneNumbersList.innerHTML += `
+          <div class="phoneNumber" data-phone="${contact.phone}" data-textoptions="${contact.name}"></div>`;
+        });
+        if (Object.keys(languageManager.languagesContent).length > 1) {
+          languageManager.updateElements();
+        }
+        Object.values(phoneNumbersList.querySelectorAll("& .phoneNumber")).forEach((item)=> {
+          item.onclick = function() {
+            const baseUrl = "https://wa.me/";
+            window.location.href = baseUrl + item.dataset.phone;
+          }
+        });
+      }
+
+      function onLanguageChange(language) {
+        localStorage.setItem("language", language);
+      }
+
+      function onThemeChange(theme) {
+        localStorage.setItem("theme", theme);
+      }
+
+      function onAvailableLanguagesChange(languages) {
+        availableLanguages.innerHTML = "";
+        languages.forEach((language)=> {
+          availableLanguages.innerHTML += `
+          <div class="languageItem" data-id="${language}" data-textoptions="${language}"></div>`;
+        });
+        if (Object.keys(languageManager.languagesContent).length > 1) {
+          languageManager.updateElements();
+        }
+        Object.values(availableLanguages.querySelectorAll("& .languageItem")).forEach((item)=> {
+          item.onclick = function() {
+            const id = item.dataset.id;
+            languageManager.setLanguage(id);
+          }
+        });
+      }
+
+      function onAvailableThemesChange(themes) {
+        availableThemes.innerHTML = "";
+        themes.forEach((theme)=> {
+          availableThemes.innerHTML += `
+          <div class="themeItem" data-id="${theme}" data-textoptions="${theme}"></div>`;
+        });
+        if (Object.keys(languageManager.languagesContent).length > 1) {
+          languageManager.updateElements();
+        }
+        Object.values(availableThemes.querySelectorAll("& .themeItem")).forEach((item)=> {
+          item.onclick = function() {
+            const id = item.dataset.id;
+            themeManager.setTheme(id);
+          }
+        });
+      }
+
+      function getDatum(datum) {
+        return mainData[datum].value;
+      }
+
+      function setDatum(datum, value) {
+        mainData[datum].change(value);
+      }
+    }
+    /* run real code */
+    realCode();
+
+    Element.prototype.allChildren = function(includeSelf = false) {
+      let children = Array.from(this.children);
+      children.forEach(child => {
+        children.push(...child.allChildren());
+      });
+      return includeSelf ? [this,
+        ...children]: children;
+    };
+
+
+    Element.prototype.offclick = function (fun,
+      other = {}) {
+      let element = this;
+
+      if (other == true) other = {
+        elementPlus: true
+      }
+      let conditon = other.conditon || 'true',
+      lockEvents = other.lockEvents || false,
+      elementPlus = other.elementPlus,
+      notLock = other.notLock,
+      clearEvent = other.clearEvent;
+      document.addEventListener('mouseup',
+        offClick);
+
+      let elements = [element];
+      if (elementPlus && elementPlus.v) {
+        if (an.isOneElement(elementPlus)) elements = [element,
+          elementPlus];
+        else elements = [element,
+          ...elementPlus];
+      }
+
+      if (lockEvents) {
+        if (!notLock) notLock = elements;
+        element.lockEvents('lock', notLock);
+      }
+
+      function offClick(events) {
+        let event = events || events.changedTouches[0];
+
+        if (elementPlus == true) {
+          removeEvent(event);
+          return;
+        }
+
+        let isNoClick = elements.length;
+        elements.forEach(element => {
+          if (event.target !== element) isNoClick--;
+          if (element.children) {
+            isNoClick += element.allChildren().length;
+            element.allChildren().forEach(child=> {
+              if (event.target !== child) isNoClick--;
+            });
+          }
+        });
+        var cond = typeof conditon == 'function' ? conditon(event): typeof conditon == 'boolean' ? conditon: '';
+        if (isNoClick === 0 && cond !== false || cond === true) removeEvent(event);
+      }
+      function removeEvent(event) {
+        document.removeEventListener('mouseup', offClick);
+        if (lockEvents) element.lockEvents('unlock', notLock);
+        if (typeof fun == 'function') fun(event);
+      }
+    }
+  </script>
+</body>
+</html>
