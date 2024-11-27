@@ -15,7 +15,7 @@
   <meta http-equiv="content-type" content="text/html; charset=utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Creator QR Code</title>
-  <script src="https://cdn.jsdelivr.net/npm/qrcodejs/qrcode.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
   <style class="realStyle" id="importStyle">
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Cairo:slnt,wght@-11..11,200..1000&display=swap');
@@ -100,17 +100,19 @@
       font-weight: bold;
       color: var(--theme-color);
     }
-    #inputContainer input,#generateButton,#downloadButton {
+    #inputText,#generateButton,#downloadButton {
       width: 100%;
       padding: 10px;
       margin-bottom: 15px;
       border: 1px solid var(--theme-box4);
       outline-color: var(--theme-box4);
       border-radius: 4px;
-      font-size: 16px;
       background: var(--theme-box3);
     }
-:placeholder {
+    #inputText {
+      height: 150px;
+    }
+    #inputText:placeholder {
       color: var(--theme-color2);
     }
     #generateButton,#downloadButton {
@@ -127,21 +129,28 @@
       transform: scale(.95);
     }
     #result {
-      display: grid;
-      place-items: center;
-      width: 150px;
-      height: 150px;
+      min-width: 250px;
+      max-width: 250px;
+      aspect-ratio: 1/1;
       background: var(--theme-white);
-      color: var(--theme-black);
       margin: 40px auto 0 auto;
     }
-    #result canvas {
+    #result #resultText {
       width: 100%;
       height: 100%;
+      display: grid;
+      place-items: center;
+      color: var(--theme-black);
     }
-    #result img {
-      width: 100%;
-      height: 100%;
+    #result.correct #resultText {
+      display: none;
+    }
+    #result #qrcodeCanvas {
+      max-width: 100%;
+      max-height: 100%;
+    }
+    #result:not(.correct) #qrcodeCanvas {
+      display: none;
     }
     #sidebar {
       --leftSidebar: -100%;
@@ -260,10 +269,12 @@
         <div id="container">
           <div id="inputContainer">
             <label for="inputText" data-textoptions="enterTextKeyword"></label>
-            <input type="text" id="inputText" data-textoptions>
+            <textarea id="inputText" data-textoptions></textarea>
           </div>
           <button id="generateButton" data-textoptions="generateKeyword"></button>
-          <div id="result" data-textoptions="QRBox">
+          <div id="result">
+            <div id="resultText" data-textoptions="QRBox,,start"></div>
+            <canvas id="qrcodeCanvas"></canvas>
           </div>
           <button id="downloadButton" data-textoptions="downloadKeyword"></button>
         </div>
@@ -322,7 +333,8 @@
       const generateButton = q("#generateButton");
       const downloadButton = q("#downloadButton");
       const result = q("#result");
-      const canvas = q("#canvas");
+      const resultText = q("#resultText");
+      const qrcodeCanvas = q("#qrcodeCanvas");
 
       const languageManager = new LanguageManager({
         saveAll: true,
@@ -363,11 +375,13 @@
       setDatum("inputText", inputText.value);
 
       const options = {
-        width: 3900,
-        height: 3900,
-        colorDark: "#000000",
-        colorLight: "#ffffff",
-        correctLevel: QRCode.CorrectLevel.H
+        errorCorrectionLevel: 'H',
+        width: 4000,
+        margin: 1,
+        color: {
+          dark: "#000000",
+          light: "#FFFFFF"
+        }
       };
       setDatum("options", options);
 
@@ -405,63 +419,26 @@
         const text = getDatum("inputText");
         const options = getDatum("options");
 
-        result.innerHTML = "";
-
-        qrCode = new QRCode(result, {
-          text: text,
-          width: options.width,
-          height: options.height,
-          colorDark: options.colorDark,
-          colorLight: options.colorLight,
-          correctLevel: options.correctLevel
+        QRCode.toCanvas(qrcodeCanvas, text, options, function (error) {
+          if (error) {
+            console.error(error);
+            languageManager.setSubTextId("QRBox", "error");
+            setDatum("isQRCode", false);
+            return;
+          }
+          languageManager.setSubTextId("QRBox", "start");
+          setDatum("isQRCode", true);
         });
-        generateQRCodeWithPadding();
-
-        setDatum("isQRCode", true);
         generateButton.classList.add("disable");
       }
 
-      function generateQRCodeWithPadding(canvas) {
-        if (!canvas) {
-          canvas = result.querySelector("canvas");
-        }
-        const ctx = canvas.getContext("2d");
-
-        const padding = getDatum("padding");
-
-        const newCanvas = document.createElement("canvas");
-        newCanvas.width = canvas.width + (padding * 2);
-        newCanvas.height = canvas.height + (padding * 2);
-        const newCtx = newCanvas.getContext("2d");
-
-        newCtx.fillStyle = "white";
-        newCtx.fillRect(0, 0, newCanvas.width, newCanvas.height);
-
-        const offsetX = padding;
-        const offsetY = padding;
-
-        newCtx.drawImage(canvas, offsetX, offsetY);
-
-        canvas.width = canvas.width + 100;
-        canvas.height = canvas.height + 100;
-
-        ctx.drawImage(newCanvas, 0, 0);
-        newCanvas.remove();
-      }
-
       function downloadQRCode() {
-        if (!qrCode) {
-          return;
-        }
-
-        const canvas = result.querySelector("canvas");
-
         const date = new Date();
         const formattedDate = date.toISOString().split('T')[0];
         const formattedTime = date.toTimeString().split(' ')[0].replace(/:/g, '-');
 
         const link = document.createElement('a');
-        link.href = canvas.toDataURL('image/png');
+        link.href = qrcodeCanvas.toDataURL('image/png');
         link.download = `QRCode-${formattedDate}-${formattedTime}.png`;
         link.click();
       }
@@ -480,9 +457,10 @@
 
       function onIsQRCodeChange(isQRCode) {
         if (isQRCode === true) {
-          result.removeAttribute("data-textoptions");
           downloadButton.classList.remove("disable");
+          result.classList.add("correct");
         } else {
+          result.classList.remove("correct");
           downloadButton.classList.add("disable");
         }
       }
