@@ -445,181 +445,180 @@
           });
         generateButton.classList.add("disable");
       }
-    }
 
-    function downloadQRCode() {
-      const date = new Date();
-      const formattedDate = date.toISOString().split('T')[0];
-      const formattedTime = date.toTimeString().split(' ')[0].replace(/:/g,
-        '-');
+      function downloadQRCode() {
+        const date = new Date();
+        const formattedDate = date.toISOString().split('T')[0];
+        const formattedTime = date.toTimeString().split(' ')[0].replace(/:/g,
+          '-');
 
-      const link = document.createElement('a');
-      link.href = qrcodeCanvas.toDataURL('image/png');
-      link.download = `QRCode-${formattedDate}-${formattedTime}.png`;
-      link.click();
-    }
-
-    function onInputTextChange(value) {
-      if (typeof value === "string" && value.trim().length > 0) {
-        generateButton.classList.remove("disable");
-      } else {
-        generateButton.classList.add("disable");
+        const link = document.createElement('a');
+        link.href = qrcodeCanvas.toDataURL('image/png');
+        link.download = `QRCode-${formattedDate}-${formattedTime}.png`;
+        link.click();
       }
-    }
 
-    function onOptionsChange(options) {
-      //
-    }
-
-    function onIsQRCodeChange(isQRCode) {
-      if (isQRCode === true) {
-        downloadButton.classList.remove("disable");
-        result.classList.add("correct");
-      } else {
-        result.classList.remove("correct");
-        downloadButton.classList.add("disable");
-      }
-    }
-
-    function onPaddingChange(padding) {
-      //
-    }
-
-    function onContactsChange(contacts) {
-      phoneNumbersList.innerHTML = "";
-      contacts.forEach((contact)=> {
-        phoneNumbersList.innerHTML += `
-        <div class="phoneNumber" data-phone="${contact.phone}" data-textoptions="${contact.name}"></div>`;
-      });
-      if (Object.keys(languageManager.languagesContent).length > 1) {
-        languageManager.updateElements();
-      }
-      Object.values(phoneNumbersList.querySelectorAll("& .phoneNumber")).forEach((item)=> {
-        item.onclick = function() {
-          const baseUrl = "https://wa.me/";
-          window.location.href = baseUrl + item.dataset.phone;
+      function onInputTextChange(value) {
+        if (typeof value === "string" && value.trim().length > 0) {
+          generateButton.classList.remove("disable");
+        } else {
+          generateButton.classList.add("disable");
         }
-      });
-    }
-
-    function onLanguageChange(language) {
-      localStorage.setItem("language", language);
-    }
-
-    function onThemeChange(theme) {
-      localStorage.setItem("theme", theme);
-    }
-
-    function onAvailableLanguagesChange(languages) {
-      availableLanguages.innerHTML = "";
-      languages.forEach((language)=> {
-        availableLanguages.innerHTML += `
-        <div class="languageItem" data-id="${language}" data-textoptions="${language}"></div>`;
-      });
-      if (Object.keys(languageManager.languagesContent).length > 1) {
-        languageManager.updateElements();
-      }
-      Object.values(availableLanguages.querySelectorAll("& .languageItem")).forEach((item)=> {
-        item.onclick = function() {
-          const id = item.dataset.id;
-          languageManager.setLanguage(id);
-        }
-      });
-    }
-
-    function onAvailableThemesChange(themes) {
-      availableThemes.innerHTML = "";
-      themes.forEach((theme)=> {
-        availableThemes.innerHTML += `
-        <div class="themeItem" data-id="${theme}" data-textoptions="${theme}"></div>`;
-      });
-      if (Object.keys(languageManager.languagesContent).length > 1) {
-        languageManager.updateElements();
-      }
-      Object.values(availableThemes.querySelectorAll("& .themeItem")).forEach((item)=> {
-        item.onclick = function() {
-          const id = item.dataset.id;
-          themeManager.setTheme(id);
-        }
-      });
-    }
-
-    function getDatum(datum) {
-      return mainData[datum].value;
-    }
-
-    function setDatum(datum, value) {
-      mainData[datum].change(value);
-    }
-  }
-  /* run real code */
-  realCode();
-
-  Element.prototype.allChildren = function(includeSelf = false) {
-    let children = Array.from(this.children);
-    children.forEach(child => {
-      children.push(...child.allChildren());
-    });
-    return includeSelf ? [this,
-      ...children]: children;
-  };
-
-
-  Element.prototype.offclick = function (fun,
-    other = {}) {
-    let element = this;
-
-    if (other == true) other = {
-      elementPlus: true
-    }
-    let conditon = other.conditon || 'true',
-    lockEvents = other.lockEvents || false,
-    elementPlus = other.elementPlus,
-    notLock = other.notLock,
-    clearEvent = other.clearEvent;
-    document.addEventListener('mouseup',
-      offClick);
-
-    let elements = [element];
-    if (elementPlus && elementPlus.v) {
-      if (an.isOneElement(elementPlus)) elements = [element,
-        elementPlus];
-      else elements = [element,
-        ...elementPlus];
-    }
-
-    if (lockEvents) {
-      if (!notLock) notLock = elements;
-      element.lockEvents('lock', notLock);
-    }
-
-    function offClick(events) {
-      let event = events || events.changedTouches[0];
-
-      if (elementPlus == true) {
-        removeEvent(event);
-        return;
       }
 
-      let isNoClick = elements.length;
-      elements.forEach(element => {
-        if (event.target !== element) isNoClick--;
-        if (element.children) {
-          isNoClick += element.allChildren().length;
-          element.allChildren().forEach(child=> {
-            if (event.target !== child) isNoClick--;
-          });
+      function onOptionsChange(options) {
+        //
+      }
+
+      function onIsQRCodeChange(isQRCode) {
+        if (isQRCode === true) {
+          downloadButton.classList.remove("disable");
+          result.classList.add("correct");
+        } else {
+          result.classList.remove("correct");
+          downloadButton.classList.add("disable");
         }
+      }
+
+      function onPaddingChange(padding) {
+        //
+      }
+
+      function onContactsChange(contacts) {
+        phoneNumbersList.innerHTML = "";
+        contacts.forEach((contact)=> {
+          phoneNumbersList.innerHTML += `
+          <div class="phoneNumber" data-phone="${contact.phone}" data-textoptions="${contact.name}"></div>`;
+        });
+        if (Object.keys(languageManager.languagesContent).length > 1) {
+          languageManager.updateElements();
+        }
+        Object.values(phoneNumbersList.querySelectorAll("& .phoneNumber")).forEach((item)=> {
+          item.onclick = function() {
+            const baseUrl = "https://wa.me/";
+            window.location.href = baseUrl + item.dataset.phone;
+          }
+        });
+      }
+
+      function onLanguageChange(language) {
+        localStorage.setItem("language", language);
+      }
+
+      function onThemeChange(theme) {
+        localStorage.setItem("theme", theme);
+      }
+
+      function onAvailableLanguagesChange(languages) {
+        availableLanguages.innerHTML = "";
+        languages.forEach((language)=> {
+          availableLanguages.innerHTML += `
+          <div class="languageItem" data-id="${language}" data-textoptions="${language}"></div>`;
+        });
+        if (Object.keys(languageManager.languagesContent).length > 1) {
+          languageManager.updateElements();
+        }
+        Object.values(availableLanguages.querySelectorAll("& .languageItem")).forEach((item)=> {
+          item.onclick = function() {
+            const id = item.dataset.id;
+            languageManager.setLanguage(id);
+          }
+        });
+      }
+
+      function onAvailableThemesChange(themes) {
+        availableThemes.innerHTML = "";
+        themes.forEach((theme)=> {
+          availableThemes.innerHTML += `
+          <div class="themeItem" data-id="${theme}" data-textoptions="${theme}"></div>`;
+        });
+        if (Object.keys(languageManager.languagesContent).length > 1) {
+          languageManager.updateElements();
+        }
+        Object.values(availableThemes.querySelectorAll("& .themeItem")).forEach((item)=> {
+          item.onclick = function() {
+            const id = item.dataset.id;
+            themeManager.setTheme(id);
+          }
+        });
+      }
+
+      function getDatum(datum) {
+        return mainData[datum].value;
+      }
+
+      function setDatum(datum, value) {
+        mainData[datum].change(value);
+      }
+    }
+    /* run real code */
+    realCode();
+
+    Element.prototype.allChildren = function(includeSelf = false) {
+      let children = Array.from(this.children);
+      children.forEach(child => {
+        children.push(...child.allChildren());
       });
-      var cond = typeof conditon == 'function' ? conditon(event): typeof conditon == 'boolean' ? conditon: '';
-      if (isNoClick === 0 && cond !== false || cond === true) removeEvent(event);
+      return includeSelf ? [this,
+        ...children]: children;
+    };
+
+
+    Element.prototype.offclick = function (fun,
+      other = {}) {
+      let element = this;
+
+      if (other == true) other = {
+        elementPlus: true
+      }
+      let conditon = other.conditon || 'true',
+      lockEvents = other.lockEvents || false,
+      elementPlus = other.elementPlus,
+      notLock = other.notLock,
+      clearEvent = other.clearEvent;
+      document.addEventListener('mouseup',
+        offClick);
+
+      let elements = [element];
+      if (elementPlus && elementPlus.v) {
+        if (an.isOneElement(elementPlus)) elements = [element,
+          elementPlus];
+        else elements = [element,
+          ...elementPlus];
+      }
+
+      if (lockEvents) {
+        if (!notLock) notLock = elements;
+        element.lockEvents('lock', notLock);
+      }
+
+      function offClick(events) {
+        let event = events || events.changedTouches[0];
+
+        if (elementPlus == true) {
+          removeEvent(event);
+          return;
+        }
+
+        let isNoClick = elements.length;
+        elements.forEach(element => {
+          if (event.target !== element) isNoClick--;
+          if (element.children) {
+            isNoClick += element.allChildren().length;
+            element.allChildren().forEach(child=> {
+              if (event.target !== child) isNoClick--;
+            });
+          }
+        });
+        var cond = typeof conditon == 'function' ? conditon(event): typeof conditon == 'boolean' ? conditon: '';
+        if (isNoClick === 0 && cond !== false || cond === true) removeEvent(event);
+      }
+      function removeEvent(event) {
+        document.removeEventListener('mouseup', offClick);
+        if (lockEvents) element.lockEvents('unlock', notLock);
+        if (typeof fun == 'function') fun(event);
+      }
     }
-    function removeEvent(event) {
-      document.removeEventListener('mouseup', offClick);
-      if (lockEvents) element.lockEvents('unlock', notLock);
-      if (typeof fun == 'function') fun(event);
-    }
-  }
-</script>
+  </script>
 </body>
 </html>
