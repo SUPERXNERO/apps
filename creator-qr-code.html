@@ -418,6 +418,12 @@
       function generateQRCode() {
         const text = getDatum("inputText");
         const options = getDatum("options");
+        
+        if (!QRCode) {
+          languageManager.setSubTextId("QRBox", "error");
+            setDatum("isQRCode", false);
+          return;
+        }
 
         QRCode.toCanvas(qrcodeCanvas, text, options, function (error) {
           if (error) {
