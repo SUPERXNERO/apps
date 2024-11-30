@@ -1,9 +1,9 @@
+<!DOCTYPE html>
+<html>
 <head>
-  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-</head>
-
-<div id="realPage">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <title>Copy Empty Text</title>
   <style class="realStyle" id="importStyle">
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Cairo:slnt,wght@-11..11,200..1000&display=swap');
@@ -196,35 +196,38 @@
       align-self: stretch;
     }
   </style>
+</head>
+<body>
+  <div id="realPage">
 
-  <div id="sponsoredBy">
-    <span data-textoptions="sponsoredBy"></span>
-    <div id="sponsors">
-      <div data-whatsapp="https://wa.me/967718387522" class="sponsor" data-textoptions="sponsor1"></div>
-    </div>
-  </div>
-  <div id="container">
-    <div id="themes">
-      <div id="currentTheme" data-textoptions></div>
-      <div id="themesList">
+    <div id="sponsoredBy">
+      <span data-textoptions="sponsoredBy"></span>
+      <div id="sponsors">
+        <div data-whatsapp="https://wa.me/967718387522" class="sponsor" data-textoptions="sponsor1"></div>
       </div>
     </div>
-    <div id="content">
-      <button id="copyButton" data-textoptions="copyButton"></button>
-      <div id="message" data-textoptions="message"></div>
-    </div>
-    <div id="communication">
-      <span data-textoptions="communicationText"></span>
-      <div id="communicationIcons">
-        <a href="https://wa.me/967718177515" data-fetch="https://superxnero.github.io/assets/svgs/whatsapp-icon-logo_303147.svg"></a>
-        <div class="separator"></div>
-        <a href="mailto:alsdyabrahym439@gmail.com" data-fetch="https://superxnero.github.io/assets/svgs/gmail_349378.svg"></a>
-        <div class="separator"></div>
-        <a id="paypalBtn" data-fetch="https://superxnero.github.io/assets/svgs/paypal_349473.svg"></a>
+    <div id="container">
+      <div id="themes">
+        <div id="currentTheme" data-textoptions></div>
+        <div id="themesList">
+        </div>
+      </div>
+      <div id="content">
+        <button id="copyButton" data-textoptions="copyButton"></button>
+        <div id="message" data-textoptions="message"></div>
+      </div>
+      <div id="communication">
+        <span data-textoptions="communicationText"></span>
+        <div id="communicationIcons">
+          <a href="https://wa.me/967718177515" data-fetch="https://superxnero.github.io/assets/svgs/whatsapp-icon-logo_303147.svg"></a>
+          <div class="separator"></div>
+          <a href="mailto:alsdyabrahym439@gmail.com" data-fetch="https://superxnero.github.io/assets/svgs/gmail_349378.svg"></a>
+          <div class="separator"></div>
+          <a id="paypalBtn" data-fetch="https://superxnero.github.io/assets/svgs/paypal_349473.svg"></a>
+        </div>
       </div>
     </div>
   </div>
-
   <script class="realScript" type="module" defer>
     import {
       startClean
@@ -274,7 +277,7 @@
         baseUrl: "https://superxnero.github.io/themes-content/copy-empty-text/"
       });
       const fetchToElement = new FetchToElement(true);
-      
+
       const availableLanguages = new GitHubManager("", "superxnero", "languages-content");
       const availableThemes = new GitHubManager("", "superxnero", "themes-content");
 
@@ -285,14 +288,14 @@
       };
       setDatum("text", "ㅤ");
       setDatum("availableLanguages", ["ar", "en"]);
-      setDatum("availableThemes", ["light", "dark", "pink", "red", "orange", "yellow", "green", "blue", "indigo" ,"violet"]);
-      
-      availableLanguages.getDirectoryContents("copy-empty-text", false).then((contents)=>{
+      setDatum("availableThemes", ["light", "dark", "pink", "red", "orange", "yellow", "green", "blue", "indigo", "violet"]);
+
+      availableLanguages.getDirectoryContents("copy-empty-text", false).then((contents)=> {
         contents = contents.map((item)=>item.name.split(".json").slice(0, item.name.split(".json").length-1).join(""));
         setDatum("availableLanguages", contents);
       });
-      
-      availableThemes.getDirectoryContents("public", false).then((contents)=>{
+
+      availableThemes.getDirectoryContents("public", false).then((contents)=> {
         contents = contents.map((item)=>item.name.split(".json").slice(0, item.name.split(".json").length-1).join(""));
         setDatum("availableThemes", contents);
       });
@@ -350,7 +353,7 @@
         currentTheme.dataset.textoptions = themeManager.getTheme();
         languageManager.updateElements(themeManager.getTheme());
       }
-      
+
       function OnAvailableLanguagesChange() {
         //
       }
@@ -448,4 +451,5 @@
       }
     }
   </script>
-</div>
+</body>
+</html>
