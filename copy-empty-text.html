@@ -284,16 +284,6 @@
       setDatum("availableLanguages", ["ar", "en"]);
       setDatum("availableThemes", ["light", "dark", "pink", "red", "orange", "yellow", "green", "blue", "indigo", "violet"]);
 
-      availableLanguages.getDirectoryContents("copy-empty-text", false).then((contents)=> {
-        contents = contents.map((item)=>item.name.split(".json").slice(0, item.name.split(".json").length-1).join(""));
-        setDatum("availableLanguages", contents);
-      });
-
-      availableThemes.getDirectoryContents("public", false).then((contents)=> {
-        contents = contents.map((item)=>item.name.split(".json").slice(0, item.name.split(".json").length-1).join(""));
-        setDatum("availableThemes", contents);
-      });
-
       // element variables
       let hideCopiedMessage;
       const email = "alsdyabrahym439@gmail.com";
