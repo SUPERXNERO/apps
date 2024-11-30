@@ -244,9 +244,6 @@
     import {
       FetchToElement
     } from "https://superxnero.github.io/assets/libs/FetchToElement.js";
-    import {
-      GitHubManager
-    } from "https://superxnero.github.io/assets/libs/GitHubManager.js";
     const q = (e)=> document.querySelector(e);
     const qA = (e)=> document.querySelectorAll(e);
     const root = document.documentElement;
@@ -277,9 +274,6 @@
         baseUrl: "https://superxnero.github.io/themes-content/copy-empty-text/"
       });
       const fetchToElement = new FetchToElement(true);
-
-      const availableLanguages = new GitHubManager("", "superxnero", "languages-content");
-      const availableThemes = new GitHubManager("", "superxnero", "themes-content");
 
       var mainData = {
         text: new OnChange(onTextChange),
