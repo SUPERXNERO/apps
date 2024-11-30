@@ -336,7 +336,6 @@
       function OnLanguagesContentChange(value) {
         currentTheme.dataset.textoptions = themeManager.getTheme();
         if (Object.keys(languageManager.languagesContent).length > 0) {
-          console.log("yes");
           languageManager.updateElements(themeManager.getTheme());
         }
       }
@@ -352,7 +351,9 @@
           themesList.innerHTML += `
           <div class="theme" data-id="${key}" data-textoptions="${key}"></div>`;
         });
-        languageManager.updateElements();
+        if (Object.keys(languageManager.languagesContent).length > 0) {
+          languageManager.updateElements();
+        }
         themesList.querySelectorAll("* .theme").forEach((theme)=> {
           theme.onclick = function() {
             themeManager.setTheme(theme.dataset.id);
