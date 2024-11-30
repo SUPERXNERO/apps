@@ -1,6 +1,17 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-VBHMN6YSS1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+    gtag('js', new Date());
+    gtag('config', 'G-VBHMN6YSS1');
+  </script>
+  <!--<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5475049640797404" crossorigin="anonymous"></script>-->
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="content-type" content="text/html; charset=utf-8" />
   <title>Copy Empty Text</title>
@@ -230,9 +241,6 @@
   </div>
   <script class="realScript" type="module" defer>
     import {
-      startClean
-    } from "https://superxnero.github.io/assets/libs/startClean.js";
-    import {
       OnChange
     } from "https://superxnero.github.io/assets/libs/OnChange.js";
     import {
@@ -252,8 +260,6 @@
     const realPage = q("#realPage");
 
     async function realCode() {
-      await startClean();
-
       // element variables
       const sponsors = q("#sponsors");
       const currentTheme = q("#currentTheme");
@@ -305,6 +311,13 @@
       copyButton.onclick = function() {
         clearTimeout(hideCopiedMessage);
         navigator.clipboard.writeText(getDatum("text")).then(() => {
+          gtag('event',
+          'CopyEmptyText',
+          {
+            'event_category': 'Buttons',
+            'event_label': 'Copy Empty Text Button',
+            'value': 1
+          });
           languageManager.setTextOptions("message", ",,copy,textContent");
           message.classList.add("show");
           message.classList.remove("paypal");
