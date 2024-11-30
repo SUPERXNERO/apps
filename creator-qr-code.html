@@ -452,7 +452,6 @@
             'event_label': 'Generate QR Code Button',
             'value': 1
           });
-        generateButton.classList.add("disable");
       }
 
       function downloadQRCode() {
@@ -468,11 +467,7 @@
       }
 
       function onInputTextChange(value) {
-        if (typeof value === "string" && value.trim().length > 0) {
-          generateButton.classList.remove("disable");
-        } else {
-          //generateButton.classList.add("disable");
-        }
+        //
       }
 
       function onOptionsChange(options) {
