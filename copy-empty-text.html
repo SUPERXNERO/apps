@@ -216,11 +216,11 @@
     <div id="communication">
       <span data-textoptions="communicationText"></span>
       <div id="communicationIcons">
-        <a href="https://wa.me/967718177515" data-fetch="/storage/5A67-DF85/GitHub/assets/svgs/whatsapp-icon-logo_303147.svg"></a>
+        <a href="https://wa.me/967718177515" data-fetch="https://superxnero.github.io/assets/svgs/whatsapp-icon-logo_303147.svg"></a>
         <div class="separator"></div>
-        <a href="mailto:alsdyabrahym439@gmail.com" data-fetch="/storage/5A67-DF85/GitHub/assets/svgs/gmail_349378.svg"></a>
+        <a href="mailto:alsdyabrahym439@gmail.com" data-fetch="https://superxnero.github.io/assets/svgs/gmail_349378.svg"></a>
         <div class="separator"></div>
-        <a id="paypalBtn" data-fetch="/storage/5A67-DF85/GitHub/assets/svgs/paypal_349473.svg"></a>
+        <a id="paypalBtn" data-fetch="https://superxnero.github.io/assets/svgs/paypal_349473.svg"></a>
       </div>
     </div>
   </div>
@@ -228,22 +228,22 @@
   <script class="realScript" type="module" defer>
     import {
       startClean
-    } from "/storage/5A67-DF85/GitHub/assets/libs/startClean.js";
+    } from "https://superxnero.github.io/assets/libs/startClean.js";
     import {
       OnChange
-    } from "/storage/5A67-DF85/GitHub/assets/libs/OnChange.js";
+    } from "https://superxnero.github.io/assets/libs/OnChange.js";
     import {
       LanguageManager
-    } from "/storage/5A67-DF85/GitHub/assets/libs/LanguageManager.js";
+    } from "https://superxnero.github.io/assets/libs/LanguageManager.js";
     import {
       ThemeManager
-    } from "/storage/5A67-DF85/GitHub/assets/libs/ThemeManager.js";
+    } from "https://superxnero.github.io/assets/libs/ThemeManager.js";
     import {
       FetchToElement
-    } from "/storage/5A67-DF85/GitHub/assets/libs/FetchToElement.js";
+    } from "https://superxnero.github.io/assets/libs/FetchToElement.js";
     import {
       GitHubManager
-    } from "/storage/5A67-DF85/GitHub/assets/libs/GitHubManager.js";
+    } from "https://superxnero.github.io/assets/libs/GitHubManager.js";
     const q = (e)=> document.querySelector(e);
     const qA = (e)=> document.querySelectorAll(e);
     const root = document.documentElement;
@@ -264,14 +264,14 @@
 
       const languageManager = new LanguageManager({
         saveAll: true,
-        baseUrl: "/storage/5A67-DF85/GitHub/languages-content/copy-empty-text/",
+        baseUrl: "https://superxnero.github.io/languages-content/copy-empty-text/",
         changeEvents: {
           "languagesContent": OnLanguagesContentChange
         }
       });
       const themeManager = new ThemeManager({
         saveAll: true,
-        baseUrl: "/storage/5A67-DF85/GitHub/themes-content/copy-empty-text/"
+        baseUrl: "https://superxnero.github.io/themes-content/copy-empty-text/"
       });
       const fetchToElement = new FetchToElement(true);
       
