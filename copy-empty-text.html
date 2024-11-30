@@ -334,8 +334,8 @@
       }
 
       function OnLanguagesContentChange(value) {
+        currentTheme.dataset.textoptions = themeManager.getTheme();
         if (Object.keys(languageManager.languagesContent).length > 0) {
-          currentTheme.dataset.textoptions = themeManager.getTheme();
           languageManager.updateElements(themeManager.getTheme());
         }
       }
