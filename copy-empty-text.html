@@ -1,0 +1,451 @@
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<div id="realPage">
+  <style class="realStyle" id="importStyle">
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cairo:slnt,wght@-11..11,200..1000&display=swap');
+  </style>
+  <style class="realStyle">
+    *,
+    *::before,
+    *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      color: var(--theme-color);
+      font-family: inherit;
+      user-select: none;
+    }
+    body {
+      background: var(--theme-background);
+    }
+    .ds-none {
+      display: none;
+    }
+    #realPage {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      width: 100vw;
+    }
+    #container {
+      position: relative;
+      margin: 0 auto;
+      width: 90vw;
+    }
+    #sponsoredBy {
+      position: absolute;
+      top: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    #sponsoredBy span {
+      font-weight: bold;
+      text-shadow: 2px 2px 2px #777;
+    }
+    #sponsoredBy .sponsor {
+      background: var(--theme-box3);
+      border-radius: 6px;
+      padding: 6px;
+      margin-block-start: 6px;
+      border: 2px solid transparent;
+      transition: .2s;
+    }
+    #themes {
+      position: absolute;
+      left: 0;
+      bottom: calc(100% + 6px);
+    }
+    .arLanguage #themes {
+      left: auto;
+      right: 0;
+    }
+    #currentTheme,#themesList .theme {
+      padding: 8px;
+      min-width: 100px;
+      width: fit-content;
+      border: 2px solid transparent;
+      background: var(--theme-box3);
+      text-wrap: nowrap;
+      transition: .2s;
+    }
+    #currentTheme {
+      border-radius: 6px;
+    }
+:is(#currentTheme, #themesList .theme, #sponsoredBy .sponsor):active {
+      filter: brightness(1.5);
+      border-color: var(--theme-color2);
+      transform: scale(.9);
+    }
+    #themesList {
+      position: absolute;
+      top: 0;
+      left: 0;
+      opacity: 0;
+      pointer-events: none;
+      overflow: scroll;
+      max-height: 400px;
+      transition: .2s;
+    }
+    #themesList.show {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    #themesList .theme {
+      width: 100%;
+    }
+    #content {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 20px;
+      background: var(--theme-box);
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    }
+    #copyButton {
+      background: var(--theme-button);
+      color: var(--theme-color);
+      padding: 15px 30px;
+      border: none;
+      font-size: 16px;
+      cursor: pointer;
+      border-radius: 8px;
+      transition: background 0.3s;
+    }
+    #copyButton:hover {
+      background: var(--theme-buttonHoverColor);
+    }
+    #message {
+      margin-top: 20px;
+      padding: 10px;
+      background: var(--theme-box2);
+      color: var(--theme-color);
+      border-radius: 5px;
+      text-align: center;
+      display: none;
+    }
+    #message.show:not(.paypal) {
+      display: block;
+    }
+    #message.show.paypal {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    #message.paypal button {
+      background: var(--theme-box);
+      color: var(--theme-color);
+      padding: 6px;
+      margin-block-start: 6px;
+      width: fit-content;
+      aspect-ratio: 4/1;
+      outline: none;
+      border: none;
+      box-shadow: .5px 2px 0 2px var(--theme-box3);
+      font-size: 16px;
+      border-radius: 18px;
+      transition: 0.1s;
+    }
+    #message.paypal button:active {
+      filter: brightness(1.5);
+      border: 2px solid var(--theme-color);
+      border-radius: 6px;
+      transform: translate(.5px, 2px);
+      box-shadow: 0 0 0 0;
+    }
+    #communication {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: var(--theme-color);
+      padding: 10px 6px;
+      margin: 12px;
+      font-size: .9rem;
+      background: var(--theme-box);
+      border-radius: 6px;
+    }
+    .arLanguage #communication {
+      direction: rtl;
+    }
+    #communicationIcons {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+    #communicationIcons svg {
+      margin: 0 6px;
+      width: 25px;
+      height: 25px;
+      transition: .2s;
+    }
+    #communicationIcons svg:active {
+      transform: scale(.9);
+    }
+    #communicationIcons .separator {
+      display: inline-block;
+      width: 2px;
+      background: var(--theme-box2);
+      align-self: stretch;
+    }
+  </style>
+
+  <div id="sponsoredBy">
+    <span data-textoptions="sponsoredBy"></span>
+    <div id="sponsors">
+      <div data-whatsapp="https://wa.me/967718387522" class="sponsor" data-textoptions="sponsor1"></div>
+    </div>
+  </div>
+  <div id="container">
+    <div id="themes">
+      <div id="currentTheme" data-textoptions></div>
+      <div id="themesList">
+      </div>
+    </div>
+    <div id="content">
+      <button id="copyButton" data-textoptions="copyButton"></button>
+      <div id="message" data-textoptions="message"></div>
+    </div>
+    <div id="communication">
+      <span data-textoptions="communicationText"></span>
+      <div id="communicationIcons">
+        <a href="https://wa.me/967718177515" data-fetch="/storage/5A67-DF85/GitHub/assets/svgs/whatsapp-icon-logo_303147.svg"></a>
+        <div class="separator"></div>
+        <a href="mailto:alsdyabrahym439@gmail.com" data-fetch="/storage/5A67-DF85/GitHub/assets/svgs/gmail_349378.svg"></a>
+        <div class="separator"></div>
+        <a id="paypalBtn" data-fetch="/storage/5A67-DF85/GitHub/assets/svgs/paypal_349473.svg"></a>
+      </div>
+    </div>
+  </div>
+
+  <script class="realScript" type="module" defer>
+    import {
+      startClean
+    } from "/storage/5A67-DF85/GitHub/assets/libs/startClean.js";
+    import {
+      OnChange
+    } from "/storage/5A67-DF85/GitHub/assets/libs/OnChange.js";
+    import {
+      LanguageManager
+    } from "/storage/5A67-DF85/GitHub/assets/libs/LanguageManager.js";
+    import {
+      ThemeManager
+    } from "/storage/5A67-DF85/GitHub/assets/libs/ThemeManager.js";
+    import {
+      FetchToElement
+    } from "/storage/5A67-DF85/GitHub/assets/libs/FetchToElement.js";
+    import {
+      GitHubManager
+    } from "/storage/5A67-DF85/GitHub/assets/libs/GitHubManager.js";
+    const q = (e)=> document.querySelector(e);
+    const qA = (e)=> document.querySelectorAll(e);
+    const root = document.documentElement;
+    const head = document.head;
+    const body = document.body;
+    const realPage = q("#realPage");
+
+    async function realCode() {
+      await startClean();
+
+      // element variables
+      const sponsors = q("#sponsors");
+      const currentTheme = q("#currentTheme");
+      const themesList = q("#themesList");
+      const copyButton = q("#copyButton");
+      const paypalBtn = q('#paypalBtn');
+      const message = q('#message');
+
+      const languageManager = new LanguageManager({
+        saveAll: true,
+        baseUrl: "/storage/5A67-DF85/GitHub/languages-content/copy-empty-text/",
+        changeEvents: {
+          "languagesContent": OnLanguagesContentChange
+        }
+      });
+      const themeManager = new ThemeManager({
+        saveAll: true,
+        baseUrl: "/storage/5A67-DF85/GitHub/themes-content/copy-empty-text/"
+      });
+      const fetchToElement = new FetchToElement(true);
+      
+      const availableLanguages = new GitHubManager("", "superxnero", "languages-content");
+      const availableThemes = new GitHubManager("", "superxnero", "themes-content");
+
+      var mainData = {
+        text: new OnChange(onTextChange),
+        availableLanguages: new OnChange(OnAvailableLanguagesChange),
+        availableThemes: new OnChange(onThemesChange)
+      };
+      setDatum("text", "ㅤ");
+      setDatum("availableLanguages", ["ar", "en"]);
+      setDatum("availableThemes", ["light", "dark", "pink", "red", "orange", "yellow", "green", "blue", "indigo" ,"violet"]);
+      
+      availableLanguages.getDirectoryContents("copy-empty-text", false).then((contents)=>{
+        contents = contents.map((item)=>item.name.split(".json").slice(0, item.name.split(".json").length-1).join(""));
+        setDatum("availableLanguages", contents);
+      });
+      
+      availableThemes.getDirectoryContents("public", false).then((contents)=>{
+        contents = contents.map((item)=>item.name.split(".json").slice(0, item.name.split(".json").length-1).join(""));
+        setDatum("availableThemes", contents);
+      });
+
+      // element variables
+      let hideCopiedMessage;
+      const email = "alsdyabrahym439@gmail.com";
+      const url = "https://www.paypal.com/myaccount/transfer/homepage";
+
+      sponsors.querySelectorAll("* .sponsor").forEach((sponsor)=> {
+        sponsor.onclick = function() {
+          window.location.href = sponsor.dataset.whatsapp;
+        }
+      });
+
+      currentTheme.onclick = function() {
+        themesList.classList.add("show");
+        themesList.offclick(()=> {
+          themesList.classList.remove("show");
+        });
+      }
+
+      copyButton.onclick = function() {
+        clearTimeout(hideCopiedMessage);
+        navigator.clipboard.writeText(getDatum("text")).then(() => {
+          languageManager.setTextOptions("message", ",,copy,textContent");
+          message.classList.add("show");
+          message.classList.remove("paypal");
+          hideCopiedMessage = setTimeout(() => {
+            message.classList.remove("show");
+          }, 2000);
+        });
+      }
+
+      paypalBtn.onclick = function() {
+        clearTimeout(hideCopiedMessage);
+        navigator.clipboard.writeText(email).then(() => {
+          languageManager.setTextOptions("message", ",,paypal,innerHTML");
+          message.classList.add("show");
+          message.classList.add("paypal");
+          message.querySelector("button").onclick = function() {
+            setTimeout(() => {
+              message.classList.remove("show");
+            }, 200);
+            window.location.href = url;
+          }
+        });
+      };
+
+      function onTextChange(value) {
+        //
+      }
+
+      function OnLanguagesContentChange(value) {
+        currentTheme.dataset.textoptions = themeManager.getTheme();
+        languageManager.updateElements(themeManager.getTheme());
+      }
+      
+      function OnAvailableLanguagesChange() {
+        //
+      }
+
+      function onThemesChange(themes) {
+        const keys = themes;
+        themesList.innerHTML = "";
+        keys.forEach((key, index)=> {
+          themesList.innerHTML += `
+          <div class="theme" data-id="${key}" data-textoptions="${key}"></div>`;
+        });
+        languageManager.updateElements();
+        themesList.querySelectorAll("* .theme").forEach((theme)=> {
+          theme.onclick = function() {
+            themeManager.setTheme(theme.dataset.id);
+            currentTheme.textContent = languageManager.getTextByClass(theme.dataset.id);
+            themesList.classList.remove("show");
+          }
+        });
+      }
+
+      function getDatum(datum) {
+        return mainData[datum].value;
+      }
+
+      function setDatum(datum, value) {
+        mainData[datum].change(value);
+      }
+    }
+    realCode();
+
+    Element.prototype.allChildren = function(includeSelf = false) {
+      let children = Array.from(this.children);
+      children.forEach(child => {
+        children.push(...child.allChildren());
+      });
+      return includeSelf ? [this,
+        ...children]: children;
+    };
+
+
+    Element.prototype.offclick = function (fun,
+      other = {}) {
+      let element = this;
+
+      if (other == true) other = {
+        elementPlus: true
+      }
+      let conditon = other.conditon || 'true',
+      lockEvents = other.lockEvents || false,
+      elementPlus = other.elementPlus,
+      notLock = other.notLock,
+      clearEvent = other.clearEvent;
+      document.addEventListener('mouseup',
+        offClick);
+
+      let elements = [element];
+      if (elementPlus && elementPlus.v) {
+        if (an.isOneElement(elementPlus)) elements = [element,
+          elementPlus];
+        else elements = [element,
+          ...elementPlus];
+      }
+
+      if (lockEvents) {
+        if (!notLock) notLock = elements;
+        element.lockEvents('lock', notLock);
+      }
+
+      function offClick(events) {
+        let event = events || events.changedTouches[0];
+
+        if (elementPlus == true) {
+          removeEvent(event);
+          return;
+        }
+
+        let isNoClick = elements.length;
+        elements.forEach(element => {
+          if (event.target !== element) isNoClick--;
+          if (element.children) {
+            isNoClick += element.allChildren().length;
+            element.allChildren().forEach(child=> {
+              if (event.target !== child) isNoClick--;
+            });
+          }
+        });
+        var cond = typeof conditon == 'function' ? conditon(event): typeof conditon == 'boolean' ? conditon: '';
+        if (isNoClick === 0 && cond !== false || cond === true) removeEvent(event);
+      }
+      function removeEvent(event) {
+        document.removeEventListener('mouseup', offClick);
+        if (lockEvents) element.lockEvents('unlock', notLock);
+        if (typeof fun == 'function') fun(event);
+      }
+    }
+  </script>
+</div>
