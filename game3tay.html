@@ -116,11 +116,19 @@
 
       const languageManager = new LanguageManager({
         saveAll: true,
-        baseUrl: "https://superxnero.github.io/languages-content/game3tay/"
+        baseUrl: "https://superxnero.github.io/languages-content/game3tay/",
+        defaultLanguage: localStorage.getItem("language"),
+        changeEvents: {
+          "language": onLanguageChange
+        }
       });
       const themeManager = new ThemeManager({
         saveAll: true,
-        baseUrl: "https://superxnero.github.io/themes-content/public/"
+        baseUrl: "https://superxnero.github.io/themes-content/public/",
+        defaultTheme: localStorage.getItem("theme"),
+        changeEvents: {
+          "theme": onThemeChange
+        }
       });
       const fetchToElement = new FetchToElement(true);
 
@@ -312,6 +320,14 @@
             window.location.href = baseUrl + item.dataset.phone;
           }
         });
+      }
+      
+      function onLanguageChange(language) {
+        localStorage.setItem("language", language);
+      }
+
+      function onThemeChange(theme) {
+        localStorage.setItem("theme", theme);
       }
 
       function onAvailableLanguagesChange(languages) {
