@@ -26,11 +26,15 @@
     .ds-none {
       display: none;
     }
+    #main {
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+    }
     header {
       position: relative;
-      margin-top: 6px;
-      background: var(--theme-box);
-      width: 90%;
+      background: var(--theme-box3);
+      width: 100%;
       margin-left: auto;
       margin-right: auto;
       padding: 6px;
@@ -65,15 +69,15 @@
       font-size: 21px;
     }
     #container {
-      width: 90%;
+      width: 100%;
+      flex-grow: 1;
       margin-left: auto;
       margin-right: auto;
-      margin-block-start: 30px;
       padding: 10px;
       background: var(--theme-box);
-      min-height: 200px;
       overflow: scroll;
-      max-height: calc(100% - 200px);
+      display: flex;
+      flex-direction: column;
     }
     .containerItem,.moreItem {
       margin: 10px 0;
@@ -170,15 +174,56 @@
       transform: scale(.95);
     }
   </style>
+  <style class="realStyle">
+@media (min-width: 800px) {
+    #mainSidebar {
+      display: grid;
+      grid-template-columns: 1fr 5fr;
+      min-width: 100vw;
+      min-height: 100vh;
+    }
+    .arLanguage #mainSidebar {
+      grid-template-columns: 5fr 1fr;
+    }
+    #main {
+      order: 2;
+    }
+    .arLanguage #main {
+      order: 1;
+    }
+    #sidebar {
+      order: 1;
+    }
+    .arLanguage #sidebar {
+      order: 2;
+    }
+    header {
+      border-bottom: 2px solid var(--theme-color2);
+    }
+    #h1Title {
+      font-size: 35px;
+    }
+    #openSidebar {
+      display: none;
+    }
+    #sidebar {
+      position: relative;
+      --leftSidebar: 0;
+    }
+  }
+  </style>
 </head>
 <body>
 
   <div id="realPage">
-    <header>
-      <div id="openSidebar" data-fetch="https://superxnero.github.io/assets/svgs/burger-menu_506800.svg"></div>
-      <h1 id="h1Title" data-textoptions="title"></h1>
-    </header>
-    <div id="container">
+  <div id="mainSidebar">
+    <div id="main">
+      <header>
+        <div id="openSidebar" data-fetch="https://superxnero.github.io/assets/svgs/burger-menu_506800.svg"></div>
+        <h1 id="h1Title" data-textoptions="title"></h1>
+      </header>
+      <div id="container">
+      </div>
     </div>
     <div id="sidebar">
       <div class="item">
@@ -197,6 +242,7 @@
         </div>
       </div>
     </div>
+  </div>
   </div>
 
   <script class="realScript" type="module" defer>
@@ -341,6 +387,10 @@
         {
           "name": "zaid",
           "phone": "967770209751"
+        },
+        {
+          "name": "mr.tabby",
+          "phone": "967718474619"
         }];
       setDatum("contacts", contacts);
 
@@ -378,7 +428,7 @@
 
           container.innerHTML += `
           <div data-open="${more ? "true": "false"}" data-url="${item.url}" class="containerItem">
-          <h3 data-textoptions="${item.title}"></h3>
+          <div data-textoptions="${item.title}"></div>
           ${
           more ? `
           <div class="moreItems" style="--openMore:0px;">
@@ -388,7 +438,7 @@
           </div>`;
         });
 
-        if (Object.keys(languageManager.languagesContent).length > 0) {
+        if (Object.keys(languageManager.languagesContent).length > 1) {
           languageManager.updateElements();
         }
         Object.values(container.querySelectorAll("& .containerItem, & .moreItem")).forEach((item)=> {
@@ -449,7 +499,7 @@
           availableThemes.innerHTML += `
           <div class="themeItem" data-id="${theme}" data-textoptions="${theme}"></div>`;
         });
-        if (Object.keys(languageManager.languagesContent).length > 1) {
+        if (Object.keys(languageManager.languagesContent).length > 0) {
           languageManager.updateElements();
         }
         Object.values(availableThemes.querySelectorAll("& .themeItem")).forEach((item)=> {
