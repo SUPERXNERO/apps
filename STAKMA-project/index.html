@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>STAKMA project</title>
+  <link rel="stylesheet" href="/storage/5A67-DF85/GitHub/assets/css/sx.css" />
+  <style class="realStyle" id="importStyle">
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cairo:slnt,wght@-11..11,200..1000&display=swap');
+  </style>
+  <style class="realStyle">
+    #circle {
+      position: fixed;
+      width: 50px;
+      height: 50px;
+      background: var(--theme-white);
+      border-radius: 50%;
+      filter: blur(1px);
+      opacity: .4;
+      z-index: 9999;
+      pointer-events: none;
+      transform: translate(-50%, -50%);
+      display: none;
+    }
+    #circle.show {
+      display: block;
+    }
+    #container {
+      perspective: 1000px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .card {
+      position: relative;
+      width: 380px;
+      height: 200px;
+      margin: 10px 0;
+      transform-style: preserve-3d;
+      transition: transform 0.6s;
+    }
+    .card.show-back {
+      transform: rotateY(180deg);
+    }
+    .superxnero {
+      --front-side: #005CFF;
+      --back-side: #003EB3;
+    }
+    .gyotaro {
+      --front-side: #FF0000;
+      --back-side: #B30000;
+    }
+    .zhmed {
+      --front-side: #009E00;
+      --back-side: #006600;
+    }
+    .king {
+      --front-side: #FFA500;
+      --back-side: #CC8400;
+    }
+    .prince {
+      --front-side: #FFD700;
+      --back-side: #BFA500;
+    }
+    .tabby {
+      --front-side: #D966FF;
+      --back-side: #9900CC;
+    }
+    .card-face {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      font-family: Arial, sans-serif;
+      color: white;
+      border-radius: 10px;
+    }
+    .card-front {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr;
+      grid-template-rows: 1fr;
+      background-color: var(--front-side);
+      box-shadow: 2px 2px .5px #000;
+    }
+    .card-front .left-side {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      padding: 6px;
+    }
+    .card-front .left-side span {
+      padding: 12px 0;
+      text-shadow: 1px 1px 0px #000;
+    }
+    .card-front .left-side span name {
+      font-weight: bold;
+    }
+    .card-front .left-side .note {
+      position: absolute;
+      left: 6px;
+      bottom: 6px;
+      font-size: 10px;
+      font-weight: bold;
+      color: var(--theme-color2);
+      background: var(--theme-box2);
+      border-radius: 6px;
+      padding: 4px;
+    }
+    .card-front .right-side {
+      display: grid;
+      place-items: center;
+      max-height: 100%;
+      padding: 6px;
+    }
+    .card-front .right-side img {
+      max-width: 100%;
+      max-height: 100%;
+    }
+    .card-back {
+      display: grid;
+      grid-template-columns: 1fr 1.5fr;
+      grid-template-rows: 1fr;
+      background-color: var(--back-side);
+      box-shadow: -2px 2px .5px #000;
+      transform: rotateY(180deg);
+    }
+    .card-back .left-side {
+      padding: 6px;
+    }
+    .card-back .right-side {
+      display: flex;
+      flex-direction: column;
+      height: 200px;
+      padding: 6px;
+    }
+    .card-back .right-side .content {
+      overflow: scroll;
+      font-size: 12px;
+      padding: 4px;
+    }
+  </style>
+</head>
+<body>
+  <div id="realPage">
+    <div id="main">
+      <header>
+        <h1 id="h1Title">STAKMA</h1>
+      </header>
+      <div id="container">
+        <div id="cards">
+          <div class="card superxnero">
+            <div class="card-face card-front">
+              <div class="left-side">
+                <span>name: <name>Ibrahim Salah Qassem Abdulqawi Thabet</name></span>
+                <span>nickname: <name>superxnero</name></span>
+                <div class="note">
+                  click to show back side , click again to go back to front side
+                </div>
+              </div>
+              <div class="right-side">
+                <img src="/storage/emulated/0/Download/superxnero.png" alt="" />
+              </div>
+            </div>
+            <div class="card-face card-back">
+              <div class="left-side">
+                <span class="title">skills</span>
+                <div class="content"></div>
+              </div>
+              <div class="right-side">
+                <span class="title">about me</span>
+                <div class="content"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card gyotaro">
+            <div class="card-face card-front">
+              <div class="left-side">
+                <span>name: <name>Ahmed Sameer Dhaifullah Qaid</name></span>
+                <span>nickname: <name>Gyotaro</name></span>
+                <div class="note">
+                  click to show back side , click again to go back to front side
+                </div>
+              </div>
+              <div class="right-side">
+                <img src="/storage/emulated/0/Download/gyotaro.png" alt="" />
+              </div>
+            </div>
+            <div class="card-face card-back">
+              <div class="left-side">
+                <span class="title">skills</span>
+                <span class="content"></span>
+              </div>
+              <div class="right-side">
+                <span class="title">about me</span>
+                <div class="content">
+                  MY NAME IS AHMED SAMEER DHAIF ALLAH QAID
+I LOVE VIDEO GAMES ALTHOUGH I PLAY IT ONLY IN THE PHONE 
+I PLAYING FOOTBALL FROM TIME TO TIME WITH MY COUSINS 
+I LOVE SWIMMING 
+MY FAVOURITE COLOUR IS BLACK 
+WHEN IS WAS A KID MY DREAM WAS JOINING NASA 
+AND NOW JUST HAVE A PROPER JOB 
+TO BE HONEST I'M A LAZY HARDWORKING PERSON (( YES WE'RE REAL )) 
+I LOVE MOVIES , ANIME AND MANG 
+I WOULD LIKE TO GO TO JAPAN IN THE FUTURE AND RUSSIA AS WELL .
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card zhmed">
+            <div class="card-face card-front">
+              <div class="left-side">
+                <span>name: <name>Ahmed Mansour Ahmed Saif</name></span>
+                <span>nickname: <name>zhmed</name></span>
+                <div class="note">
+                  click to show back side , click again to go back to front side
+                </div>
+              </div>
+              <div class="right-side">
+                <img src="/storage/emulated/0/Download/Zhmed.png" alt="" />
+              </div>
+            </div>
+            <div class="card-face card-back">
+              <div class="left-side">
+                <span class="title">skills</span>
+                <div class="content"></div>
+              </div>
+              <div class="right-side">
+                <span class="title">about me</span>
+                <div class="content"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card king">
+            <div class="card-face card-front">
+              <div class="left-side">
+                <span>name: <name>Ibrahim Hussein Abdulrab Ali</name></span>
+                <span>nickname: <name>King</name></span>
+                <div class="note">
+                  click to show back side , click again to go back to front side
+                </div>
+              </div>
+              <div class="right-side">
+                <img src="/storage/emulated/0/Download/King.png" alt="" />
+              </div>
+            </div>
+            <div class="card-face card-back">
+              <div class="left-side">
+                <span class="title">skills</span>
+                <div class="content"></div>
+              </div>
+              <div class="right-side">
+                <span class="title">about me</span>
+                <div class="content"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card prince">
+            <div class="card-face card-front">
+              <div class="left-side">
+                <span>name: <name>Mohammed Faisal Ali Saleh Alshaebi</name></span>
+                <span>nickname: <name>Prince</name></span>
+                <div class="note">
+                  click to show back side , click again to go back to front side
+                </div>
+              </div>
+              <div class="right-side">
+                <img src="/storage/emulated/0/Download/Prince.png" alt="" />
+              </div>
+            </div>
+            <div class="card-face card-back">
+              <div class="left-side">
+                <span class="title">skills</span>
+                <div class="content"></div>
+              </div>
+              <div class="right-side">
+                <span class="title">about me</span>
+                <div class="content"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card tabby">
+            <div class="card-face card-front">
+              <div class="left-side">
+                <span>name: <name>Youssef Hussein Ahmed Ali Al-Bari </name></span>
+                <span>nickname: <name>Jinx</name></span>
+                <div class="note">
+                  click to show back side , click again to go back to front side
+                </div>
+              </div>
+              <div class="right-side">
+                <img src="/storage/emulated/0/Download/Jinx.png" alt="" />
+              </div>
+            </div>
+            <div class="card-face card-back">
+              <div class="left-side">
+                <span class="title">skills</span>
+                <div class="content">2d / pixel animator and artist</div>
+              </div>
+              <div class="right-side">
+                <span class="title">about me</span>
+                <div class="content"></div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div id="circle"></div>
+  </div>
+
+  <script class="realScript" type="module" defer>
+    import {
+      OnChange
+    } from "/storage/5A67-DF85/GitHub/assets/libs/OnChange.js";
+    import {
+      LanguageManager
+    } from "/storage/5A67-DF85/GitHub/assets/libs/LanguageManager.js";
+    import {
+      ThemeManager
+    } from "/storage/5A67-DF85/GitHub/assets/libs/ThemeManager.js";
+    import {
+      FetchToElement
+    } from "/storage/5A67-DF85/GitHub/assets/libs/FetchToElement.js";
+    import * as an from "/storage/5A67-DF85/GitHub/assets/libs/another.js";
+    const q = (e)=> document.querySelector(e);
+    const qA = (e)=> document.querySelectorAll(e);
+    const root = document.documentElement;
+    const head = document.head;
+    const body = document.body;
+    const realPage = q("#realPage");
+
+    // element variables
+    const openSidebar = q("#openSidebar");
+    const container = q("#container");
+    const sidebar = q("#sidebar");
+    const cards = qA(".card");
+    
+    const themeManager = new ThemeManager({
+      saveAll: true,
+      baseUrl: "/storage/5A67-DF85/GitHub/themes-content/STAKMA-project/",
+      defaultTheme: "dark",
+      changeEvents: {
+        "theme": onThemeChange
+      }
+    });
+    const fetchToElement = new FetchToElement(true);
+
+    let mainData = {
+      
+    };
+
+    cards.forEach((card)=>card.onclick = function() {
+      card.classList.toggle("show-back");
+    });
+
+    function onThemeChange(theme) {
+      localStorage.setItem("theme", theme);
+    }
+
+    function getDatum(datum) {
+      return mainData[datum].value;
+    }
+
+    function setDatum(datum, value) {
+      mainData[datum].change(value);
+    }
+
+    Element.prototype.allChildren = function(includeSelf = false) {
+      let children = Array.from(this.children);
+      children.forEach(child => {
+        children.push(...child.allChildren());
+      });
+      return includeSelf ? [this,
+        ...children]: children;
+    };
+
+
+    Element.prototype.offclick = function (fun,
+      other = {}) {
+      let element = this;
+
+      if (other == true) other = {
+        elementPlus: true
+      }
+      let conditon = other.conditon || 'true',
+      lockEvents = other.lockEvents || false,
+      elementPlus = other.elementPlus,
+      notLock = other.notLock,
+      clearEvent = other.clearEvent;
+      document.addEventListener('mouseup',
+        offClick);
+
+      let elements = [element];
+      if (elementPlus && elementPlus.v) {
+        if (an.isOneElement(elementPlus)) elements = [element,
+          elementPlus];
+        else elements = [element,
+          ...elementPlus];
+      }
+
+      if (lockEvents) {
+        if (!notLock) notLock = elements;
+        element.lockEvents('lock', notLock);
+      }
+
+      function offClick(events) {
+        let event = events || events.changedTouches[0];
+
+        if (elementPlus == true) {
+          removeEvent(event);
+          return;
+        }
+
+        let isNoClick = elements.length;
+        elements.forEach(element => {
+          if (event.target !== element) isNoClick--;
+          if (element.children) {
+            isNoClick += element.allChildren().length;
+            element.allChildren().forEach(child=> {
+              if (event.target !== child) isNoClick--;
+            });
+          }
+        });
+        var cond = typeof conditon == 'function' ? conditon(event): typeof conditon == 'boolean' ? conditon: '';
+        if (isNoClick === 0 && cond !== false || cond === true) removeEvent(event);
+      }
+      function removeEvent(event) {
+        document.removeEventListener('mouseup', offClick);
+        if (lockEvents) element.lockEvents('unlock', notLock);
+        if (typeof fun == 'function') fun(event);
+      }
+    }
+  </script>
+</body>
+</html>
