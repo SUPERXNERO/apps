@@ -5,10 +5,9 @@
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-VBHMN6YSS1"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
-    function gtag() {
-      dataLayer.push(arguments);
-    }
+    function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
+  
     gtag('config', 'G-VBHMN6YSS1');
   </script>
   <meta http-equiv="content-type" content="text/html; charset=utf-8" />
@@ -20,31 +19,13 @@
 @import url('https://fonts.googleapis.com/css2?family=Cairo:slnt,wght@-11..11,200..1000&display=swap');
   </style>
   <style class="realStyle">
-    #circle {
-      position: fixed;
-      width: 50px;
-      height: 50px;
-      background: var(--theme-white);
-      border-radius: 50%;
-      filter: blur(1px);
-      opacity: .4;
-      z-index: 9999;
-      pointer-events: none;
-      transform: translate(-50%, -50%);
-      display: none;
-    }
-    #circle.show {
-      display: block;
-    }
-    .container {
-      perspective: 1000px;
+    #cards {
       display: flex;
       flex-direction: row;
       flex-wrap: wrap;
       justify-content: center;
-      min-width: 90%;
       overflow: scroll;
-      background-color: var(--theme-box);
+      perspective: 8000px;
     }
     .card {
       position: relative;
@@ -55,7 +36,7 @@
       transition: transform 0.6s;
     }
     .card.show-back {
-      transform: rotateY(180deg);
+      transform: rotateY(-180deg);
     }
     .superxnero {
       --front-side: #005CFF;
@@ -86,15 +67,13 @@
       width: 100%;
       height: 100%;
       backface-visibility: hidden;
-      font-family: Arial, sans-serif;
-      color: white;
       border-radius: 10px;
       overflow: hidden;
     }
     .card-front {
       display: grid;
-      grid-template-columns: 1.5fr 1fr;
-      grid-template-rows: 1fr;
+      grid-template-columns: 1.5fr 1fr !important;
+      grid-template-rows: 1fr !important;
       background-color: var(--front-side);
       box-shadow: 2px 2px .5px #000;
     }
@@ -127,6 +106,8 @@
       max-height: 100%;
       padding: 6px;
       border-left: 2px solid var(--theme-box2);
+      background-color: inherit;
+      filter: ;
     }
     .card-front .right-side img {
       max-width: 100%;
@@ -134,8 +115,8 @@
     }
     .card-back {
       display: grid;
-      grid-template-columns: 1fr 1.5fr;
-      grid-template-rows: 1fr;
+      grid-template-columns: 1fr 1.5fr !important;
+      grid-template-rows: 1fr !important;
       background-color: var(--back-side);
       box-shadow: -2px 2px .5px #000;
       transform: rotateY(180deg);
@@ -160,12 +141,15 @@
       text-shadow: 1px 1px 0px #000;
       margin-bottom: 4px;
       background-color: inherit;
-      filter: brightness(1.5);
+      filter: brightness(2);
     }
-    .card-back .right-side .content {
-      overflow: scroll;
-      font-size: 12px;
+    .card-back .content {
+      display: block;
+      background-color: inherit;
+      filter: brightness(1.3);
       padding: 4px;
+      overflow: scroll;
+      font-size: 12.5px;
     }
   </style>
 </head>
@@ -175,7 +159,7 @@
       <header>
         <h1 id="h1Title">STAKMA</h1>
       </header>
-      <div class="container">
+      <div id="container">
         <div id="cards">
           <div class="card superxnero">
             <div class="card-face card-front">
@@ -201,7 +185,7 @@
                 <div class="content">
                   I love programming 😋🤍, and money 💰 <br/><br/>
 I like to relax 😊, and the peace 🕊️<br/><br/>
-I love arts too 🎨🖌️
+I love arts too 🎨🖌️<br/><br/>
 My favorite colors are black ⚫, dark blue 🔵, Silver 🩶
                 </div>
               </div>
@@ -224,7 +208,7 @@ My favorite colors are black ⚫, dark blue 🔵, Silver 🩶
             <div class="card-face card-back">
               <div class="left-side">
                 <span class="title">skills</span>
-                <span class="content">rubik cube solver, editor</span>
+                <div class="content">rubik cube solver, editor</div>
                 <span class="note">click to show front side</span>
               </div>
               <div class="right-side">
@@ -436,72 +420,6 @@ I often love letting my mind explore ✨ the limits of this world by having the 
 
     function setDatum(datum, value) {
       mainData[datum].change(value);
-    }
-
-    Element.prototype.allChildren = function(includeSelf = false) {
-      let children = Array.from(this.children);
-      children.forEach(child => {
-        children.push(...child.allChildren());
-      });
-      return includeSelf ? [this,
-        ...children]: children;
-    };
-
-
-    Element.prototype.offclick = function (fun,
-      other = {}) {
-      let element = this;
-
-      if (other == true) other = {
-        elementPlus: true
-      }
-      let conditon = other.conditon || 'true',
-      lockEvents = other.lockEvents || false,
-      elementPlus = other.elementPlus,
-      notLock = other.notLock,
-      clearEvent = other.clearEvent;
-      document.addEventListener('mouseup',
-        offClick);
-
-      let elements = [element];
-      if (elementPlus && elementPlus.v) {
-        if (an.isOneElement(elementPlus)) elements = [element,
-          elementPlus];
-        else elements = [element,
-          ...elementPlus];
-      }
-
-      if (lockEvents) {
-        if (!notLock) notLock = elements;
-        element.lockEvents('lock', notLock);
-      }
-
-      function offClick(events) {
-        let event = events || events.changedTouches[0];
-
-        if (elementPlus == true) {
-          removeEvent(event);
-          return;
-        }
-
-        let isNoClick = elements.length;
-        elements.forEach(element => {
-          if (event.target !== element) isNoClick--;
-          if (element.children) {
-            isNoClick += element.allChildren().length;
-            element.allChildren().forEach(child=> {
-              if (event.target !== child) isNoClick--;
-            });
-          }
-        });
-        var cond = typeof conditon == 'function' ? conditon(event): typeof conditon == 'boolean' ? conditon: '';
-        if (isNoClick === 0 && cond !== false || cond === true) removeEvent(event);
-      }
-      function removeEvent(event) {
-        document.removeEventListener('mouseup', offClick);
-        if (lockEvents) element.lockEvents('unlock', notLock);
-        if (typeof fun == 'function') fun(event);
-      }
     }
   </script>
 </body>
