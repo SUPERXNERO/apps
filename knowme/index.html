@@ -15,7 +15,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Know Me</title>
   <link rel="stylesheet" href="https://superxnero.github.io/assets/css/sx.css" />
-  <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
   <style class="realStyle" id="importStyle">
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Cairo:slnt,wght@-11..11,200..1000&display=swap');
@@ -60,6 +59,11 @@
       left: auto;
       right: 0;
       background: linear-gradient(to right, rgba(255, 255, 255, 0), var(--theme-box3));
+    }
+    #container {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
     }
     #card {
       position: relative;
@@ -222,13 +226,15 @@
     #socialIcons .value .icon:active {
       transform: scale(.9);
     }
+    #makeNewCard {
+      margin: var(--twenty-px) auto;
+      border-radius: var(--ten-px);
+      text-align: center;
+      border: 1px solid var(--theme-color2);
+    }
 
     #socialOptions {
-      --top: 65%;
-      --left: 50%;
       position: absolute;
-      top: var(--top);
-      left: var(--left);
       background: var(--theme-box2);
       min-width: 120px;
       border-radius: var(--two-px);
@@ -244,7 +250,7 @@
       transform: scale(1);
       pointer-events: auto;
     }
-    #copiedMessage,#cantShareMessage {
+    #copiedMessage,#cantShareMessage,#contactDev {
       position: fixed;
       left: 0;
       bottom: -100%;
@@ -259,11 +265,21 @@
       z-index: 3;
       transition: .3s;
     }
-:is(#copiedMessage, #cantShareMessage).show {
+:is(#copiedMessage, #cantShareMessage, #contactDev).show {
       bottom: 0;
     }
     #cantShareMessage {
       background: var(--theme-error);
+    }
+    #makeNewCard,#contactDev {
+      background: #091230;
+      box-shadow: 0 0 5px 3px #132C4D;
+      color: #8CA2A8;
+    }
+    [data-theme="light"] :is(#makeNewCard, #contactDev) {
+      background: #3D91BA;
+      box-shadow: 0 0 5px 3px #CFD9E3;
+      color: #14161C;
     }
 
 @media (min-width: 600px) {
@@ -358,14 +374,11 @@
               </div>
             </div>
           </div>
-          <div id="copiedMessage" data-textoptions="copied">
-          </div>
-          <div id="cantShareMessage" data-textoptions="cantShare">
-          </div>
+
+          <div id="makeNewCard" class="sxButton" data-textoptions="makeNewCard"></div>
+
         </div>
       </div>
-
-      <!-- بدلا من وضع باي بال مع قسم التواصل ، سوف نضيف قسم آخر وهو الدعم ، ويحتوي على باي بال و باتريون و اشتري لي قهوة وغيرها -->
 
       <div id="sidebar">
         <div class="item">
@@ -396,6 +409,15 @@
       </div>
     </div>
 
+    <div id="copiedMessage" data-textoptions="copied">
+    </div>
+    <div id="cantShareMessage" data-textoptions="cantShare">
+    </div>
+    <div id="contactDev">
+      <div data-textoptions="contactDev"></div>
+      <div id="contactDevBtn" class="sxButton" data-textoptions="contactDevBtn"></div>
+    </div>
+
   </div>
 
   <script class="realScript" type="module" defer>
@@ -419,7 +441,6 @@
     const body = document.body;
     const realPage = q("#realPage");
 
-    // element variables
     const openSidebar = q("#openSidebar");
     const container = q("#container");
     const sidebar = q("#sidebar");
@@ -434,6 +455,10 @@
     const userId = q("#userId");
     const copiedMessage = q("#copiedMessage");
     const cantShareMessage = q("#cantShareMessage");
+    const makeNewCard = q("#makeNewCard");
+    const contactDev = q("#contactDev");
+    const contactDevBtn = q("#contactDevBtn");
+    const socialOptions = q("#socialOptions");
 
     const languageManager = new LanguageManager({
       saveAll: true,
@@ -473,6 +498,18 @@
 
     let timeoutCopiedUserId;
     let timeoutCantShareUserId;
+
+    contactDevBtn.addEventListener("click", function() {
+      window.location.href = "https://wa.me/967718177515";
+      setTimeout(()=> contactDev.classList.remove("show"), 200);
+    });
+
+    makeNewCard.addEventListener("click", function() {
+      contactDev.classList.add("show");
+      contactDev.offclick(() => {
+        contactDev.classList.remove("show");
+      });
+    });
 
     userId.addEventListener("click", async function() {
       clearTimeout(timeoutCopiedUserId);
@@ -593,9 +630,11 @@
     }
 
     async function onCardDataChange(cardData) {
-      const cardLanguage = Object.keys(cardData.texts).find((language)=>"arabic" == navigator.language.split("-")[0]) || Object.keys(cardData.texts)[0];
+      const cardLanguage =
+      Object.keys(cardData.texts).find(
+        (language) => language == navigator.language.split("-")[0]
+      ) || Object.keys(cardData.texts)[0];
       if (!cardLanguage) {
-        // there is no data here !!
         return;
       }
       setDatum("cardLanguages", Object.keys(cardData.texts));
@@ -605,19 +644,220 @@
       img.src = cardData.image;
       img.alt = getDatum("userId");
 
-      const iconsResponse = await fetch(`https://superxnero.github.io/data/knowme/social_media_icons.json`);
+      const iconsResponse = await fetch(
+        `https://superxnero.github.io/data/knowme/social_media_icons.json`
+      );
       const iconsJson = await iconsResponse.json();
-      const linksResponse = await fetch(`https://superxnero.github.io/data/knowme/social_media_links.json`);
+      const linksResponse = await fetch(
+        `https://superxnero.github.io/data/knowme/social_media_links.json`
+      );
       const linksJson = await linksResponse.json();
       socialIcons.innerHTML = "";
-      Object.keys(cardData.socialMedia).forEach((key, i)=> {
-        const htmlElement = `<div class="icon" data-id="${i}" data-key="${key}" data-url="${linksJson[key].replace("${}", getDatum("userId"))}" data-fetch="https://superxnero.github.io/${iconsJson[key]}"></div>`;
+      Object.keys(cardData.socialMedia).forEach((key, i) => {
+        const htmlElement = `<div class="icon" data-id="${i}" data-key="${key}" data-url="${linksJson[key].replace("${}", cardData.socialMedia[key])}" data-fetch="https://superxnero.github.io/${
+        iconsJson[key]
+        }"></div>`;
         socialIcons.innerHTML += htmlElement;
       });
-      fetchToElement.reloadFetching(Object.values(socialIcons.querySelectorAll(".icon")));
+      fetchToElement.reloadFetching(
+        Object.values(socialIcons.querySelectorAll(".icon"))
+      );
+
+      socialIcons.querySelectorAll(".icon").forEach((icon)=> {
+        icon.addEventListener("click", function (event) {
+          socialOptions.dataset.currentkey = icon.dataset.key;
+          socialOptions.style.setProperty(
+            "--top",
+            icon.offsetTop + icon.offsetHeight / 2 + "px"
+          );
+          socialOptions.style.setProperty(
+            "--left",
+            icon.offsetLeft + icon.offsetWidth / 2 + "px"
+          );
+          if (icon.offsetLeft + icon.offsetWidth + socialOptions.offsetWidth > window.innerWidth) {
+            socialOptions.style.setProperty(
+              "--left",
+              window.innerWidth - socialOptions.offsetWidth - 10 + "px"
+            );
+          }
+          socialOptions.classList.add("show");
+          socialOptions.offclick(() => {
+            socialOptions.classList.remove("show");
+          });
+        });
+      });
     }
+
+    socialOptions.querySelectorAll(".option").forEach((option) => {
+      option.addEventListener("click",
+        async function () {
+          const id = option.dataset.id;
+          const icon = socialIcons.querySelector(`[data-key=${socialOptions.dataset.currentkey}]`);
+          const url = icon.dataset.url;
+          if (id === "openLink") {
+            window.open(url, "_blank");
+          } else if (id === "copyLink") {
+            clearTimeout(timeoutCopiedUserId);
+            await navigator.clipboard.writeText(url);
+            copiedMessage.classList.add("show");
+            timeoutCopiedUserId = setTimeout(() => {
+              copiedMessage.classList.remove("show");
+            }, 1500);
+          } else if (id === "shareLink") {
+            clearTimeout(timeoutCantShareUserId);
+            const shareData = {
+              title: document.title,
+              url: url,
+            };
+            if (
+              navigator.share &&
+              navigator.canShare &&
+              navigator.canShare(shareData)
+            ) {
+              navigator.share(shareData);
+            } else {
+              cantShareMessage.classList.add("show");
+              timeoutCantShareUserId = setTimeout(() => {
+                cantShareMessage.classList.remove("show");
+              }, 3000);
+            }
+          }
+          setTimeout(() => socialOptions.classList.remove("show"), 500);
+        });
+    });
 
     function onContactsChange(contacts) {
       phoneNumbersList.innerHTML = "";
       contacts.forEach((contact)=> {
-    
+        phoneNumbersList.innerHTML += `
+        <div class="phoneNumber" data-knowmeid="${contact.knowme}" data-textoptions="${contact.name}"></div>`;
+      });
+      if (Object.keys(languageManager.languagesContent).length > 1) {
+        languageManager.updateElements();
+      }
+      Object.values(phoneNumbersList.querySelectorAll("& .phoneNumber")).forEach((item)=> {
+        item.addEventListener("click", function() {
+          const url = `https://superxnero.github.io/apps/knowme/index.html?user_id=${item.dataset.knowmeid}`;
+          window.location.href = url;
+        });
+      });
+    }
+
+    function onLanguageChange(language) {
+      localStorage.setItem("language", language);
+    }
+
+    function onThemeChange(theme) {
+      localStorage.setItem("theme", theme);
+    }
+
+    function onAvailableLanguagesChange(languages) {
+      availableLanguages.innerHTML = "";
+      languages.forEach((language)=> {
+        availableLanguages.innerHTML += `
+        <div class="languageItem" data-id="${language}" data-textoptions="${language}"></div>`;
+      });
+      if (Object.keys(languageManager.languagesContent).length > 1) {
+        languageManager.updateElements();
+      }
+      Object.values(availableLanguages.querySelectorAll("& .languageItem")).forEach((item)=> {
+        item.addEventListener("click", function() {
+          const id = item.dataset.id;
+          languageManager.setLanguage(id);
+        });
+      });
+    }
+
+    function onAvailableThemesChange(themes) {
+      availableThemes.innerHTML = "";
+      themes.forEach((theme)=> {
+        availableThemes.innerHTML += `
+        <div class="themeItem" data-id="${theme}" data-textoptions="${theme}"></div>`;
+      });
+      if (Object.keys(languageManager.languagesContent).length > 1) {
+        languageManager.updateElements();
+      }
+      Object.values(availableThemes.querySelectorAll("& .themeItem")).forEach((item)=> {
+        item.addEventListener("click", function() {
+          const id = item.dataset.id;
+          themeManager.setTheme(id);
+        });
+      });
+    }
+
+    function getDatum(datum) {
+      return mainData[datum].value;
+    }
+
+    function setDatum(datum, value) {
+      mainData[datum].change(value);
+    }
+
+    Element.prototype.allChildren = function(includeSelf = false) {
+      let children = Array.from(this.children);
+      children.forEach(child => {
+        children.push(...child.allChildren());
+      });
+      return includeSelf ? [this,
+        ...children]: children;
+    };
+
+
+    Element.prototype.offclick = function (fun,
+      other = {}) {
+      let element = this;
+
+      if (other == true) other = {
+        elementPlus: true
+      }
+      let conditon = other.conditon || 'true',
+      lockEvents = other.lockEvents || false,
+      elementPlus = other.elementPlus,
+      notLock = other.notLock,
+      clearEvent = other.clearEvent;
+      document.addEventListener('mouseup',
+        offClick);
+
+      let elements = [element];
+      if (elementPlus && elementPlus.v) {
+        if (an.isOneElement(elementPlus)) elements = [element,
+          elementPlus];
+        else elements = [element,
+          ...elementPlus];
+      }
+
+      if (lockEvents) {
+        if (!notLock) notLock = elements;
+        element.lockEvents('lock', notLock);
+      }
+
+      function offClick(events) {
+        let event = events || events.changedTouches[0];
+
+        if (elementPlus == true) {
+          removeEvent(event);
+          return;
+        }
+
+        let isNoClick = elements.length;
+        elements.forEach(element => {
+          if (event.target !== element) isNoClick--;
+          if (element.children) {
+            isNoClick += element.allChildren().length;
+            element.allChildren().forEach(child=> {
+              if (event.target !== child) isNoClick--;
+            });
+          }
+        });
+        var cond = typeof conditon == 'function' ? conditon(event): typeof conditon == 'boolean' ? conditon: '';
+        if (isNoClick === 0 && cond !== false || cond === true) removeEvent(event);
+      }
+      function removeEvent(event) {
+        document.removeEventListener('mouseup', offClick);
+        if (lockEvents) element.lockEvents('unlock', notLock);
+        if (typeof fun == 'function') fun(event);
+      }
+    }
+  </script>
+</body>
+</html>
