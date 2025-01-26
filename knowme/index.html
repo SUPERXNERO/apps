@@ -611,4 +611,135 @@
     function onContactsChange(contacts) {
       phoneNumbersList.innerHTML = "";
       contacts.forEach((contact)=> {
-    
+        phoneNumbersList.innerHTML += `
+        <div class="phoneNumber" data-knowmeid="${contact.knowme}" data-textoptions="${contact.name}"></div>`;
+      });
+      if (Object.keys(languageManager.languagesContent).length > 1) {
+        languageManager.updateElements();
+      }
+      Object.values(phoneNumbersList.querySelectorAll("& .phoneNumber")).forEach((item)=> {
+        item.addEventListener("click", function() {
+          const url = `https://superxnero.github.io/apps/knowme/index.html?user_id=${item.dataset.knowmeid}`;
+          window.location.href = url;
+        });
+      });
+    }
+
+    function onLanguageChange(language) {
+      localStorage.setItem("language", language);
+    }
+
+    function onThemeChange(theme) {
+      localStorage.setItem("theme", theme);
+    }
+
+    function onAvailableLanguagesChange(languages) {
+      availableLanguages.innerHTML = "";
+      languages.forEach((language)=> {
+        availableLanguages.innerHTML += `
+        <div class="languageItem" data-id="${language}" data-textoptions="${language}"></div>`;
+      });
+      if (Object.keys(languageManager.languagesContent).length > 1) {
+        languageManager.updateElements();
+      }
+      Object.values(availableLanguages.querySelectorAll("& .languageItem")).forEach((item)=> {
+        item.addEventListener("click", function() {
+          const id = item.dataset.id;
+          languageManager.setLanguage(id);
+        });
+      });
+    }
+
+    function onAvailableThemesChange(themes) {
+      availableThemes.innerHTML = "";
+      themes.forEach((theme)=> {
+        availableThemes.innerHTML += `
+        <div class="themeItem" data-id="${theme}" data-textoptions="${theme}"></div>`;
+      });
+      if (Object.keys(languageManager.languagesContent).length > 1) {
+        languageManager.updateElements();
+      }
+      Object.values(availableThemes.querySelectorAll("& .themeItem")).forEach((item)=> {
+        item.addEventListener("click", function() {
+          const id = item.dataset.id;
+          themeManager.setTheme(id);
+        });
+      });
+    }
+
+    function getDatum(datum) {
+      return mainData[datum].value;
+    }
+
+    function setDatum(datum, value) {
+      mainData[datum].change(value);
+    }
+
+    Element.prototype.allChildren = function(includeSelf = false) {
+      let children = Array.from(this.children);
+      children.forEach(child => {
+        children.push(...child.allChildren());
+      });
+      return includeSelf ? [this,
+        ...children]: children;
+    };
+
+
+    Element.prototype.offclick = function (fun,
+      other = {}) {
+      let element = this;
+
+      if (other == true) other = {
+        elementPlus: true
+      }
+      let conditon = other.conditon || 'true',
+      lockEvents = other.lockEvents || false,
+      elementPlus = other.elementPlus,
+      notLock = other.notLock,
+      clearEvent = other.clearEvent;
+      document.addEventListener('mouseup',
+        offClick);
+
+      let elements = [element];
+      if (elementPlus && elementPlus.v) {
+        if (an.isOneElement(elementPlus)) elements = [element,
+          elementPlus];
+        else elements = [element,
+          ...elementPlus];
+      }
+
+      if (lockEvents) {
+        if (!notLock) notLock = elements;
+        element.lockEvents('lock', notLock);
+      }
+
+      function offClick(events) {
+        let event = events || events.changedTouches[0];
+
+        if (elementPlus == true) {
+          removeEvent(event);
+          return;
+        }
+
+        let isNoClick = elements.length;
+        elements.forEach(element => {
+          if (event.target !== element) isNoClick--;
+          if (element.children) {
+            isNoClick += element.allChildren().length;
+            element.allChildren().forEach(child=> {
+              if (event.target !== child) isNoClick--;
+            });
+          }
+        });
+        var cond = typeof conditon == 'function' ? conditon(event): typeof conditon == 'boolean' ? conditon: '';
+        if (isNoClick === 0 && cond !== false || cond === true) removeEvent(event);
+      }
+      function removeEvent(event) {
+        document.removeEventListener('mouseup', offClick);
+        if (lockEvents) element.lockEvents('unlock', notLock);
+        if (typeof fun == 'function') fun(event);
+      }
+    }
+  </script>
+</body>
+</html>
