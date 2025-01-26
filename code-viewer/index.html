@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Code Viewer</title>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.12/codemirror.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.12/codemirror.min.js"></script>
+
+  <style class="realStyle" id="importStyle">
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cairo:slnt,wght@-11..11,200..1000&display=swap');
+  </style>
+  <style class="realStyle">
+    *,
+    *::before,
+    *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: inherit;
+      user-select: none;
+    }
+    body {
+      background: var(--theme-background);
+      color: var(--theme-color);
+    }
+    .ds-none {
+      display: none;
+    }
+    .disable {
+      filter: opacity(.6);
+      pointer-events: none;
+    }
+    #main {
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+    }
+    header {
+      position: relative;
+      background: var(--theme-box3);
+      width: 100%;
+      margin-left: auto;
+      margin-right: auto;
+      padding: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 2px solid var(--theme-color2);
+    }
+    .arLanguage header {
+      flex-direction: row-reverse;
+    }
+    #openSidebar,#openMenu {
+      border-radius: 50%;
+      background: var(--theme-box2);
+      border: 2px solid transparent;
+      padding: 6px;
+      aspect-ratio: 1/1;
+      transition: .2s;
+    }
+:is(#openSidebar,#openMenu):active {
+      filter: brightness(1.5);
+      border-color: var(--theme-color2);
+      transform: scale(.9);
+    }
+:is(#openSidebar, #openMenu) svg {
+      width: 25px;
+      height: 25px;
+    }
+    #openSidebar svg {
+      stroke: var(--theme-color);
+    }
+    #openMenu svg {
+      fill: var(--theme-color);
+    }
+    #h1Title {
+      flex-grow: 1;
+      text-align: center;
+      font-size: 18px;
+    }
+    #container {
+      width: 100%;
+      flex-grow: 1;
+      margin-left: auto;
+      margin-right: auto;
+      padding: 10px;
+      background: var(--theme-box);
+      overflow: scroll;
+      display: flex;
+      flex-direction: column;
+    }
+    #codeOptions {
+      display: flex;
+      align-items: center;
+      margin-block-end: 20px;
+      background: var(--theme-box2);
+      padding: 6px;
+    }
+    #codeThemes, #codeLanguages {
+      position: relative;
+      min-width: 120px;
+    }
+    #codeThemes {
+      margin-inline-end: 10px;
+    }
+    #currentCodeTheme,#currentCodeLanguage {
+      padding: 6px;
+      border: 2px solid transparent;
+      background: var(--theme-box3);
+      transition: .2s;
+    }
+:is(#currentCodeTheme,#currentCodeLanguage):active {
+      filter: brightness(1.5);
+      border-color: var(--theme-color2);
+      transform: scale(.95);
+    }
+    #codeThemesList,#codeLanguagesList {
+      position: absolute;
+      top: 0;
+      left: 0;
+      opacity: 0;
+      pointer-events: none;
+      background: var(--theme-box3);
+      width: 100%;
+      border-left: 2px solid var(--theme-box3);
+      overflow: scroll;
+      max-height: 400px;
+      z-index: 1;
+      transition: .2s;
+    }
+    .arLanguage :is(#codeThemesList,#codeLanguagesList) {
+      left: auto;
+      right: 0;
+    }
+:is(#codeThemesList,#codeLanguagesList).show {
+      opacity: 1;
+      pointer-events: auto;
+    }
+:is(#codeThemesList,#codeLanguagesList) .item {
+      width: 100%;
+      border: 2px solid transparent;
+      text-wrap: nowrap;
+      padding: 6px;
+      background: var(--theme-box3);
+      transition: .2s;
+    }
+:is(#codeThemesList,#codeLanguagesList) .item:active {
+      filter: brightness(1.5);
+      border-color: var(--theme-color2);
+      transform: scale(.95);
+    }
+    /*#codeViewer {
+      width: 100%;
+      height: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 1px solid var(--theme-box3);
+      outline-color: var(--theme-box3);
+      border-radius: 4px;
+      background: var(--theme-box4);
+      resize: none;
+    }*/
+    #container .CodeMirror {
+      width: 100%;
+      height: 100%;
+    }
+    #sidebar {
+      --leftSidebar: -100%;
+      position: fixed;
+      top: 0;
+      left: var(--leftSidebar);
+      height: 100%;
+      min-width: 160px;
+      background: var(--theme-box4);
+      border-inline-end: 2px solid var(--theme-color2);
+      transition: .2s;
+    }
+    .arLanguage #sidebar {
+      left: auto;
+      right: var(--leftSidebar);
+      border-inline-end: 0;
+      border-inline-start: 2px solid var(--theme-color2);
+    }
+    #sidebar.show {
+      --leftSidebar: 0;
+    }
+    #sidebar .item {
+      position: relative;
+    }
+    #sidebar .itemShow {
+      padding: 6px;
+      border: 2px solid transparent;
+      background: var(--theme-box4);
+      transition: .2s;
+    }
+    #sidebar .itemShow:active {
+      filter: brightness(1.5);
+    }
+    #sidebar .itemList {
+      position: absolute;
+      top: 0;
+      left: 100%;
+      opacity: 0;
+      pointer-events: none;
+      background: var(--theme-box4);
+      min-width: 100px;
+      border: 2px solid var(--theme-color2);
+      border-left-width: 0;
+      overflow: scroll;
+      max-height: 400px;
+      transition: .2s;
+    }
+    #sidebar .itemList.show {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .arLanguage #sidebar .itemList {
+      left: auto;
+      right: 100%;
+      border-left-width: 2px;
+      border-right-width: 0;
+    }
+    #sidebar .itemList > div {
+      width: 100%;
+      border: 2px solid transparent;
+      text-wrap: nowrap;
+      padding: 6px;
+      background: var(--theme-box3);
+      transition: .2s;
+    }
+    #sidebar .itemList > div:active {
+      filter: brightness(1.5);
+      border-color: var(--theme-color2);
+      transform: scale(.95);
+    }
+  </style>
+  <style class="realStyle">
+@media (min-width: 800px) {
+    #mainSidebar {
+      display: grid;
+      grid-template-columns: 1fr 5fr;
+      min-width: 100vw;
+      min-height: 100vh;
+    }
+    .arLanguage #mainSidebar {
+      grid-template-columns: 5fr 1fr;
+    }
+    #main {
+      order: 2;
+    }
+    .arLanguage #main {
+      order: 1;
+    }
+    #sidebar {
+      order: 1;
+    }
+    .arLanguage #sidebar {
+      order: 2;
+    }
+    #h1Title {
+      font-size: 35px;
+    }
+    #openSidebar {
+      display: none;
+    }
+    #sidebar {
+      position: relative;
+      --leftSidebar: 0;
+    }
+  }
+  </style>
+</head>
+<body>
+  <div id="realPage">
+    <div id="mainSidebar">
+      <div id="main">
+        <header>
+          <div id="openSidebar" data-fetch="/storage/5A67-DF85/GitHub/assets/svgs/burger-menu_506800.svg"></div>
+          <h1 id="h1Title" data-textoptions="title"></h1>
+        </header>
+        <div id="container">
+          <div id="codeOptions">
+            <div id="codeThemes">
+              <div id="currentCodeTheme"></div>
+              <div id="codeThemesList">
+              </div>
+            </div>
+            <div id="codeLanguages">
+              <div id="currentCodeLanguage"></div>
+              <div id="codeLanguagesList">
+              </div>
+            </div>
+          </div>
+          <textarea id="codeViewer">const greet = () => console.log('Hello, World!');</textarea>
+        </div>
+      </div>
+      <div id="sidebar">
+        <div class="item">
+          <div class="itemShow" data-textoptions="language"></div>
+          <div id="availableLanguages" class="itemList">
+          </div>
+        </div>
+        <div class="item">
+          <div class="itemShow" data-textoptions="themeText"></div>
+          <div id="availableThemes" class="itemList">
+          </div>
+        </div>
+        <div class="item">
+          <div class="itemShow" data-textoptions="contact"></div>
+          <div id="phoneNumbersList" class="itemList">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script class="realScript" type="module" defer>
+    import {
+      OnChange
+    } from "/storage/5A67-DF85/GitHub/assets/libs/OnChange.js";
+    import {
+      LanguageManager
+    } from "/storage/5A67-DF85/GitHub/assets/libs/LanguageManager.js";
+    import {
+      ThemeManager
+    } from "/storage/5A67-DF85/GitHub/assets/libs/ThemeManager.js";
+    import {
+      FetchToElement
+    } from "/storage/5A67-DF85/GitHub/assets/libs/FetchToElement.js";
+    import * as an from "/storage/5A67-DF85/GitHub/assets/libs/another.js";
+    const q = (e)=> document.querySelector(e);
+    const qA = (e)=> document.querySelectorAll(e);
+    const root = document.documentElement;
+    const head = document.head;
+    const body = document.body;
+    const realPage = q("#realPage");
+
+    /* start real code */
+    async function realCode() {
+      // element variables
+      const openSidebar = q("#openSidebar");
+      const container = q("#container");
+      const sidebar = q("#sidebar");
+      const availableLanguages = q("#availableLanguages");
+      const availableThemes = q("#availableThemes");
+      const phoneNumbersList = q("#phoneNumbersList");
+      const codeViewer = q("#codeViewer");
+      const codeThemes = q("#codeThemes");
+      const currentCodeTheme = q("#currentCodeTheme");
+      const codeThemesList = q("#codeThemesList");
+      const codeLanguages = q("#codeLanguages");
+      const codeLanguagesList = q("#codeLanguagesList");
+      const currentCodeLanguage = q("#currentCodeLanguage");
+
+      const languageManager = new LanguageManager({
+        saveAll: true,
+        baseUrl: "/storage/5A67-DF85/GitHub/languages-content/code-viewer/",
+        defaultLanguage: localStorage.getItem("language"),
+        changeEvents: {
+          "language": onLanguageChange
+        }
+      });
+      const themeManager = new ThemeManager({
+        saveAll: true,
+        baseUrl: "/storage/5A67-DF85/GitHub/themes-content/public/",
+        defaultTheme: localStorage.getItem("theme"),
+        changeEvents: {
+          "theme": onThemeChange
+        }
+      });
+      const fetchToElement = new FetchToElement(true);
+      const editor = CodeMirror.fromTextArea(codeViewer, {
+        lineNumbers: true,
+        mode: "javascript",
+        theme: "cobalt"
+      });
+
+      let mainData = {
+        availableLanguages: new OnChange(onAvailableLanguagesChange),
+        availableThemes: new OnChange(onAvailableThemesChange),
+        contacts: new OnChange(onContactsChange),
+        codeThemes: new OnChange(onCodeThemesChange),
+        codeLanguages: new OnChange(onCodeLanguagesChange),
+        currentCodeTheme: new OnChange(onCurrentCodeThemeChange),
+        currentCodeLanguage: new OnChange(onCurrentCodeLanguageChange)
+      };
+      setDatum("availableLanguages", ["ar", "en"]);
+      setDatum("availableThemes", ["light", "dark"]);
+
+      const contacts = [{
+        "name": "developer",
+        "phone": "967718177515"
+      }];
+      setDatum("contacts", contacts);
+      setDatum("codeThemes", [
+        "dracula",
+        "monokai",
+        "solarized",
+        "cobalt",
+        "material",
+        "nord",
+        "gruvbox-dark",
+        "night",
+        "twilight"
+      ]);
+      setDatum("codeLanguages", [
+        "javascript",
+        "python",
+        "html",
+        "css",
+        "java",
+        "php",
+        "ruby",
+        "c",
+        "c++",
+        "typescript",
+        "sql",
+        "go",
+        "swift",
+        "rust",
+        "xml",
+        "json",
+        "shell",
+        "markdown",
+        "lua",
+        "objective-c"
+      ]);
+      setDatum("currentCodeTheme", "cobalt");
+      setDatum("currentCodeLanguage", "javascript");
+
+      openSidebar.onclick = function() {
+        sidebar.classList.add("show");
+        sidebar.offclick(()=> {
+          sidebar.classList.remove("show");
+        });
+      }
+
+      sidebar.querySelectorAll("& > .item").forEach((item)=> {
+        const itemShow = item.querySelector("& > .itemShow");
+        const itemList = item.querySelector("& > .itemList");
+        itemShow.onclick = function() {
+          itemList.classList.add("show");
+          itemList.offclick(()=> {
+            itemList.classList.remove("show");
+          });
+        }
+      });
+      currentCodeTheme.onclick = function() {
+        codeThemesList.classList.add("show");
+        codeThemesList.offclick(()=> {
+          codeThemesList.classList.remove("show");
+        });
+      }
+      currentCodeLanguage.onclick = function() {
+        codeLanguagesList.classList.add("show");
+        codeLanguagesList.offclick(()=> {
+          codeLanguagesList.classList.remove("show");
+        });
+      }
+
+      function onCodeThemesChange(codeThemes) {
+        codeThemesList.innerHTML = "";
+        codeThemes.forEach((codeTheme)=> {
+          codeThemesList.innerHTML += `
+          <div class="item" data-id="${codeTheme}">${codeTheme}</div>`;
+        });
+        codeThemesList.querySelectorAll("& > .item").forEach((item)=> {
+          item.onclick = function() {
+            const id = item.dataset.id;
+            setDatum("currentCodeTheme", id);
+            editor.setOption("theme", id);
+            codeThemesList.classList.remove("show");
+          }
+        });
+      }
+
+      function onCodeLanguagesChange(codeLanguages) {
+        codeLanguagesList.innerHTML = "";
+        codeLanguages.forEach((codeLanguage)=> {
+          codeLanguagesList.innerHTML += `
+          <div class="item" data-id="${codeLanguage}">${codeLanguage}</div>`;
+        });
+        codeLanguagesList.querySelectorAll("& > .item").forEach((item)=> {
+          item.onclick = function() {
+            const id = item.dataset.id;
+            setDatum("currentCodeLanguage", id);
+            editor.setOption("mode", id);
+            codeLanguagesList.classList.remove("show");
+          }
+        });
+      }
+
+      function onCurrentCodeThemeChange(newCurrentCodeTheme) {
+        const existingLink = document.querySelector(`link[rel="stylesheet"][href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.12/theme/${newCurrentCodeTheme}.min.css"]`);
+        if (existingLink) {
+          return;
+        }
+        const link = document.createElement("link");
+        link.rel = "stylesheet";
+        link.type = "text/css";
+        link.href = `https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.12/theme/${newCurrentCodeTheme}.min.css`;
+        document.head.appendChild(link);
+        currentCodeTheme.innerHTML = newCurrentCodeTheme;
+      }
+
+      function onCurrentCodeLanguageChange(newCurrentCodeLanguage) {
+        currentCodeLanguage.innerHTML = newCurrentCodeLanguage;
+      }
+
+      function onContactsChange(contacts) {
+        phoneNumbersList.innerHTML = "";
+        contacts.forEach((contact)=> {
+          phoneNumbersList.innerHTML += `
+          <div class="phoneNumber" data-phone="${contact.phone}" data-textoptions="${contact.name}"></div>`;
+        });
+        if (Object.keys(languageManager.languagesContent).length > 1) {
+          languageManager.updateElements();
+        }
+        Object.values(phoneNumbersList.querySelectorAll("& .phoneNumber")).forEach((item)=> {
+          item.onclick = function() {
+            const baseUrl = "https://wa.me/";
+            window.location.href = baseUrl + item.dataset.phone;
+          }
+        });
+      }
+
+      function onLanguageChange(language) {
+        localStorage.setItem("language", language);
+      }
+
+      function onThemeChange(theme) {
+        localStorage.setItem("theme", theme);
+      }
+
+      function onAvailableLanguagesChange(languages) {
+        availableLanguages.innerHTML = "";
+        languages.forEach((language)=> {
+          availableLanguages.innerHTML += `
+          <div class="languageItem" data-id="${language}" data-textoptions="${language}"></div>`;
+        });
+        if (Object.keys(languageManager.languagesContent).length > 1) {
+          languageManager.updateElements();
+        }
+        Object.values(availableLanguages.querySelectorAll("& .languageItem")).forEach((item)=> {
+          item.onclick = function() {
+            const id = item.dataset.id;
+            languageManager.setLanguage(id);
+          }
+        });
+      }
+
+      function onAvailableThemesChange(themes) {
+        availableThemes.innerHTML = "";
+        themes.forEach((theme)=> {
+          availableThemes.innerHTML += `
+          <div class="themeItem" data-id="${theme}" data-textoptions="${theme}"></div>`;
+        });
+        if (Object.keys(languageManager.languagesContent).length > 1) {
+          languageManager.updateElements();
+        }
+        Object.values(availableThemes.querySelectorAll("& .themeItem")).forEach((item)=> {
+          item.onclick = function() {
+            const id = item.dataset.id;
+            themeManager.setTheme(id);
+          }
+        });
+      }
+
+      function getDatum(datum) {
+        return mainData[datum].value;
+      }
+
+      function setDatum(datum, value) {
+        mainData[datum].change(value);
+      }
+    }
+    /* run real code */
+    realCode();
+
+    Element.prototype.allChildren = function(includeSelf = false) {
+      let children = Array.from(this.children);
+      children.forEach(child => {
+        children.push(...child.allChildren());
+      });
+      return includeSelf ? [this,
+        ...children]: children;
+    };
+
+
+    Element.prototype.offclick = function (fun,
+      other = {}) {
+      let element = this;
+
+      if (other == true) other = {
+        elementPlus: true
+      }
+      let conditon = other.conditon || 'true',
+      lockEvents = other.lockEvents || false,
+      elementPlus = other.elementPlus,
+      notLock = other.notLock,
+      clearEvent = other.clearEvent;
+      document.addEventListener('mouseup',
+        offClick);
+
+      let elements = [element];
+      if (elementPlus && elementPlus.v) {
+        if (an.isOneElement(elementPlus)) elements = [element,
+          elementPlus];
+        else elements = [element,
+          ...elementPlus];
+      }
+
+      if (lockEvents) {
+        if (!notLock) notLock = elements;
+        element.lockEvents('lock', notLock);
+      }
+
+      function offClick(events) {
+        let event = events || events.changedTouches[0];
+
+        if (elementPlus == true) {
+          removeEvent(event);
+          return;
+        }
+
+        let isNoClick = elements.length;
+        elements.forEach(element => {
+          if (event.target !== element) isNoClick--;
+          if (element.children) {
+            isNoClick += element.allChildren().length;
+            element.allChildren().forEach(child=> {
+              if (event.target !== child) isNoClick--;
+            });
+          }
+        });
+        var cond = typeof conditon == 'function' ? conditon(event): typeof conditon == 'boolean' ? conditon: '';
+        if (isNoClick === 0 && cond !== false || cond === true) removeEvent(event);
+      }
+      function removeEvent(event) {
+        document.removeEventListener('mouseup', offClick);
+        if (lockEvents) element.lockEvents('unlock', notLock);
+        if (typeof fun == 'function') fun(event);
+      }
+    }
+  </script>
+</body>
+</html>
