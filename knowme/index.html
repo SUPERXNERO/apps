@@ -4,7 +4,7 @@
   <meta http-equiv="content-type" content="text/html; charset=utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Know Me</title>
-  <link rel="stylesheet" href="/storage/5A67-DF85/GitHub/assets/css/sx.css" />
+  <link rel="stylesheet" href="https://superxnero.github.io/assets/css/sx.css" />
   <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
   <style class="realStyle" id="importStyle">
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
@@ -288,14 +288,14 @@
     <div id="mainSidebar">
       <div id="main">
         <header>
-          <div id="openSidebar" data-fetch="/storage/5A67-DF85/GitHub/assets/svgs/burger-menu_506800.svg"></div>
+          <div id="openSidebar" data-fetch="https://superxnero.github.io/assets/svgs/burger-menu_506800.svg"></div>
           <h1 id="h1Title" data-textoptions="title"></h1>
         </header>
         <div id="container">
           <div id="card">
             <div class="options">
               <div id="cardMenu">
-                <div id="openCardMenu" class="sxButton" data-fetch="/storage/5A67-DF85/GitHub/assets/svgs/three-dots-vertical_345223.svg"></div>
+                <div id="openCardMenu" class="sxButton" data-fetch="https://superxnero.github.io/assets/svgs/three-dots-vertical_345223.svg"></div>
                 <div id="cardMenuOptions">
                   <div class="option sxButton" data-id="copyLink" data-textoptions="copyLinkKW,true">
                   </div>
@@ -392,17 +392,17 @@
   <script class="realScript" type="module" defer>
     import {
       OnChange
-    } from "/storage/5A67-DF85/GitHub/assets/libs/OnChange.js";
+    } from "https://superxnero.github.io/assets/libs/OnChange.js";
     import {
       LanguageManager
-    } from "/storage/5A67-DF85/GitHub/assets/libs/LanguageManager.js";
+    } from "https://superxnero.github.io/assets/libs/LanguageManager.js";
     import {
       ThemeManager
-    } from "/storage/5A67-DF85/GitHub/assets/libs/ThemeManager.js";
+    } from "https://superxnero.github.io/assets/libs/ThemeManager.js";
     import {
       FetchToElement
-    } from "/storage/5A67-DF85/GitHub/assets/libs/FetchToElement.js";
-    import * as an from "/storage/5A67-DF85/GitHub/assets/libs/another.js";
+    } from "https://superxnero.github.io/assets/libs/FetchToElement.js";
+    import * as an from "https://superxnero.github.io/assets/libs/another.js";
     const q = (e)=> document.querySelector(e);
     const qA = (e)=> document.querySelectorAll(e);
     const root = document.documentElement;
@@ -428,7 +428,7 @@
 
     const languageManager = new LanguageManager({
       saveAll: true,
-      baseUrl: "/storage/5A67-DF85/GitHub/languages-content/knowme/",
+      baseUrl: "https://superxnero.github.io/languages-content/knowme/",
       defaultLanguage: localStorage.getItem("language"),
       changeEvents: {
         "language": onLanguageChange
@@ -436,7 +436,7 @@
     });
     const themeManager = new ThemeManager({
       saveAll: true,
-      baseUrl: "/storage/5A67-DF85/GitHub/themes-content/knowme/",
+      baseUrl: "https://superxnero.github.io/themes-content/knowme/",
       defaultTheme: localStorage.getItem("theme"),
       changeEvents: {
         "theme": onThemeChange
@@ -485,7 +485,7 @@
     cardMenuOptions.querySelectorAll(".option").forEach((option) => {
       option.addEventListener("click", async function () {
         const id = option.dataset.id;
-        const url = `/storage/5A67-DF85/GitHub/apps/knowme/index.html?user_id=${getDatum("userId")}`;
+        const url = `https://superxnero.github.io/apps/knowme/index.html?user_id=${getDatum("userId")}`;
         if (id === "copyLink") {
           clearTimeout(timeoutCopiedUserId);
           await navigator.clipboard.writeText(url);
@@ -578,7 +578,7 @@
     async function onUserIdChange(newUserId) {
       userId.innerText = newUserId;
 
-      const response = await fetch(`/storage/5A67-DF85/GitHub/data/knowme/users/${newUserId}.json`);
+      const response = await fetch(`https://superxnero.github.io/data/knowme/users/${newUserId}.json`);
       const json = await response.json();
       setDatum("cardData", json);
     }
@@ -596,13 +596,13 @@
       img.src = cardData.image;
       img.alt = getDatum("userId");
 
-      const iconsResponse = await fetch(`/storage/5A67-DF85/GitHub/data/knowme/social_media_icons.json`);
+      const iconsResponse = await fetch(`https://superxnero.github.io/data/knowme/social_media_icons.json`);
       const iconsJson = await iconsResponse.json();
-      const linksResponse = await fetch(`/storage/5A67-DF85/GitHub/data/knowme/social_media_links.json`);
+      const linksResponse = await fetch(`https://superxnero.github.io/data/knowme/social_media_links.json`);
       const linksJson = await linksResponse.json();
       socialIcons.innerHTML = "";
       Object.keys(cardData.socialMedia).forEach((key, i)=> {
-        const htmlElement = `<div class="icon" data-id="${i}" data-key="${key}" data-url="${linksJson[key].replace("${}", getDatum("userId"))}" data-fetch="/storage/5A67-DF85/GitHub/${iconsJson[key]}"></div>`;
+        const htmlElement = `<div class="icon" data-id="${i}" data-key="${key}" data-url="${linksJson[key].replace("${}", getDatum("userId"))}" data-fetch="https://superxnero.github.io/${iconsJson[key]}"></div>`;
         socialIcons.innerHTML += htmlElement;
       });
       fetchToElement.reloadFetching(Object.values(socialIcons.querySelectorAll(".icon")));
@@ -611,135 +611,4 @@
     function onContactsChange(contacts) {
       phoneNumbersList.innerHTML = "";
       contacts.forEach((contact)=> {
-        phoneNumbersList.innerHTML += `
-        <div class="phoneNumber" data-knowmeid="${contact.knowme}" data-textoptions="${contact.name}"></div>`;
-      });
-      if (Object.keys(languageManager.languagesContent).length > 1) {
-        languageManager.updateElements();
-      }
-      Object.values(phoneNumbersList.querySelectorAll("& .phoneNumber")).forEach((item)=> {
-        item.addEventListener("click", function() {
-          const url = `/storage/5A67-DF85/GitHub/apps/knowme/index.html?user_id=${item.dataset.knowmeid}`;
-          window.location.href = url;
-        });
-      });
-    }
-
-    function onLanguageChange(language) {
-      localStorage.setItem("language", language);
-    }
-
-    function onThemeChange(theme) {
-      localStorage.setItem("theme", theme);
-    }
-
-    function onAvailableLanguagesChange(languages) {
-      availableLanguages.innerHTML = "";
-      languages.forEach((language)=> {
-        availableLanguages.innerHTML += `
-        <div class="languageItem" data-id="${language}" data-textoptions="${language}"></div>`;
-      });
-      if (Object.keys(languageManager.languagesContent).length > 1) {
-        languageManager.updateElements();
-      }
-      Object.values(availableLanguages.querySelectorAll("& .languageItem")).forEach((item)=> {
-        item.addEventListener("click", function() {
-          const id = item.dataset.id;
-          languageManager.setLanguage(id);
-        });
-      });
-    }
-
-    function onAvailableThemesChange(themes) {
-      availableThemes.innerHTML = "";
-      themes.forEach((theme)=> {
-        availableThemes.innerHTML += `
-        <div class="themeItem" data-id="${theme}" data-textoptions="${theme}"></div>`;
-      });
-      if (Object.keys(languageManager.languagesContent).length > 1) {
-        languageManager.updateElements();
-      }
-      Object.values(availableThemes.querySelectorAll("& .themeItem")).forEach((item)=> {
-        item.addEventListener("click", function() {
-          const id = item.dataset.id;
-          themeManager.setTheme(id);
-        });
-      });
-    }
-
-    function getDatum(datum) {
-      return mainData[datum].value;
-    }
-
-    function setDatum(datum, value) {
-      mainData[datum].change(value);
-    }
-
-    Element.prototype.allChildren = function(includeSelf = false) {
-      let children = Array.from(this.children);
-      children.forEach(child => {
-        children.push(...child.allChildren());
-      });
-      return includeSelf ? [this,
-        ...children]: children;
-    };
-
-
-    Element.prototype.offclick = function (fun,
-      other = {}) {
-      let element = this;
-
-      if (other == true) other = {
-        elementPlus: true
-      }
-      let conditon = other.conditon || 'true',
-      lockEvents = other.lockEvents || false,
-      elementPlus = other.elementPlus,
-      notLock = other.notLock,
-      clearEvent = other.clearEvent;
-      document.addEventListener('mouseup',
-        offClick);
-
-      let elements = [element];
-      if (elementPlus && elementPlus.v) {
-        if (an.isOneElement(elementPlus)) elements = [element,
-          elementPlus];
-        else elements = [element,
-          ...elementPlus];
-      }
-
-      if (lockEvents) {
-        if (!notLock) notLock = elements;
-        element.lockEvents('lock', notLock);
-      }
-
-      function offClick(events) {
-        let event = events || events.changedTouches[0];
-
-        if (elementPlus == true) {
-          removeEvent(event);
-          return;
-        }
-
-        let isNoClick = elements.length;
-        elements.forEach(element => {
-          if (event.target !== element) isNoClick--;
-          if (element.children) {
-            isNoClick += element.allChildren().length;
-            element.allChildren().forEach(child=> {
-              if (event.target !== child) isNoClick--;
-            });
-          }
-        });
-        var cond = typeof conditon == 'function' ? conditon(event): typeof conditon == 'boolean' ? conditon: '';
-        if (isNoClick === 0 && cond !== false || cond === true) removeEvent(event);
-      }
-      function removeEvent(event) {
-        document.removeEventListener('mouseup', offClick);
-        if (lockEvents) element.lockEvents('unlock', notLock);
-        if (typeof fun == 'function') fun(event);
-      }
-    }
-  </script>
-</body>
-</html>
+    
