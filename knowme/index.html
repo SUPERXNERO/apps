@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Know Me</title>
+  <link rel="stylesheet" href="/storage/5A67-DF85/GitHub/assets/css/sx.css" />
+  <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+  <style class="realStyle" id="importStyle">
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cairo:slnt,wght@-11..11,200..1000&display=swap');
+  </style>
+  <style class="realStyle">
+    .fade-effect-left,.fade-effect-right,.fade-effect-top,.fade-effect-bottom {
+      position: relative;
+    }
+:is(.fade-effect-left,.fade-effect-right,.fade-effect-top,.fade-effect-bottom)::after {
+      content: "";
+      position: absolute;
+      pointer-events: none;
+    }
+:is(.fade-effect-top,.fade-effect-bottom)::after {
+      left: 0;
+      width: 100%;
+      max-width: none;
+      height: 20%;
+      max-height: 50px;
+    }
+    .fade-effect-top::after {
+      top: 0;
+      background: linear-gradient(to top, rgba(255, 255, 255, 0), var(--theme-box3));
+    }
+    .fade-effect-bottom::after {
+      top: auto;
+      bottom: 0;
+      background: linear-gradient(to bottom, rgba(255, 255, 255, 0), var(--theme-box3));
+    }
+:is(.fade-effect-left,.fade-effect-right)::after {
+      bottom: 0;
+      height: 100%;
+      max-height: none;
+      width: 20%;
+      max-width: 50px;
+    }
+    .fade-effect-left::after {
+      left: 0;
+      background: linear-gradient(to left, rgba(255, 255, 255, 0), var(--theme-box3));
+    }
+    .fade-effect-right::after {
+      left: auto;
+      right: 0;
+      background: linear-gradient(to right, rgba(255, 255, 255, 0), var(--theme-box3));
+    }
+    #card {
+      position: relative;
+      width: 90%;
+      max-width: 900px;
+      margin: 0 auto;
+      background: var(--theme-box5);
+      border-radius: var(--six-px);
+      overflow: hidden;
+      box-shadow: .2px .2px var(--two-px) .5px var(--theme-black);
+      padding: var(--six-px);
+      transition: .15s;
+    }
+    [data-language="ar"] #card {
+      direction: rtl;
+    }
+    #card .content {
+      display: flex;
+      flex-direction: column;
+    }
+    #card .options {
+      display: flex;
+      justify-content: space-between;
+      align-items: stretch;
+      max-width: 100%;
+    }
+    #cardMenu,#cardLanguage {
+      position: relative;
+    }
+    #openCardMenu {
+      display: grid;
+      place-items: center;
+      width: 100%;
+      height: 100%;
+      border-radius: var(--four-px);
+      background: var(--theme-box2);
+    }
+    #openCardMenu svg {
+      width: 20px;
+      height: 20px;
+      fill: var(--theme-color);
+    }
+    #currentCardLanguage {
+      min-width: 120px;
+      text-align: center;
+      border: 1px solid var(--theme-color2);
+      border-radius: var(--four-px);
+    }
+    #cardMenuOptions, #cardLanguagesList {
+      position: absolute;
+      top: 0;
+      left: 0;
+      background: var(--theme-box2);
+      min-width: 120px;
+      border-radius: var(--two-px);
+      box-shadow: .2px .2px var(--two-px) .5px var(--theme-black);
+      overflow: hidden;
+      opacity: 0;
+      transform: scale(.75);
+      pointer-events: none;
+      transition: .2s;
+    }
+    #cardLanguagesList {
+      right: 0;
+      left: auto;
+      box-shadow: none;
+      border: 1px solid var(--theme-color2);
+      border-radius: var(--four-px);
+      text-align: center;
+    }
+    [data-language="ar"] #cardMenuOptions, #cardLanguagesList {
+      left: auto;
+      right: 0;
+    }
+:is(#cardMenuOptions, #cardLanguagesList).show {
+      opacity: 1;
+      transform: scale(1);
+      pointer-events: auto;
+    }
+    #userId {
+      flex-grow: 1;
+      margin: 0 var(--six-px);
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      border-radius: var(--four-px);
+      text-align: center;
+      border: 1px solid var(--theme-color2);
+      background: var(--theme-box4);
+    }
+    #imageContainer {
+      display: grid;
+      place-items: center;
+      padding: calc(var(--six-px) * 3);
+      margin: var(--six-px);
+      border-block-end: 2px solid var(--theme-color2);
+    }
+    #imageContainer img {
+      display: block !important;
+      max-width: 100%;
+      max-height: 250px;
+      border: var(--two-px) solid var(--theme-black);
+      border-radius: var(--four-px);
+    }
+    #textContainer {
+      display: flex;
+      flex-direction: column;
+      text-align: center;
+      padding: var(--six-px);
+      margin: var(--six-px);
+      flex-grow: 1;
+    }
+    #name,#nickname,#description {
+      margin: var(--six-px);
+      background: var(--theme-box4);
+      border: 2px solid var(--theme-black);
+      border-radius: var(--two-px);
+    }
+:is(#name,#nickname,#description,#socialIcons) .key {
+      background: var(--theme-box2);
+      padding: var(--six-px);
+    }
+:is(#name,#nickname,#description,#socialIcons) .value {
+      padding: var(--six-px);
+      max-height: 80px;
+      overflow: scroll;
+    }
+    #description {
+      margin-bottom: var(--six-px);
+    }
+    #socialIcons {
+      margin: var(--six-px);
+      background: var(--theme-box4);
+      border: 2px solid var(--theme-black);
+      border-radius: var(--two-px);
+      flex-grow: 1;
+    }
+    #socialIcons .value {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    #socialIcons .value .icon {
+      width: 36px;
+      height: 36px;
+      margin: var(--six-px);
+      padding: var(--two-px);
+      border-radius: var(--six-px);
+      transition: .1s;
+    }
+    #socialIcons .value .icon.white {
+      background: var(--theme-white);
+    }
+    #socialIcons .value .icon.black {
+      background: var(--theme-black);
+    }
+    #socialIcons .value .icon[data-key="facebook"] {
+      background: #1877F2;
+    }
+    #socialIcons .value .icon:active {
+      transform: scale(.9);
+    }
+
+    #socialOptions {
+      --top: 65%;
+      --left: 50%;
+      position: absolute;
+      top: var(--top);
+      left: var(--left);
+      background: var(--theme-box2);
+      min-width: 120px;
+      border-radius: var(--two-px);
+      box-shadow: .2px .2px var(--two-px) .5px var(--theme-black);
+      overflow: hidden;
+      opacity: 0;
+      transform: scale(.75);
+      pointer-events: none;
+      transition: .2s;
+    }
+    #socialOptions.show {
+      opacity: 1;
+      transform: scale(1);
+      pointer-events: auto;
+    }
+    #copiedMessage,#cantShareMessage {
+      position: fixed;
+      left: 0;
+      bottom: -100%;
+      width: 100%;
+      padding: var(--twelve-px);
+      text-align: center;
+      background: var(--theme-success);
+      border: 3px solid var(--theme-color2);
+      border-bottom: 0;
+      box-shadow: 0 -2px 2px 2px #0005;
+      border-radius: var(--twelve-px) var(--twelve-px);
+      z-index: 3;
+      transition: .3s;
+    }
+:is(#copiedMessage, #cantShareMessage).show {
+      bottom: 0;
+    }
+    #cantShareMessage {
+      background: var(--theme-error);
+    }
+
+@media (min-width: 600px) {
+      #card .content {
+        flex-direction: row-reverse;
+      }
+      #imageContainer {
+        min-width: 50%;
+        max-width: 50%;
+        border-block-end: none;
+        border-inline-start: 2px solid var(--theme-color2);
+      }
+      #imageContainer img {
+        max-height: 350px;
+      }
+      #textContainer {
+        text-align: start;
+      }
+:is(#name,#nickname,#description,#socialIcons) .value {
+        max-height: none;
+      }
+      #socialIcons .icon {
+        width: 40px;
+        height: 40px;
+        margin: var(--six-px);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="realPage">
+    <div id="mainSidebar">
+      <div id="main">
+        <header>
+          <div id="openSidebar" data-fetch="/storage/5A67-DF85/GitHub/assets/svgs/burger-menu_506800.svg"></div>
+          <h1 id="h1Title" data-textoptions="title"></h1>
+        </header>
+        <div id="container">
+          <div id="card">
+            <div class="options">
+              <div id="cardMenu">
+                <div id="openCardMenu" class="sxButton" data-fetch="/storage/5A67-DF85/GitHub/assets/svgs/three-dots-vertical_345223.svg"></div>
+                <div id="cardMenuOptions">
+                  <div class="option sxButton" data-id="copyLink" data-textoptions="copyLinkKW,true">
+                  </div>
+                  <div class="option sxButton" data-id="shareLink" data-textoptions="shareKW,true">
+                  </div>
+                </div>
+              </div>
+
+              <div id="userId" class="sxButton">
+                superxnero
+              </div>
+
+              <div id="cardLanguage">
+                <div id="currentCardLanguage" class="sxButton"></div>
+                <div id="cardLanguagesList">
+                </div>
+              </div>
+            </div>
+
+            <div class="content">
+              <div id="imageContainer">
+                <img src="" />
+              </div>
+              <div id="textContainer">
+                <div id="name-description">
+                  <div id="name">
+                    <div class="key" data-textoptions="nameKW">
+                    </div>
+                    <div class="value">
+                    </div>
+                  </div>
+                  <div id="nickname">
+                    <div class="key" data-textoptions="nicknameKW">
+                    </div>
+                    <div class="value">
+                    </div>
+                  </div>
+                  <div id="description" class="fade-effect-bottom">
+                    <div class="key" data-textoptions="aboutmeKW">
+                    </div>
+                    <div class="value">
+                    </div>
+                  </div>
+                </div>
+                <div id="socialIcons" class="fade-effect-bottom">
+                  <div class="key" data-textoptions="contactMeKW">
+                  </div>
+                  <div class="value">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div id="copiedMessage" data-textoptions="copied">
+          </div>
+          <div id="cantShareMessage" data-textoptions="cantShare">
+          </div>
+        </div>
+      </div>
+
+      <!-- بدلا من وضع باي بال مع قسم التواصل ، سوف نضيف قسم آخر وهو الدعم ، ويحتوي على باي بال و باتريون و اشتري لي قهوة وغيرها -->
+
+      <div id="sidebar">
+        <div class="item">
+          <div class="itemShow" data-textoptions="language"></div>
+          <div id="availableLanguages" class="itemList">
+          </div>
+        </div>
+        <div class="item">
+          <div class="itemShow" data-textoptions="themeText"></div>
+          <div id="availableThemes" class="itemList">
+          </div>
+        </div>
+        <div class="item">
+          <div class="itemShow" data-textoptions="contact"></div>
+          <div id="phoneNumbersList" class="itemList">
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div id="socialOptions">
+      <div class="option sxButton" data-id="openLink" data-textoptions="openKW">
+      </div>
+      <div class="option sxButton" data-id="copyLink" data-textoptions="copyLinkKW,true">
+      </div>
+      <div class="option sxButton" data-id="shareLink" data-textoptions="shareKW,true">
+      </div>
+    </div>
+
+  </div>
+
+  <script class="realScript" type="module" defer>
+    import {
+      OnChange
+    } from "/storage/5A67-DF85/GitHub/assets/libs/OnChange.js";
+    import {
+      LanguageManager
+    } from "/storage/5A67-DF85/GitHub/assets/libs/LanguageManager.js";
+    import {
+      ThemeManager
+    } from "/storage/5A67-DF85/GitHub/assets/libs/ThemeManager.js";
+    import {
+      FetchToElement
+    } from "/storage/5A67-DF85/GitHub/assets/libs/FetchToElement.js";
+    import * as an from "/storage/5A67-DF85/GitHub/assets/libs/another.js";
+    const q = (e)=> document.querySelector(e);
+    const qA = (e)=> document.querySelectorAll(e);
+    const root = document.documentElement;
+    const head = document.head;
+    const body = document.body;
+    const realPage = q("#realPage");
+
+    // element variables
+    const openSidebar = q("#openSidebar");
+    const container = q("#container");
+    const sidebar = q("#sidebar");
+    const availableLanguages = q("#availableLanguages");
+    const availableThemes = q("#availableThemes");
+    const phoneNumbersList = q("#phoneNumbersList");
+    const openCardMenu = q("#openCardMenu");
+    const cardMenuOptions = q("#cardMenuOptions");
+    const currentCardLanguage = q("#currentCardLanguage");
+    const cardLanguagesList = q("#cardLanguagesList");
+    const socialIcons = q("#socialIcons .value");
+    const userId = q("#userId");
+    const copiedMessage = q("#copiedMessage");
+    const cantShareMessage = q("#cantShareMessage");
+
+    const languageManager = new LanguageManager({
+      saveAll: true,
+      baseUrl: "/storage/5A67-DF85/GitHub/languages-content/knowme/",
+      defaultLanguage: localStorage.getItem("language"),
+      changeEvents: {
+        "language": onLanguageChange
+      }
+    });
+    const themeManager = new ThemeManager({
+      saveAll: true,
+      baseUrl: "/storage/5A67-DF85/GitHub/themes-content/knowme/",
+      defaultTheme: localStorage.getItem("theme"),
+      changeEvents: {
+        "theme": onThemeChange
+      }
+    });
+    const fetchToElement = new FetchToElement(true);
+
+    let mainData = {
+      availableLanguages: new OnChange(onAvailableLanguagesChange),
+      availableThemes: new OnChange(onAvailableThemesChange),
+      contacts: new OnChange(onContactsChange),
+      cardData: new OnChange(onCardDataChange),
+      userId: new OnChange(onUserIdChange),
+      currentCardLanguage: new OnChange(onCurrentCardLanguageChange),
+      cardLanguages: new OnChange(onCardLanguagesChange)
+    };
+    setDatum("availableLanguages", ["ar", "en"]);
+    setDatum("availableThemes", ["light", "dark"]);
+
+    const contacts = [{
+      "name": "developer",
+      "knowme": "superxnero"
+    }];
+    setDatum("contacts", contacts);
+
+    let timeoutCopiedUserId;
+    let timeoutCantShareUserId;
+
+    userId.addEventListener("click", async function() {
+      clearTimeout(timeoutCopiedUserId);
+      const text = getDatum("userId");
+      await navigator.clipboard.writeText(text);
+      copiedMessage.classList.add("show");
+      timeoutCopiedUserId = setTimeout(()=> {
+        copiedMessage.classList.remove("show");
+      }, 1500);
+    });
+
+    openCardMenu.addEventListener("click", function() {
+      cardMenuOptions.classList.add("show");
+      cardMenuOptions.offclick(()=> {
+        cardMenuOptions.classList.remove("show");
+      });
+    });
+
+    cardMenuOptions.querySelectorAll(".option").forEach((option) => {
+      option.addEventListener("click", async function () {
+        const id = option.dataset.id;
+        const url = `/storage/5A67-DF85/GitHub/apps/knowme/index.html?user_id=${getDatum("userId")}`;
+        if (id === "copyLink") {
+          clearTimeout(timeoutCopiedUserId);
+          await navigator.clipboard.writeText(url);
+          copiedMessage.classList.add("show");
+          timeoutCopiedUserId = setTimeout(()=> {
+            copiedMessage.classList.remove("show");
+          }, 1500);
+        } else if (id === "shareLink") {
+          clearTimeout(timeoutCantShareUserId);
+          const shareData = {
+            title: document.title,
+            url: url,
+          };
+          if (navigator.share && navigator.canShare && navigator.canShare(shareData)) {
+            navigator.share(shareData);
+          } else {
+            cantShareMessage.classList.add("show");
+            timeoutCantShareUserId = setTimeout(()=> {
+              cantShareMessage.classList.remove("show");
+            }, 3000);
+          }
+        }
+        setTimeout(() => cardMenuOptions.classList.remove("show"), 500);
+      });
+    });
+
+    currentCardLanguage.addEventListener("click", function() {
+      cardLanguagesList.classList.add("show");
+      cardLanguagesList.offclick(()=> {
+        cardLanguagesList.classList.remove("show");
+      });
+    })
+
+    openSidebar.addEventListener("click", function() {
+      sidebar.classList.add("show");
+      sidebar.offclick(()=> {
+        sidebar.classList.remove("show");
+      });
+    });
+
+    sidebar.querySelectorAll("& > .item").forEach((item)=> {
+      const itemShow = item.querySelector("& > .itemShow");
+      const itemList = item.querySelector("& > .itemList");
+      itemShow.addEventListener("click",
+        function() {
+          itemList.classList.add("show");
+          itemList.offclick(()=> {
+            itemList.classList.remove("show");
+          });
+        })
+    });
+
+    function getUserIdFromQuery() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const userId = urlParams.get('user_id');
+      return userId;
+    }
+    if (getUserIdFromQuery()) {
+      setDatum("userId", getUserIdFromQuery());
+    } else {
+      setDatum("userId", "superxnero");
+    }
+
+    function onCardLanguagesChange(cardLanguages) {
+      cardLanguagesList.innerHTML = "";
+      cardLanguages.forEach((cardLanguage)=> {
+        const htmlElement = `<div class="cardLanguageItem sxButton" data-id="${cardLanguage}">${cardLanguage}</div>`;
+        cardLanguagesList.innerHTML += htmlElement;
+      });
+      cardLanguagesList.querySelectorAll(".cardLanguageItem").forEach((cardLanguageItem)=> {
+        cardLanguageItem.addEventListener("click", function() {
+          setDatum("currentCardLanguage", cardLanguageItem.dataset.id);
+          setTimeout(() => cardLanguagesList.classList.remove("show"), 500);
+        })
+      })
+    }
+
+    function onCurrentCardLanguageChange(cardLanguage) {
+      currentCardLanguage.innerHTML = cardLanguage;
+      const cardData = getDatum("cardData");
+      const texts = cardData.texts[cardLanguage];
+      const name = q("#name .value");
+      const nickname = q("#nickname .value");
+      const description = q("#description .value");
+      name.textContent = texts.name;
+      nickname.textContent = texts.nickname;
+      description.innerText = texts.aboutme;
+    }
+
+    async function onUserIdChange(newUserId) {
+      userId.innerText = newUserId;
+
+      const response = await fetch(`/storage/5A67-DF85/GitHub/data/knowme/users/${newUserId}.json`);
+      const json = await response.json();
+      setDatum("cardData", json);
+    }
+
+    async function onCardDataChange(cardData) {
+      const cardLanguage = Object.keys(cardData.texts).find((language)=>"arabic" == navigator.language.split("-")[0]) || Object.keys(cardData.texts)[0];
+      if (!cardLanguage) {
+        // there is no data here !!
+        return;
+      }
+      setDatum("cardLanguages", Object.keys(cardData.texts));
+      setDatum("currentCardLanguage", cardLanguage);
+
+      const img = q("#imageContainer img");
+      img.src = cardData.image;
+      img.alt = getDatum("userId");
+
+      const iconsResponse = await fetch(`/storage/5A67-DF85/GitHub/data/knowme/social_media_icons.json`);
+      const iconsJson = await iconsResponse.json();
+      const linksResponse = await fetch(`/storage/5A67-DF85/GitHub/data/knowme/social_media_links.json`);
+      const linksJson = await linksResponse.json();
+      socialIcons.innerHTML = "";
+      Object.keys(cardData.socialMedia).forEach((key, i)=> {
+        const htmlElement = `<div class="icon" data-id="${i}" data-key="${key}" data-url="${linksJson[key].replace("${}", getDatum("userId"))}" data-fetch="/storage/5A67-DF85/GitHub/${iconsJson[key]}"></div>`;
+        socialIcons.innerHTML += htmlElement;
+      });
+      fetchToElement.reloadFetching(Object.values(socialIcons.querySelectorAll(".icon")));
+    }
+
+    function onContactsChange(contacts) {
+      phoneNumbersList.innerHTML = "";
+      contacts.forEach((contact)=> {
+        phoneNumbersList.innerHTML += `
+        <div class="phoneNumber" data-knowmeid="${contact.knowme}" data-textoptions="${contact.name}"></div>`;
+      });
+      if (Object.keys(languageManager.languagesContent).length > 1) {
+        languageManager.updateElements();
+      }
+      Object.values(phoneNumbersList.querySelectorAll("& .phoneNumber")).forEach((item)=> {
+        item.addEventListener("click", function() {
+          const url = `/storage/5A67-DF85/GitHub/apps/knowme/index.html?user_id=${item.dataset.knowmeid}`;
+          window.location.href = url;
+        });
+      });
+    }
+
+    function onLanguageChange(language) {
+      localStorage.setItem("language", language);
+    }
+
+    function onThemeChange(theme) {
+      localStorage.setItem("theme", theme);
+    }
+
+    function onAvailableLanguagesChange(languages) {
+      availableLanguages.innerHTML = "";
+      languages.forEach((language)=> {
+        availableLanguages.innerHTML += `
+        <div class="languageItem" data-id="${language}" data-textoptions="${language}"></div>`;
+      });
+      if (Object.keys(languageManager.languagesContent).length > 1) {
+        languageManager.updateElements();
+      }
+      Object.values(availableLanguages.querySelectorAll("& .languageItem")).forEach((item)=> {
+        item.addEventListener("click", function() {
+          const id = item.dataset.id;
+          languageManager.setLanguage(id);
+        });
+      });
+    }
+
+    function onAvailableThemesChange(themes) {
+      availableThemes.innerHTML = "";
+      themes.forEach((theme)=> {
+        availableThemes.innerHTML += `
+        <div class="themeItem" data-id="${theme}" data-textoptions="${theme}"></div>`;
+      });
+      if (Object.keys(languageManager.languagesContent).length > 1) {
+        languageManager.updateElements();
+      }
+      Object.values(availableThemes.querySelectorAll("& .themeItem")).forEach((item)=> {
+        item.addEventListener("click", function() {
+          const id = item.dataset.id;
+          themeManager.setTheme(id);
+        });
+      });
+    }
+
+    function getDatum(datum) {
+      return mainData[datum].value;
+    }
+
+    function setDatum(datum, value) {
+      mainData[datum].change(value);
+    }
+
+    Element.prototype.allChildren = function(includeSelf = false) {
+      let children = Array.from(this.children);
+      children.forEach(child => {
+        children.push(...child.allChildren());
+      });
+      return includeSelf ? [this,
+        ...children]: children;
+    };
+
+
+    Element.prototype.offclick = function (fun,
+      other = {}) {
+      let element = this;
+
+      if (other == true) other = {
+        elementPlus: true
+      }
+      let conditon = other.conditon || 'true',
+      lockEvents = other.lockEvents || false,
+      elementPlus = other.elementPlus,
+      notLock = other.notLock,
+      clearEvent = other.clearEvent;
+      document.addEventListener('mouseup',
+        offClick);
+
+      let elements = [element];
+      if (elementPlus && elementPlus.v) {
+        if (an.isOneElement(elementPlus)) elements = [element,
+          elementPlus];
+        else elements = [element,
+          ...elementPlus];
+      }
+
+      if (lockEvents) {
+        if (!notLock) notLock = elements;
+        element.lockEvents('lock', notLock);
+      }
+
+      function offClick(events) {
+        let event = events || events.changedTouches[0];
+
+        if (elementPlus == true) {
+          removeEvent(event);
+          return;
+        }
+
+        let isNoClick = elements.length;
+        elements.forEach(element => {
+          if (event.target !== element) isNoClick--;
+          if (element.children) {
+            isNoClick += element.allChildren().length;
+            element.allChildren().forEach(child=> {
+              if (event.target !== child) isNoClick--;
+            });
+          }
+        });
+        var cond = typeof conditon == 'function' ? conditon(event): typeof conditon == 'boolean' ? conditon: '';
+        if (isNoClick === 0 && cond !== false || cond === true) removeEvent(event);
+      }
+      function removeEvent(event) {
+        document.removeEventListener('mouseup', offClick);
+        if (lockEvents) element.lockEvents('unlock', notLock);
+        if (typeof fun == 'function') fun(event);
+      }
+    }
+  </script>
+</body>
+</html>
