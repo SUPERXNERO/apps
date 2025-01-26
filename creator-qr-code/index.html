@@ -4,7 +4,7 @@
   <meta http-equiv="content-type" content="text/html; charset=utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Creator QR Code</title>
-  <link rel="stylesheet" href="/storage/5A67-DF85/GitHub/assets/css/sx.css" />
+  <link rel="stylesheet" href="https://superxnero.github.io/assets/css/sx.css" />
   <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
   <style class="realStyle" id="importStyle">
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
@@ -81,7 +81,7 @@
     <div id="mainSidebar">
       <div id="main">
         <header>
-          <div id="openSidebar" data-fetch="/storage/5A67-DF85/GitHub/assets/svgs/burger-menu_506800.svg"></div>
+          <div id="openSidebar" data-fetch="https://superxnero.github.io/assets/svgs/burger-menu_506800.svg"></div>
           <h1 id="h1Title" data-textoptions="title"></h1>
         </header>
         <div id="container">
@@ -120,17 +120,17 @@
   <script class="realScript" type="module" defer>
     import {
       OnChange
-    } from "/storage/5A67-DF85/GitHub/assets/libs/OnChange.js";
+    } from "https://superxnero.github.io/assets/libs/OnChange.js";
     import {
       LanguageManager
-    } from "/storage/5A67-DF85/GitHub/assets/libs/LanguageManager.js";
+    } from "https://superxnero.github.io/assets/libs/LanguageManager.js";
     import {
       ThemeManager
-    } from "/storage/5A67-DF85/GitHub/assets/libs/ThemeManager.js";
+    } from "https://superxnero.github.io/assets/libs/ThemeManager.js";
     import {
       FetchToElement
-    } from "/storage/5A67-DF85/GitHub/assets/libs/FetchToElement.js";
-    import * as an from "/storage/5A67-DF85/GitHub/assets/libs/another.js";
+    } from "https://superxnero.github.io/assets/libs/FetchToElement.js";
+    import * as an from "https://superxnero.github.io/assets/libs/another.js";
     const q = (e)=> document.querySelector(e);
     const qA = (e)=> document.querySelectorAll(e);
     const root = document.documentElement;
@@ -156,7 +156,7 @@
 
       const languageManager = new LanguageManager({
         saveAll: true,
-        baseUrl: "/storage/5A67-DF85/GitHub/languages-content/creator-qr-code/",
+        baseUrl: "https://superxnero.github.io/languages-content/creator-qr-code/",
         defaultLanguage: localStorage.getItem("language"),
         changeEvents: {
           "language": onLanguageChange
@@ -164,7 +164,7 @@
       });
       const themeManager = new ThemeManager({
         saveAll: true,
-        baseUrl: "/storage/5A67-DF85/GitHub/themes-content/public/",
+        baseUrl: "https://superxnero.github.io/themes-content/public/",
         defaultTheme: localStorage.getItem("theme"),
         changeEvents: {
           "theme": onThemeChange
