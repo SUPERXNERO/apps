@@ -641,7 +641,7 @@
       setDatum("currentCardLanguage", cardLanguage);
 
       const img = q("#imageContainer img");
-      img.src = cardData.image;
+      img.src = "https://superxnero.github.io/" + cardData.image;
       img.alt = getDatum("userId");
 
       const iconsResponse = await fetch(
