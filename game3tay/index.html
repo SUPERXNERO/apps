@@ -1,27 +1,17 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <!-- Google tag (gtag.js) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-VBHMN6YSS1"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag() {
-      dataLayer.push(arguments);
-    }
-    gtag('js', new Date());
-    gtag('config', 'G-VBHMN6YSS1');
-  </script>
   <meta http-equiv="content-type" content="text/html; charset=utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>جامعتي | My university</title>
-  <link rel="stylesheet" href="https://superxnero.github.io/assets/css/sx.css" />
+  <link rel="stylesheet" href="/storage/5A67-DF85/GitHub/assets/css/sx.css" />
   <style class="realStyle" id="importStyle">
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Cairo:slnt,wght@-11..11,200..1000&display=swap');
   </style>
   <style class="realStyle">
     .containerItem,.moreItem {
-      margin: 10px 0;
+      margin: 10px;
       padding: 10px;
       text-align: center;
       background: var(--theme-box2);
@@ -57,7 +47,7 @@
   <div id="mainSidebar">
     <div id="main">
       <header>
-        <div id="openSidebar" data-fetch="https://superxnero.github.io/assets/svgs/burger-menu_506800.svg"></div>
+        <div id="openSidebar" data-fetch="/storage/5A67-DF85/GitHub/assets/svgs/burger-menu_506800.svg"></div>
         <h1 id="h1Title" data-textoptions="title"></h1>
       </header>
       <div id="container">
@@ -86,17 +76,17 @@
   <script class="realScript" type="module" defer>
     import {
       OnChange
-    } from "https://superxnero.github.io/assets/libs/OnChange.js";
+    } from "/storage/5A67-DF85/GitHub/assets/libs/OnChange.js";
     import {
       LanguageManager
-    } from "https://superxnero.github.io/assets/libs/LanguageManager.js";
+    } from "/storage/5A67-DF85/GitHub/assets/libs/LanguageManager.js";
     import {
       ThemeManager
-    } from "https://superxnero.github.io/assets/libs/ThemeManager.js";
+    } from "/storage/5A67-DF85/GitHub/assets/libs/ThemeManager.js";
     import {
       FetchToElement
-    } from "https://superxnero.github.io/assets/libs/FetchToElement.js";
-    import * as an from "https://superxnero.github.io/assets/libs/another.js";
+    } from "/storage/5A67-DF85/GitHub/assets/libs/FetchToElement.js";
+    import * as an from "/storage/5A67-DF85/GitHub/assets/libs/another.js";
     const q = (e)=> document.querySelector(e);
     const qA = (e)=> document.querySelectorAll(e);
     const root = document.documentElement;
@@ -116,7 +106,7 @@
 
       const languageManager = new LanguageManager({
         saveAll: true,
-        baseUrl: "https://superxnero.github.io/languages-content/game3tay/",
+        baseUrl: "/storage/5A67-DF85/GitHub/languages-content/game3tay/",
         defaultLanguage: localStorage.getItem("language"),
         changeEvents: {
           "language": onLanguageChange
@@ -124,7 +114,7 @@
       });
       const themeManager = new ThemeManager({
         saveAll: true,
-        baseUrl: "https://superxnero.github.io/themes-content/public/",
+        baseUrl: "/storage/5A67-DF85/GitHub/themes-content/public/",
         defaultTheme: localStorage.getItem("theme"),
         changeEvents: {
           "theme": onThemeChange
