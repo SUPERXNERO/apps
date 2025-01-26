@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SX Search</title>
+  <link rel="stylesheet" href="/storage/5A67-DF85/GitHub/assets/css/sx.css" />
+  <style class="realStyle" id="importStyle">
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cairo:slnt,wght@-11..11,200..1000&display=swap');
+  </style>
+  <style class="realStyle">
+  </style>
+</head>
+<body>
+  <div id="realPage">
+    <div id="main">
+      <header>
+        <h1 id="h1Title">SX Search</h1>
+      </header>
+      <div id="container">
+      </div>
+    </div>
+  </div>
+
+  <script class="realScript" type="module" defer>
+    import {
+      OnChange
+    } from "/storage/5A67-DF85/GitHub/assets/libs/OnChange.js";
+    import {
+      LanguageManager
+    } from "/storage/5A67-DF85/GitHub/assets/libs/LanguageManager.js";
+    import {
+      ThemeManager
+    } from "/storage/5A67-DF85/GitHub/assets/libs/ThemeManager.js";
+    import {
+      FetchToElement
+    } from "/storage/5A67-DF85/GitHub/assets/libs/FetchToElement.js";
+    import * as an from "/storage/5A67-DF85/GitHub/assets/libs/another.js";
+    const q = (e)=> document.querySelector(e);
+    const qA = (e)=> document.querySelectorAll(e);
+    const root = document.documentElement;
+    const head = document.head;
+    const body = document.body;
+    const realPage = q("#realPage");
+
+    // element variables
+    const openSidebar = q("#openSidebar");
+    const container = q("#container");
+    
+    const themeManager = new ThemeManager({
+      saveAll: true,
+      baseUrl: "/storage/5A67-DF85/GitHub/themes-content/STAKMA-project/",
+      defaultTheme: "dark",
+      changeEvents: {
+        "theme": onThemeChange
+      }
+    });
+    const fetchToElement = new FetchToElement(true);
+
+    let mainData = {
+      
+    };
+
+    function onThemeChange(theme) {
+      localStorage.setItem("theme", theme);
+    }
+
+    function getDatum(datum) {
+      return mainData[datum].value;
+    }
+
+    function setDatum(datum, value) {
+      mainData[datum].change(value);
+    }
+    
+    Element.prototype.allChildren = function(includeSelf = false) {
+      let children = Array.from(this.children);
+      children.forEach(child => {
+        children.push(...child.allChildren());
+      });
+      return includeSelf ? [this,
+        ...children]: children;
+    };
+
+
+    Element.prototype.offclick = function (fun,
+      other = {}) {
+      let element = this;
+
+      if (other == true) other = {
+        elementPlus: true
+      }
+      let conditon = other.conditon || 'true',
+      lockEvents = other.lockEvents || false,
+      elementPlus = other.elementPlus,
+      notLock = other.notLock,
+      clearEvent = other.clearEvent;
+      document.addEventListener('mouseup',
+        offClick);
+
+      let elements = [element];
+      if (elementPlus && elementPlus.v) {
+        if (an.isOneElement(elementPlus)) elements = [element,
+          elementPlus];
+        else elements = [element,
+          ...elementPlus];
+      }
+
+      if (lockEvents) {
+        if (!notLock) notLock = elements;
+        element.lockEvents('lock', notLock);
+      }
+
+      function offClick(events) {
+        let event = events || events.changedTouches[0];
+
+        if (elementPlus == true) {
+          removeEvent(event);
+          return;
+        }
+
+        let isNoClick = elements.length;
+        elements.forEach(element => {
+          if (event.target !== element) isNoClick--;
+          if (element.children) {
+            isNoClick += element.allChildren().length;
+            element.allChildren().forEach(child=> {
+              if (event.target !== child) isNoClick--;
+            });
+          }
+        });
+        var cond = typeof conditon == 'function' ? conditon(event): typeof conditon == 'boolean' ? conditon: '';
+        if (isNoClick === 0 && cond !== false || cond === true) removeEvent(event);
+      }
+      function removeEvent(event) {
+        document.removeEventListener('mouseup', offClick);
+        if (lockEvents) element.lockEvents('unlock', notLock);
+        if (typeof fun == 'function') fun(event);
+      }
+    }
+  </script>
+</body>
+</html>
