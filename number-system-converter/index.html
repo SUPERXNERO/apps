@@ -12,7 +12,7 @@
     gtag('config', 'G-VBHMN6YSS1');
   </script>
   <!--<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5475049640797404"
-       crossorigin="anonymous"></script>-->
+         crossorigin="anonymous"></script>-->
   <meta http-equiv="content-type" content="text/html; charset=utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>محول نظام الاعداد | Number System Converter</title>
@@ -268,7 +268,7 @@
 
       const contacts = [{
         "name": "developer",
-        "phone": "967718177515"
+        "knowme": "superxnero"
       }];
       setDatum("contacts", contacts);
 
@@ -409,16 +409,16 @@
         phoneNumbersList.innerHTML = "";
         contacts.forEach((contact)=> {
           phoneNumbersList.innerHTML += `
-          <div class="phoneNumber" data-phone="${contact.phone}" data-textoptions="${contact.name}"></div>`;
+          <div class="phoneNumber" data-knowmeid="${contact.knowme}" data-textoptions="${contact.name}"></div>`;
         });
         if (Object.keys(languageManager.languagesContent).length > 1) {
           languageManager.updateElements();
         }
         Object.values(phoneNumbersList.querySelectorAll("& .phoneNumber")).forEach((item)=> {
-          item.onclick = function() {
-            const baseUrl = "https://wa.me/";
-            window.location.href = baseUrl + item.dataset.phone;
-        }
+          item.addEventListener("click", function() {
+            const url = `/storage/5A67-DF85/GitHub/apps/knowme/index.html?user_id=${item.dataset.knowmeid}`;
+            window.location.href = url;
+        });
         });
     }
 
