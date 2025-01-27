@@ -263,7 +263,8 @@
       function downloadQRCode() {
         const date = new Date();
         const formattedDate = date.toISOString().split('T')[0];
-        const formattedTime = date.toTimeString().split(' ')[0].replace(/:/g, '-');
+        const formattedTime = date.toTimeString().split(' ')[0].replace(/:/g,
+          '-');
 
         const link = document.createElement('a');
         link.href = qrcodeCanvas.toDataURL('image/png');
