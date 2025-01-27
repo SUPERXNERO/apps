@@ -301,16 +301,16 @@
         phoneNumbersList.innerHTML = "";
         contacts.forEach((contact)=> {
           phoneNumbersList.innerHTML += `
-          <div class="phoneNumber" data-phone="${contact.phone}" data-textoptions="${contact.name}"></div>`;
+          <div class="phoneNumber" data-knowmeid="${contact.knowme}" data-textoptions="${contact.name}"></div>`;
         });
         if (Object.keys(languageManager.languagesContent).length > 1) {
           languageManager.updateElements();
         }
         Object.values(phoneNumbersList.querySelectorAll("& .phoneNumber")).forEach((item)=> {
-          item.onclick = function() {
-            const baseUrl = "https://wa.me/";
-            window.location.href = baseUrl + item.dataset.phone;
-          }
+          item.addEventListener("click", function() {
+            const url = `/storage/5A67-DF85/GitHub/apps/knowme/index.html?user_id=${item.dataset.knowmeid}`;
+            window.location.href = url;
+          });
         });
       }
 
