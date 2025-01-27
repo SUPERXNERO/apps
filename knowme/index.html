@@ -403,6 +403,15 @@
         height: 40px;
         margin: var(--six-px);
       }
+      :is(#description, #socialIcons)::after {
+        display: none;
+      }
+    }
+
+@media (max-width: 599px) {
+:is(#description, #socialIcons) .value {
+        padding-bottom: var(--forty-px);
+      }
     }
 
     .ds-none {
