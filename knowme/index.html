@@ -14,51 +14,15 @@
   <meta http-equiv="content-type" content="text/html; charset=utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Know Me</title>
+  <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
   <link rel="stylesheet" href="https://superxnero.github.io/assets/css/sx.css" />
   <style class="realStyle" id="importStyle">
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Cairo:slnt,wght@-11..11,200..1000&display=swap');
   </style>
   <style class="realStyle">
-    .fade-effect-left,.fade-effect-right,.fade-effect-top,.fade-effect-bottom {
-      position: relative;
-    }
-:is(.fade-effect-left,.fade-effect-right,.fade-effect-top,.fade-effect-bottom)::after {
-      content: "";
-      position: absolute;
-      pointer-events: none;
-    }
-:is(.fade-effect-top,.fade-effect-bottom)::after {
-      left: 0;
-      width: 100%;
-      max-width: none;
-      height: 20%;
-      max-height: 50px;
-    }
-    .fade-effect-top::after {
-      top: 0;
-      background: linear-gradient(to top, rgba(255, 255, 255, 0), var(--theme-box3));
-    }
-    .fade-effect-bottom::after {
-      top: auto;
-      bottom: 0;
-      background: linear-gradient(to bottom, rgba(255, 255, 255, 0), var(--theme-box3));
-    }
-:is(.fade-effect-left,.fade-effect-right)::after {
-      bottom: 0;
-      height: 100%;
-      max-height: none;
-      width: 20%;
-      max-width: 50px;
-    }
-    .fade-effect-left::after {
-      left: 0;
-      background: linear-gradient(to left, rgba(255, 255, 255, 0), var(--theme-box3));
-    }
-    .fade-effect-right::after {
-      left: auto;
-      right: 0;
-      background: linear-gradient(to right, rgba(255, 255, 255, 0), var(--theme-box3));
+    .sxButton {
+      text-wrap: auto;
     }
     #container {
       display: flex;
@@ -67,7 +31,7 @@
     }
     #card {
       position: relative;
-      width: 90%;
+      width: 100%;
       max-width: 900px;
       margin: 0 auto;
       background: var(--theme-box5);
@@ -107,6 +71,7 @@
       fill: var(--theme-color);
     }
     #currentCardLanguage {
+      height: 100%;
       min-width: 120px;
       text-align: center;
       border: 1px solid var(--theme-color2);
@@ -125,6 +90,9 @@
       transform: scale(.75);
       pointer-events: none;
       transition: .2s;
+    }
+    #cardMenuOptions .option.sxButton {
+      text-wrap: nowrap;
     }
     #cardLanguagesList {
       right: 0;
@@ -226,15 +194,146 @@
     #socialIcons .value .icon:active {
       transform: scale(.9);
     }
+    #moreContainer {
+      width: 100%;
+      max-width: 900px;
+      margin: var(--twenty-px) auto;
+      background: var(--theme-box8);
+      padding: var(--eight-px);
+      border-radius: var(--twelve-px);
+      box-shadow: 0 0 5px 3px var(--theme-box7);
+    }
+    .moreItem {
+      background: var(--theme-box9);
+      margin: var(--ten-px) 0;
+      border-radius: var(--eight-px);
+      overflow: hidden;
+      box-shadow: 0 0 1.5px 0px var(--theme-color2);
+    }
+    .moreItem .content {
+      display: flex;
+      padding: var(--six-px) var(--six-px) var(--ten-px) var(--six-px);
+      border: 2px solid transparent;
+      background: transparent;
+      border-start-start-radius: var(--eight-px);
+      border-start-end-radius: var(--eight-px);
+
+      transition: .2s;
+    }
+    .moreItem .content .texts {
+      flex-grow: 1;
+    }
+    .moreItem .content .image {
+      display: grid;
+      place-items: center;
+      max-width: 30%;
+      border-radius: var(--six-px);
+    }
+    .moreItem .content .image img {
+      max-width: 100%;
+      max-height: 100%;
+    }
+    .moreItem .content:active {
+      filter: brightness(1.5);
+      border-color: var(--theme-color2);
+    }
+    .moreItem .content p {
+      margin-top: var(--ten-px);
+      color: var(--theme-color2);
+    }
+    .moreItemOptions {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      grid-template-rows: 1fr;
+      gap: 2px;
+      background: var(--theme-box6);
+      border-top: 2px solid var(--theme-box6);
+    }
+    [data-language="ar"] .moreItemOptions {
+      direction: rtl;
+    }
+    .moreItemOptions .option {
+      min-width: 100px;
+      background: var(--theme-box10);
+    }
+    .moreItemOptions .option:first-child {
+      border-end-start-radius: var(--eight-px);
+    }
+    .moreItemOptions .option:last-child {
+      border-end-end-radius: var(--eight-px)
+    }
+    .moreItemOptions .option.sxButton:active {
+      transform: scale(1);
+    }
     #makeNewCard {
       margin: var(--twenty-px) auto;
       border-radius: var(--ten-px);
       text-align: center;
       border: 1px solid var(--theme-color2);
     }
+    #noShownData,#noDataForThisId {
+      margin-top: var(--twenty-px);
+      margin-inline: var(--eight-px);
+      text-align: center;
+      padding: var(--ten-px);
+      border-radius: var(--six-px);
+      background: var(--theme-box6);
+      box-shadow: 0 0 2px .7px var(--theme-box7);
+      color: var(--theme-color3);
+    }
+    .goToDevCard {
+      margin-top: var(--twelve-px);
+    }
+
+    #qrCodeContainer {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(.75);
+      background: var(--theme-box2);
+      border-radius: var(--six-px);
+      box-shadow: 0 0 5px 2px var(--theme-black);
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: .2s;
+    }
+    #qrCodeContainer.show {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1);
+      pointer-events: auto;
+    }
+    #qrcodeCanvas {
+      width: 250px;
+      height: 250px;
+      max-width: 250px;
+      max-height: 250px;
+      margin: var(--twelve-px);
+      border-radius: var(--eight-px);
+    }
+    #downloadQRCode {
+      padding: var(--six-px);
+      border-radius: var(--four-px);
+      background: var(--theme-box4);
+      border: 1px solid var(--theme-color2);
+    }
+    #madeByCreatorQR {
+      margin-top: var(--twenty-px);
+      color: var(--theme-success);
+      opacity: .65;
+      border-radius: var(--four-px) var(--four-px) 0 0;
+      transition: .1s;
+    }
 
     #socialOptions {
+      --top: 0;
+      --left: 0;
       position: absolute;
+      top: var(--top);
+      left: var(--left);
       background: var(--theme-box2);
       min-width: 120px;
       border-radius: var(--two-px);
@@ -272,14 +371,12 @@
       background: var(--theme-error);
     }
     #makeNewCard,#contactDev {
-      background: #091230;
-      box-shadow: 0 0 5px 3px #132C4D;
-      color: #8CA2A8;
+      background: var(--theme-box6);
+      box-shadow: 0 0 5px 3px var(--theme-box7);
+      color: var(--theme-color3);
     }
-    [data-theme="light"] :is(#makeNewCard, #contactDev) {
-      background: #3D91BA;
-      box-shadow: 0 0 5px 3px #CFD9E3;
-      color: #14161C;
+    #contactDevBtn {
+      margin-top: var(--ten-px);
     }
 
 @media (min-width: 600px) {
@@ -307,6 +404,10 @@
         margin: var(--six-px);
       }
     }
+
+    .ds-none {
+      display: none !important;
+    }
   </style>
 </head>
 <body>
@@ -318,60 +419,73 @@
           <h1 id="h1Title" data-textoptions="title"></h1>
         </header>
         <div id="container">
-          <div id="card">
-            <div class="options">
-              <div id="cardMenu">
-                <div id="openCardMenu" class="sxButton" data-fetch="https://superxnero.github.io/assets/svgs/three-dots-vertical_345223.svg"></div>
-                <div id="cardMenuOptions">
-                  <div class="option sxButton" data-id="copyLink" data-textoptions="copyLinkKW,true">
+          <div>
+            <div id="card">
+              <div class="options ds-none">
+                <div id="cardMenu">
+                  <div id="openCardMenu" class="sxButton" data-fetch="https://superxnero.github.io/assets/svgs/three-dots-vertical_345223.svg"></div>
+                  <div id="cardMenuOptions">
+                    <div class="option sxButton" data-id="copyLink" data-textoptions="copyLinkKW,true"></div>
+                    <div class="option sxButton" data-id="shareLink" data-textoptions="shareKW,true"></div>
+                    <div class="option sxButton" data-id="createQRCode" data-textoptions="createQRCode,true"></div>
                   </div>
-                  <div class="option sxButton" data-id="shareLink" data-textoptions="shareKW,true">
+                </div>
+
+                <div id="userId" class="sxButton ds-none">
+                </div>
+
+                <div id="cardLanguage">
+                  <div id="currentCardLanguage" class="sxButton"></div>
+                  <div id="cardLanguagesList">
                   </div>
                 </div>
               </div>
 
-              <div id="userId" class="sxButton">
+              <div id="noShownData" class="ds-none">
+                <div data-textoptions="noShownData"></div>
+                <div class="goToDevCard sxButton" data-textoptions="goToDevCard,true"></div>
+              </div>
+              <div id="noDataForThisId" class="ds-none">
+                <div data-textoptions="noDataForThisId"></div>
+                <div class="goToDevCard sxButton" data-textoptions="goToDevCard,true"></div>
               </div>
 
-              <div id="cardLanguage">
-                <div id="currentCardLanguage" class="sxButton"></div>
-                <div id="cardLanguagesList">
+              <div class="content">
+                <div id="imageContainer" class="ds-none">
+                  <img src="" />
+                </div>
+                <div id="textContainer">
+                  <div id="name-description">
+                    <div id="name" class="ds-none">
+                      <div class="key" data-textoptions="nameKW">
+                      </div>
+                      <div class="value" data-cardtext>
+                      </div>
+                    </div>
+                    <div id="nickname" class="ds-none">
+                      <div class="key" data-textoptions="nicknameKW">
+                      </div>
+                      <div class="value" data-cardtext>
+                      </div>
+                    </div>
+                    <div id="description" class="fade-effect-bottom ds-none">
+                      <div class="key" data-textoptions="aboutmeKW">
+                      </div>
+                      <div class="value" data-cardtext>
+                      </div>
+                    </div>
+                  </div>
+                  <div id="socialIcons" class="fade-effect-bottom ds-none">
+                    <div class="key" data-textoptions="contactMeKW">
+                    </div>
+                    <div class="value">
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
 
-            <div class="content">
-              <div id="imageContainer">
-                <img src="" />
-              </div>
-              <div id="textContainer">
-                <div id="name-description">
-                  <div id="name">
-                    <div class="key" data-textoptions="nameKW">
-                    </div>
-                    <div class="value">
-                    </div>
-                  </div>
-                  <div id="nickname">
-                    <div class="key" data-textoptions="nicknameKW">
-                    </div>
-                    <div class="value">
-                    </div>
-                  </div>
-                  <div id="description" class="fade-effect-bottom">
-                    <div class="key" data-textoptions="aboutmeKW">
-                    </div>
-                    <div class="value">
-                    </div>
-                  </div>
-                </div>
-                <div id="socialIcons" class="fade-effect-bottom">
-                  <div class="key" data-textoptions="contactMeKW">
-                  </div>
-                  <div class="value">
-                  </div>
-                </div>
-              </div>
+            <div id="moreContainer" class="ds-none">
             </div>
           </div>
 
@@ -399,25 +513,30 @@
       </div>
 
     </div>
+  </div>
 
-    <div id="socialOptions">
-      <div class="option sxButton" data-id="openLink" data-textoptions="openKW">
-      </div>
-      <div class="option sxButton" data-id="copyLink" data-textoptions="copyLinkKW,true">
-      </div>
-      <div class="option sxButton" data-id="shareLink" data-textoptions="shareKW,true">
-      </div>
-    </div>
+  <div id="qrCodeContainer">
+    <canvas id="qrcodeCanvas"></canvas>
+    <button id="downloadQRCode" class="sxButton" data-textoptions="downloadQRCode,true"></button>
+    <div id="madeByCreatorQR" data-textoptions="madeByCreatorQR"></div>
+  </div>
 
-    <div id="copiedMessage" data-textoptions="copied">
+  <div id="socialOptions">
+    <div class="option sxButton" data-id="openLink" data-textoptions="openKW,<true></true>">
     </div>
-    <div id="cantShareMessage" data-textoptions="cantShare">
+    <div class="option sxButton" data-id="copyLink" data-textoptions="copyLinkKW,true">
     </div>
-    <div id="contactDev">
-      <div data-textoptions="contactDev"></div>
-      <div id="contactDevBtn" class="sxButton" data-textoptions="contactDevBtn"></div>
+    <div class="option sxButton" data-id="shareLink" data-textoptions="shareKW,true">
     </div>
-
+  </div>
+  
+  <div id="copiedMessage" data-textoptions="copied">
+  </div>
+  <div id="cantShareMessage" data-textoptions="cantShare">
+  </div>
+  <div id="contactDev">
+    <div data-textoptions="contactDev"></div>
+    <div id="contactDevBtn" class="sxButton" data-textoptions="contactDevBtn"></div>
   </div>
 
   <script class="realScript" type="module" defer>
@@ -459,6 +578,14 @@
     const contactDev = q("#contactDev");
     const contactDevBtn = q("#contactDevBtn");
     const socialOptions = q("#socialOptions");
+    const moreContainer = q("#moreContainer");
+    const noShownData = q("#noShownData");
+    const noDataForThisId = q("#noDataForThisId");
+    const goToDevCard = qA(".goToDevCard");
+    const qrCodeContainer = q("#qrCodeContainer");
+    const qrcodeCanvas = q("#qrcodeCanvas");
+    const downloadQRCodeBtn = q("#downloadQRCode");
+    const madeByCreatorQR = q("#madeByCreatorQR");
 
     const languageManager = new LanguageManager({
       saveAll: true,
@@ -498,6 +625,17 @@
 
     let timeoutCopiedUserId;
     let timeoutCantShareUserId;
+    let hasUserIdChanged = false;
+    
+    madeByCreatorQR.addEventListener("click", ()=>{
+      window.location.href = "https://superxnero.github.io/apps/creator-qr-code/index.html";
+    });
+
+    goToDevCard.forEach((btn)=> {
+      btn.addEventListener("click", ()=> {
+        setDatum("userId", "superxnero");
+      });
+    });
 
     contactDevBtn.addEventListener("click", function() {
       window.location.href = "https://wa.me/967718177515";
@@ -553,6 +691,25 @@
               cantShareMessage.classList.remove("show");
             }, 3000);
           }
+        } else if (id === "createQRCode") {
+          const url = `https://superxnero.github.io/apps/knowme/index.html?user_id=${getDatum("userId")}`;
+          const options = {
+            errorCorrectionLevel: 'H',
+            width: 1000,
+            margin: 2,
+            color: {
+              dark: "#000000",
+              light: "#FFFFFF"
+            }
+          };
+          if (hasUserIdChanged === true) {
+            generateQRCode(url, options);
+          }
+          hasUserIdChanged = false;
+          qrCodeContainer.classList.add("show");
+          qrCodeContainer.offclick(()=>{
+            qrCodeContainer.classList.remove("show");
+          });
         }
         setTimeout(() => cardMenuOptions.classList.remove("show"), 500);
       });
@@ -563,7 +720,7 @@
       cardLanguagesList.offclick(()=> {
         cardLanguagesList.classList.remove("show");
       });
-    })
+    });
 
     openSidebar.addEventListener("click", function() {
       sidebar.classList.add("show");
@@ -583,6 +740,43 @@
           });
         })
     });
+
+    function generateQRCode(text, options) {
+      QRCode.toCanvas(qrcodeCanvas, text, options, function (error) {
+        if (error) {
+          console.error(error);
+          qrCodeContainer.classList.add("ds-none");
+          return;
+        }
+      });
+    }
+
+    function downloadQR() {
+      const date = new Date();
+      const formattedDate = date.toISOString().split('T')[0];
+      const formattedTime = date.toTimeString().split(' ')[0].replace(/:/g,
+        '-');
+
+      const link = document.createElement('a');
+      link.href = qrcodeCanvas.toDataURL('image/png');
+      link.download = `QRCode-${formattedDate}-${formattedTime}.png`;
+      link.click();
+      link.remove();
+    }
+
+    function dirOfCardTexts() {
+      let cardTexts = qA("[data-cardtext]");
+      if (!cardTexts) return;
+
+      const currentCardLanguage = getDatum("currentCardLanguage");
+      let dir;
+      if (currentCardLanguage === "عربي") {
+        dir = "rtl";
+      } else if (currentCardLanguage === "english") {
+        dir = "ltr";
+      }
+      cardTexts.forEach((cardText)=>cardText.dir = dir);
+    }
 
     function getUserIdFromQuery() {
       const urlParams = new URLSearchParams(window.location.search);
@@ -616,17 +810,118 @@
       const name = q("#name .value");
       const nickname = q("#nickname .value");
       const description = q("#description .value");
-      name.textContent = texts.name;
-      nickname.textContent = texts.nickname;
-      description.innerText = texts.aboutme;
+
+      if (texts.name) {
+        q("#name").classList.remove("ds-none");
+        name.textContent = texts.name;
+      } else {
+        q("#name").classList.add("ds-none");
+      }
+      if (texts.nickname) {
+        q("#nickname").classList.remove("ds-none");
+        nickname.textContent = texts.nickname;
+      } else {
+        q("#nickname").classList.add("ds-none");
+      }
+      if (texts.aboutme) {
+        q("#description").classList.remove("ds-none");
+        description.innerText = texts.aboutme;
+      } else {
+        q("#description").classList.add("ds-none");
+      }
+
+      if (!texts.name && !texts.nickname && !texts.aboutme && !cardData.image?.url && (cardData.socialMedia?.constructor !== Object || Object.keys(cardData.socialMedia).length < 1)) {
+        noShownData.classList.remove("ds-none");
+      } else {
+        noShownData.classList.add("ds-none");
+      }
+
+      const moreData = texts["more"];
+
+      moreContainer.innerHTML = "";
+      if (moreData?.constructor !== Array || moreData.length < 1) {
+        moreContainer.classList.add("ds-none");
+        return;
+      }
+      moreContainer.classList.remove("ds-none");
+      moreData.forEach((moreItem)=> {
+        const htmlElement = `<div class="moreItem">
+        <div class="content" data-cardtext>
+        <div class="texts">
+        <h3>${moreItem.name}</h3>
+        <p>
+        ${moreItem.description}
+        </p>
+        </div>
+        ${moreItem.image?.url ? `<div class="image">
+        <img src="${moreItem.image.notDirect === true ? "https://superxnero.github.io/assets/images/knowme/" + moreItem.image.url: moreItem.image.url}" alt="${moreItem.name}"/>
+        </div>`: ""}
+        </div>
+        ${moreItem.url ? ` <div class="moreItemOptions" data-url="${moreItem.url}">
+        <div class="option sxButton" data-id="openLink" data-textoptions="openKW, true">
+        </div>
+        <div class="option sxButton" data-id="copyLink" data-textoptions="copyLinkKW,true">
+        </div>
+        <div class="option sxButton" data-id="shareLink" data-textoptions="shareKW,true">
+        </div>
+        </div>`: ""}
+        </div>`;
+        moreContainer.innerHTML += htmlElement;
+      });
+      languageManager.updateElements();
+      dirOfCardTexts();
+
+      moreContainer.querySelectorAll(".moreItemOptions").forEach((moreItemOptions)=> {
+        moreItemOptions.querySelectorAll(".option").forEach((option)=> {
+          option.addEventListener("click", async function() {
+            const id = option.dataset.id;
+            const url = moreItemOptions.dataset.url;
+            if (id === "openLink") {
+              window.open(url, "_blank");
+            } else if (id === "copyLink") {
+              clearTimeout(timeoutCopiedUserId);
+              await navigator.clipboard.writeText(url);
+              copiedMessage.classList.add("show");
+              timeoutCopiedUserId = setTimeout(()=> {
+                copiedMessage.classList.remove("show");
+              }, 1500);
+            } else if (id === "shareLink") {
+              clearTimeout(timeoutCantShareUserId);
+              const shareData = {
+                title: document.title,
+                url: url,
+              };
+              if (navigator.share && navigator.canShare && navigator.canShare(shareData)) {
+                navigator.share(shareData);
+              } else {
+                cantShareMessage.classList.add("show");
+                timeoutCantShareUserId = setTimeout(()=> {
+                  cantShareMessage.classList.remove("show");
+                }, 3000);
+              }
+            }
+          });
+        });
+      });
     }
 
     async function onUserIdChange(newUserId) {
-      userId.innerText = newUserId;
-
       const response = await fetch(`https://superxnero.github.io/data/knowme/users/${newUserId}.json`);
+      if (response.status !== 200) {
+        noDataForThisId.classList.remove("ds-none");
+        userId.classList.add("ds-none");
+        q("#card > .options").classList.add("ds-none");
+        return;
+      }
+      noDataForThisId.classList.add("ds-none");
+      userId.classList.remove("ds-none");
+      q("#card > .options").classList.remove("ds-none");
+
       const json = await response.json();
       setDatum("cardData", json);
+      
+      hasUserIdChanged = true;
+      userId.innerText = newUserId;
     }
 
     async function onCardDataChange(cardData) {
@@ -640,9 +935,18 @@
       setDatum("cardLanguages", Object.keys(cardData.texts));
       setDatum("currentCardLanguage", cardLanguage);
 
-      const img = q("#imageContainer img");
-      img.src = "https://superxnero.github.io/" + cardData.image;
-      img.alt = getDatum("userId");
+      let baseImageUrl = "";
+      if (cardData.image?.notDirect === true) {
+        baseImageUrl = "https://superxnero.github.io/assets/images/knowme/";
+      }
+      if (cardData.image?.url) {
+        q("#imageContainer").classList.remove("ds-none");
+        const img = q("#imageContainer img");
+        img.src = baseImageUrl + cardData.image.url;
+        img.alt = getDatum("userId");
+      } else {
+        q("#imageContainer").classList.add("ds-none");
+      }
 
       const iconsResponse = await fetch(
         `https://superxnero.github.io/data/knowme/social_media_icons.json`
@@ -653,6 +957,11 @@
       );
       const linksJson = await linksResponse.json();
       socialIcons.innerHTML = "";
+      if (cardData.socialMedia?.constructor !== Object || Object.keys(cardData.socialMedia).length < 1) {
+        q("#socialIcons").classList.add("ds-none");
+        return;
+      }
+      q("#socialIcons").classList.remove("ds-none");
       Object.keys(cardData.socialMedia).forEach((key, i) => {
         const htmlElement = `<div class="icon" data-id="${i}" data-key="${key}" data-url="${linksJson[key].replace("${}", cardData.socialMedia[key])}" data-fetch="https://superxnero.github.io/${
         iconsJson[key]
@@ -666,19 +975,12 @@
       socialIcons.querySelectorAll(".icon").forEach((icon)=> {
         icon.addEventListener("click", function (event) {
           socialOptions.dataset.currentkey = icon.dataset.key;
-          socialOptions.style.setProperty(
-            "--top",
-            icon.offsetTop + icon.offsetHeight / 2 + "px"
-          );
-          socialOptions.style.setProperty(
-            "--left",
-            icon.offsetLeft + icon.offsetWidth / 2 + "px"
-          );
-          if (icon.offsetLeft + icon.offsetWidth + socialOptions.offsetWidth > window.innerWidth) {
-            socialOptions.style.setProperty(
-              "--left",
-              window.innerWidth - socialOptions.offsetWidth - 10 + "px"
-            );
+
+          const rectIcon = icon.getBoundingClientRect().toJSON();
+          socialOptions.style.setProperty("--top", (rectIcon.top + window.pageYOffset) + "px");
+          socialOptions.style.setProperty("--left", rectIcon.x + icon.offsetWidth + 2 + "px");
+          if (rectIcon.x + rectIcon.width + socialOptions.offsetWidth > window.innerWidth) {
+            socialOptions.style.setProperty("--left", window.innerWidth - socialOptions.offsetWidth - 10 + "px");
           }
           socialOptions.classList.add("show");
           socialOptions.offclick(() => {
