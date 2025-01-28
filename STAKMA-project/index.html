@@ -1,21 +1,46 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-VBHMN6YSS1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+    gtag('js', new Date());
+    gtag('config', 'G-VBHMN6YSS1');
+  </script>
   <meta http-equiv="content-type" content="text/html; charset=utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>STAKMA project</title>
-  <link rel="stylesheet" href="/storage/5A67-DF85/GitHub/assets/css/sx.css" />
+  <title>STAKMAH</title>
+  <link rel="stylesheet" href="https://superxnero.github.io/assets/css/sx.css" />
   <style class="realStyle" id="importStyle">
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Cairo:slnt,wght@-11..11,200..1000&display=swap');
   </style>
   <style class="realStyle">
-    #cards {
+    * {
+      user-select: auto;
+    }
+    #membersNum {
+      position: absolute;
+      top: 50%;
+      right: 20px;
+      transform: translateY(-50%);
+      font-size: 10px;
+      font-weight: bold;
+      color: var(--theme-color2);
+      background: var(--theme-box2);
+      border-radius: 6px;
+      padding: 4px;
+    }
+    #container #cards {
       display: flex;
-      flex-direction: row;
       flex-wrap: wrap;
       justify-content: center;
       overflow: scroll;
+      flex-grow: 1;
       perspective: 8000px;
     }
     .card {
@@ -52,6 +77,10 @@
     .tabby {
       --front-side: #D966FF;
       --back-side: #9900CC;
+    }
+    .ham {
+      --front-side: #000000;
+      --back-side: #181818;
     }
     .card-face {
       position: absolute;
@@ -98,7 +127,7 @@
       padding: 6px;
       border-left: 2px solid var(--theme-box2);
       background-color: inherit;
-      filter: ;
+      filter:;
     }
     .card-front .right-side img {
       max-width: 100%;
@@ -133,6 +162,7 @@
       margin-bottom: 4px;
       background-color: inherit;
       filter: brightness(2);
+      user-select: none;
     }
     .card-back .content {
       display: block;
@@ -148,7 +178,8 @@
   <div id="realPage">
     <div id="main">
       <header>
-        <h1 id="h1Title">STAKMA</h1>
+        <h1 id="h1Title">STAKMAH</h1>
+        <div id="membersNum">7 members</div>
       </header>
       <div id="container">
         <div id="cards">
@@ -162,22 +193,24 @@
                 </div>
               </div>
               <div class="right-side">
-                <img src="/storage/5A67-DF85/GitHub/assets/images/superxnero.png" alt="" />
+                <img src="https://superxnero.github.io/assets/images/superxnero.png" alt="" />
               </div>
             </div>
             <div class="card-face card-back">
               <div class="left-side">
                 <span class="title">skills</span>
-                <div class="content">programmer,content creator</div>
+                <div class="content">
+                  programmer,content creator
+                </div>
                 <span class="note">click to show front side</span>
               </div>
               <div class="right-side">
                 <span class="title">about me</span>
                 <div class="content">
-                  I love programming 😋🤍, and money 💰 <br/><br/>
-I like to relax 😊, and the peace 🕊️<br/><br/>
-I love arts too 🎨🖌️<br/><br/>
-My favorite colors are black ⚫, dark blue 🔵, Silver 🩶
+                  I love programming 😋🤍, and money 💰 <br /><br />
+                  I like to relax 😊, and the peace 🕊️<br /><br />
+                  I love arts too 🎨🖌️<br /><br />
+                  My favorite colors are black ⚫, dark blue 🔵, Silver 🩶
                 </div>
               </div>
             </div>
@@ -193,28 +226,30 @@ My favorite colors are black ⚫, dark blue 🔵, Silver 🩶
                 </div>
               </div>
               <div class="right-side">
-                <img src="/storage/5A67-DF85/GitHub/assets/images/gyotaro.png" alt="" />
+                <img src="https://superxnero.github.io/assets/images/gyotaro.png" alt="" />
               </div>
             </div>
             <div class="card-face card-back">
               <div class="left-side">
                 <span class="title">skills</span>
-                <div class="content">rubik cube solver, editor</div>
+                <div class="content">
+                  rubik cube solver, editor
+                </div>
                 <span class="note">click to show front side</span>
               </div>
               <div class="right-side">
                 <span class="title">about me</span>
                 <div class="content">
                   MY NAME IS AHMED SAMEER DHAIF ALLAH QAID
-I LOVE VIDEO GAMES ALTHOUGH I PLAY IT ONLY IN THE PHONE<br/><br/>
-I PLAYING FOOTBALL FROM TIME TO TIME WITH MY COUSINS<br/><br/>
-I LOVE SWIMMING<br/><br/>
-MY FAVOURITE COLOUR IS BLACK <br/><br/>
-WHEN IS WAS A KID MY DREAM WAS JOINING NASA <br/><br/>
-AND NOW JUST HAVE A PROPER JOB <br/><br/>
-TO BE HONEST I'M A LAZY HARDWORKING PERSON (( YES WE'RE REAL )) <br/><br/>
-I LOVE MOVIES , ANIME AND MANG <br/><br/>
-I WOULD LIKE TO GO TO JAPAN IN THE FUTURE AND RUSSIA AS WELL .
+                  I LOVE VIDEO GAMES ALTHOUGH I PLAY IT ONLY IN THE PHONE<br /><br />
+                  I PLAYING FOOTBALL FROM TIME TO TIME WITH MY COUSINS<br /><br />
+                  I LOVE SWIMMING<br /><br />
+                  MY FAVOURITE COLOUR IS BLACK <br /><br />
+                  WHEN IS WAS A KID MY DREAM WAS JOINING NASA <br /><br />
+                  AND NOW JUST HAVE A PROPER JOB <br /><br />
+                  TO BE HONEST I'M A LAZY HARDWORKING PERSON (( YES WE'RE REAL )) <br /><br />
+                  I LOVE MOVIES , ANIME AND MANG <br /><br />
+                  I WOULD LIKE TO GO TO JAPAN IN THE FUTURE AND RUSSIA AS WELL .
                 </div>
               </div>
             </div>
@@ -230,25 +265,27 @@ I WOULD LIKE TO GO TO JAPAN IN THE FUTURE AND RUSSIA AS WELL .
                 </div>
               </div>
               <div class="right-side">
-                <img src="/storage/5A67-DF85/GitHub/assets/images/Zhmed.png" alt="" />
+                <img src="https://superxnero.github.io/assets/images/Zhmed.png" alt="" />
               </div>
             </div>
             <div class="card-face card-back">
               <div class="left-side">
                 <span class="title">skills</span>
-                <div class="content">gaming, graphic design</div>
+                <div class="content">
+                  gaming, graphic design
+                </div>
                 <span class="note">click to show front side</span>
               </div>
               <div class="right-side">
                 <span class="title">about me</span>
                 <div class="content">
-- I like highly charismatic characters.<br/><br/> 
+                  - I like highly charismatic characters.<br /><br />
 
-- I like food with lots of spices.<br/><br/>
+                  - I like food with lots of spices.<br /><br />
 
-- I like mystery and deep stories.<br/><br/>
+                  - I like mystery and deep stories.<br /><br />
 
-- I prefer a greenish sky-blue color.
+                  - I prefer a greenish sky-blue color.
                 </div>
               </div>
             </div>
@@ -264,23 +301,25 @@ I WOULD LIKE TO GO TO JAPAN IN THE FUTURE AND RUSSIA AS WELL .
                 </div>
               </div>
               <div class="right-side">
-                <img src="/storage/5A67-DF85/GitHub/assets/images/King.png" alt="" />
+                <img src="https://superxnero.github.io/assets/images/King.png" alt="" />
               </div>
             </div>
             <div class="card-face card-back">
               <div class="left-side">
                 <span class="title">skills</span>
-                <div class="content">game developer, programmer</div>
+                <div class="content">
+                  game developer, programmer
+                </div>
                 <span class="note">click to show front side</span>
               </div>
               <div class="right-side">
                 <span class="title">about me</span>
                 <div class="content">
-                  My name is Ibrahim Hussien Abdulrab Ali Alnaqib<br/><br/>
+                  My name is Ibrahim Hussien Abdulrab Ali Alnaqib<br /><br />
 
-I like playing video games 🎮 ..<br/><br/>
+                  I like playing video games 🎮 ..<br /><br />
 
-In my free time I do programming and game development 💻..
+                  In my free time I do programming and game development 💻..
                 </div>
               </div>
             </div>
@@ -296,26 +335,28 @@ In my free time I do programming and game development 💻..
                 </div>
               </div>
               <div class="right-side">
-                <img src="/storage/5A67-DF85/GitHub/assets/images/Prince.png" alt="" />
+                <img src="https://superxnero.github.io/assets/images/Prince.png" alt="" />
               </div>
             </div>
             <div class="card-face card-back">
               <div class="left-side">
                 <span class="title">skills</span>
-                <div class="content">chess, football</div>
+                <div class="content">
+                  chess, football
+                </div>
                 <span class="note">click to show front side</span>
               </div>
               <div class="right-side">
                 <span class="title">about me</span>
                 <div class="content">
-                  My name is Mohammed Faisal Ali Saleh.<br/><br/>
- I love all sports activities, especially football. <br/><br/>
+                  My name is Mohammed Faisal Ali Saleh.<br /><br />
+                  I love all sports activities, especially football. <br /><br />
 
-I have many skills such as playing chess, football, and drawing of all kinds. <br/><br/>
+                  I have many skills such as playing chess, football, and drawing of all kinds. <br /><br />
 
-My favorite color is blue and red because my favorite team is Barcelona. <br/><br/>
+                  My favorite color is blue and red because my favorite team is Barcelona. <br /><br />
 
-I aspire to be a programmer and a hacker in the future, so I specialized in the field of information technology.
+                  I aspire to be a programmer and a hacker in the future, so I specialized in the field of information technology.
                 </div>
               </div>
             </div>
@@ -331,21 +372,58 @@ I aspire to be a programmer and a hacker in the future, so I specialized in the 
                 </div>
               </div>
               <div class="right-side">
-                <img src="/storage/5A67-DF85/GitHub/assets/images/Jinx.png" alt="" />
+                <img src="https://superxnero.github.io/assets/images/Jinx.png" alt="" />
               </div>
             </div>
             <div class="card-face card-back">
               <div class="left-side">
                 <span class="title">skills</span>
-                <div class="content">2d / pixel animator and artist</div>
+                <div class="content">
+                  2d / pixel animator and artist
+                </div>
                 <span class="note">click to show front side</span>
               </div>
               <div class="right-side">
                 <span class="title">about me</span>
                 <div class="content">
-🎨Hi I love drawing .<br/><br/>
-I often love letting my mind explore ✨ the limits of this world by having the craziest imaginary scenarios, I also really ♠️♣️love wall graffiti♥️♦️.<br/><br/>
- My favourite colors are *purple and blue* and my super favourite character is 💜JINX 🤗💙
+                  🎨Hi I love drawing .<br /><br />
+                  I often love letting my mind explore ✨ the limits of this world by having the craziest imaginary scenarios, I also really ♠️♣️love wall graffiti♥️♦️.<br /><br />
+                  My favourite colors are *purple and blue* and my super favourite character is 💜JINX 🤗💙
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card ham">
+            <div class="card-face card-front">
+              <div class="left-side">
+                <span>name: <name>Hamed Adel Mohamed al-Yazidi</name></span>
+                <span>nickname: <name>HAM</name></span>
+                <div class="note">
+                  click to show back side
+                </div>
+              </div>
+              <div class="right-side">
+                coming soon!
+                <!--<img src=""/>-->
+              </div>
+            </div>
+            <div class="card-face card-back">
+              <div class="left-side">
+                <span class="title">skills</span>
+                <div class="content">
+                  playing volleyball, drawing, programming, repairing electronic devices
+                </div>
+                <span class="note">click to show front side</span>
+              </div>
+              <div class="right-side">
+                <span class="title">about me</span>
+                <div class="content">
+                  Obsessed with electronics and especially interior pieces <br /><br />
+                  I am good at playing volleyball <br /><br />
+                  I am good at repairing electronic pieces <br /><br />
+                  I hate onions <br /><br />
+                  my favorite character is Naruto...
                 </div>
               </div>
             </div>
@@ -359,17 +437,14 @@ I often love letting my mind explore ✨ the limits of this world by having the 
   <script class="realScript" type="module" defer>
     import {
       OnChange
-    } from "/storage/5A67-DF85/GitHub/assets/libs/OnChange.js";
-    import {
-      LanguageManager
-    } from "/storage/5A67-DF85/GitHub/assets/libs/LanguageManager.js";
+    } from "https://superxnero.github.io/assets/libs/OnChange.js";
     import {
       ThemeManager
-    } from "/storage/5A67-DF85/GitHub/assets/libs/ThemeManager.js";
+    } from "https://superxnero.github.io/assets/libs/ThemeManager.js";
     import {
       FetchToElement
-    } from "/storage/5A67-DF85/GitHub/assets/libs/FetchToElement.js";
-    import * as an from "/storage/5A67-DF85/GitHub/assets/libs/another.js";
+    } from "https://superxnero.github.io/assets/libs/FetchToElement.js";
+    import * as an from "https://superxnero.github.io/assets/libs/another.js";
     const q = (e)=> document.querySelector(e);
     const qA = (e)=> document.querySelectorAll(e);
     const root = document.documentElement;
@@ -382,10 +457,10 @@ I often love letting my mind explore ✨ the limits of this world by having the 
     const container = q("#container");
     const sidebar = q("#sidebar");
     const cards = qA(".card");
-    
+
     const themeManager = new ThemeManager({
       saveAll: true,
-      baseUrl: "/storage/5A67-DF85/GitHub/themes-content/STAKMA-project/",
+      baseUrl: "https://superxnero.github.io/themes-content/STAKMA-project/",
       defaultTheme: "dark",
       changeEvents: {
         "theme": onThemeChange
@@ -393,9 +468,7 @@ I often love letting my mind explore ✨ the limits of this world by having the 
     });
     const fetchToElement = new FetchToElement(true);
 
-    let mainData = {
-      
-    };
+    let mainData = {};
 
     cards.forEach((card)=>card.onclick = function() {
       card.classList.toggle("show-back");
