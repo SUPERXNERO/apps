@@ -636,6 +636,8 @@
     let timeoutCantShareUserId;
     let hasUserIdChanged = false;
     
+    downloadQRCodeBtn.addEventListener("click", downloadQR);
+    
     madeByCreatorQR.addEventListener("click", ()=>{
       window.location.href = "https://superxnero.github.io/apps/creator-qr-code/index.html";
     });
