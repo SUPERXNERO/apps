@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2D Car Animation with Day-Night Cycle</title>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+      font-family: sans-serif;
+      transition: background-color 1s ease-in-out; /* Smooth background transition */
+    }
+
+    .container {
+      width: 100vw;
+      height: 100vh;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* --- Sun and Moon --- */
+    .sun, .moon {
+      position: absolute;
+      top: 15vh;
+      right: 10vw;
+      width: 8vh;
+      height: 8vh;
+      border-radius: 50%;
+      transition: opacity 1s ease-in-out; /* Smooth fade in/out */
+      animation: moveSunMoon .0001s linear infinite;
+    }
+
+    .sun {
+      background-color: gold;
+      box-shadow: 0 0 20px gold;
+    }
+
+    .moon {
+      background-color: lightgray;
+      opacity: 0; /* Initially hidden */
+      box-shadow: 0 0 10px lightgray;
+      animation-delay: .00002s;
+    }
+    
+    @keyframes moveSunMoon {
+      0% {
+        transform: translateX(0) translateY(0);
+      }
+      25% {
+        transform: translateX(-70vw) translateY(0);
+      }
+      50% {
+        transform: translateX(-70vw) translateY(55vh);
+      }
+      75% {
+        transform: translateX(0) translateY(55vh);
+      }
+    }
+
+    .moon::before, .moon::after { /* Moon crater-like features */
+      content: '';
+      position: absolute;
+      background-color: #c0c0c0; /* Slightly darker gray */
+      border-radius: 50%;
+      opacity: 0.7;
+    }
+
+    .moon::before {
+      top: 20%;
+      left: 25%;
+      width: 30%;
+      height: 30%;
+    }
+
+    .moon::after {
+      bottom: 15%;
+      right: 20%;
+      width: 20%;
+      height: 20%;
+    }
+
+
+    @keyframes moveSky {
+      0% {
+        transform: translateX(0);
+      }
+      100% {
+        transform: translateX(-100vw);
+      }
+    }
+
+    /* Cloud Container */
+    .cloud-container {
+      position: absolute;
+      top: 20vh;
+      left: 0;
+      width: 200vw;
+      height: 20vh;
+    }
+
+    .cloud {
+      position: absolute;
+      border-radius: 20px;
+      opacity: 0.7;
+      transition: background-color 1s ease-in-out; /* Cloud color transition */
+      animation: moveClouds .00001s linear infinite;
+    }
+    
+    @keyframes moveClouds {
+      0% {
+        transform: translateY(0);
+      }
+      100% {
+        transform: translateY(calc(100vh + 20vh));
+      }
+    }
+
+    /* Desert Road */
+    .road {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 15vh;
+      border-top: 5px solid #806309;
+      box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.3);
+      transition: background-color 1s ease-in-out; /* Road color transition */
+      animation: moveRoad .00001s linear infinite;
+    }
+    
+    @keyframes moveRoad {
+      0% {
+        transform: translateY(0);
+      }
+      100% {
+        transform: translateY(-100px);
+      }
+    }
+
+    /* Rain Container */
+    .rain-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .rain {
+      position: absolute;
+      width: 1px;
+      height: 5px;
+      opacity: 1;
+      transition: background-color 1s ease-in-out; /* Rain color transition */
+      animation: moveCar .00001s linear infinite;
+    }
+
+    .car-container {
+      position: absolute;
+      bottom: 15vh;
+      left: -20vw;
+      width: 20vw;
+      height: auto;
+      aspect-ratio: 2.5 / 1;
+      animation: moveCar .00001s linear infinite;
+      z-index: 2;
+    }
+
+    @keyframes moveCar {
+      0% {
+        transform: translateX(0) translateY(0);
+      }
+      100% {
+        transform: translateX(calc(100vw + 20vw)) translateY(-100px);
+      }
+    }
+
+    .car-body {
+      position: absolute;
+      top: 10%;
+      left: 0;
+      width: 100%;
+      height: 70%;
+      background-color: steelblue;
+      border-radius: 10% 40% 0 0;
+    }
+
+    .wheel {
+      position: absolute;
+      bottom: 0;
+      width: 20%;
+      height: 50%;
+      background-color: black;
+      border-radius: 50%;
+      animation: rotateWheels 1s linear infinite;
+    }
+
+    .wheel::before {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 20%;
+      height: 20%;
+      border-radius: 50%;
+      background: #fff5;
+    }
+
+    .wheel.front {
+      right: 10%;
+    }
+
+    .wheel.rear {
+      left: 10%;
+    }
+
+    @keyframes rotateWheels {
+      from {
+        transform: rotate(0deg);
+      }
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    /* Dust Effect */
+    .dust {
+      position: absolute;
+      bottom: 0%;
+      width: 5%;
+      height: 5%;
+      border-radius: 50%;
+      transition: background-color 1s ease-in-out, opacity 1s ease-in-out; /* Dust transitions */
+    }
+
+    .dust.rear-dust1 {
+      left: 10%;
+      animation-name: dustAnimationRear1;
+      animation-delay: 0.1s;
+    }
+    .dust.rear-dust2 {
+      left: 15%;
+      animation-name: dustAnimationRear2;
+      animation-delay: 0.3s;
+    }
+    .dust.front-dust1 {
+      right: 15%;
+      animation-name: dustAnimationFront1;
+      animation-delay: 0.2s;
+    }
+    .dust.front-dust2 {
+      right: 10%;
+      animation-name: dustAnimationFront2;
+      animation-delay: 0.4s;
+    }
+
+    @keyframes dustAnimationRear1 {
+      0%, 50% { transform: translateY(0) scale(1); opacity: 0; }
+      60% { opacity: 0.5; }
+      100% { transform: translateY(-5vh) scale(1.5); opacity: 0; }
+    }
+    @keyframes dustAnimationRear2 {
+      0%, 50% { transform: translateY(0) scale(1); opacity: 0; }
+      60% { opacity: 0.4; }
+      100% { transform: translateY(-4vh) scale(1.3); opacity: 0; }
+    }
+    @keyframes dustAnimationFront1 {
+      0%, 50% { transform: translateY(0) scale(1); opacity: 0; }
+      60% { opacity: 0.3; }
+      100% { transform: translateY(-3vh) scale(1.2); opacity: 0; }
+    }
+    @keyframes dustAnimationFront2 {
+      0%, 50% { transform: translateY(0) scale(1); opacity: 0; }
+      60% { opacity: 0.2; }
+      100% { transform: translateY(-2vh) scale(1.1); opacity: 0; }
+    }
+
+    /* --- Day Mode Styles --- */
+    body.daytime {
+      background-color: lightblue; /* Day sky color */
+    }
+    body.daytime .sun {
+      opacity: 1; /* Sun visible in daytime */
+    }
+    body.daytime .moon {
+      opacity: 0; /* Moon hidden in daytime */
+    }
+    body.daytime .cloud {
+      background-color: rgba(200, 200, 200, 0.8); /* Light clouds for day */
+    }
+    body.daytime .road {
+      background-color: #d2b48c; /* Light desert road for day */
+    }
+    body.daytime .rain {
+      background-color: rgba(100, 100, 150, 0.6); /* Lighter rain for day */
+    }
+    body.daytime .dust {
+      background-color: rgba(169, 169, 169, 0.3); /* Visible dust in day */
+      opacity: 1;
+    }
+
+
+    /* --- Night Mode Styles --- */
+    body.nighttime {
+      background-color: #000a20; /* Dark night sky color */
+    }
+    body.nighttime .sun {
+      opacity: 1; /* Sun hidden at night */
+    }
+    body.nighttime .moon {
+      opacity: 1; /* Moon visible at night */
+    }
+    body.nighttime .cloud {
+      background-color: rgba(50, 50, 70, 0.8); /* Darker clouds for night */
+    }
+    body.nighttime .road {
+      background-color: #5a4e41; /* Darker desert road for night */
+    }
+    body.nighttime .rain {
+      background-color: rgba(180, 180, 220, 0.7); /* Brighter rain for night (visibility) */
+    }
+    body.nighttime .dust {
+      background-color: rgba(80, 80, 80, 0.2); /* Less visible dust at night */
+      opacity: 0.6; /* Slightly lower opacity for night dust */
+    }
+
+
+  </style>
+</head>
+<body class="nighttime">
+  <div class="container">
+    <div class="sun"></div>
+    <div class="moon"></div>
+    <div class="cloud-container">
+      <!-- Clouds will be added here by JavaScript -->
+    </div>
+    <div class="rain-container">
+      <!-- Rain drops will be added here by JavaScript -->
+    </div>
+    <div class="road"></div>
+    <div class="car-container">
+      <div class="car-body"></div>
+      <div class="wheel rear"></div>
+      <div class="wheel front"></div>
+      <div class="dust rear-dust1"></div>
+      <div class="dust rear-dust2"></div>
+      <div class="dust front-dust1"></div>
+      <div class="dust front-dust2"></div>
+    </div>
+  </div>
+
+  <script>
+    const body = document.body;
+    const rainContainer = document.querySelector('.rain-container');
+    const cloudContainer = document.querySelector('.cloud-container');
+    const rainDensity = 100000;
+    const cloudDensity = 100000;
+    const clouds = [];
+    let isDaytime = true; // Start as daytime
+
+    function createCloud() {
+      const cloud = document.createElement('div');
+      cloud.classList.add('cloud');
+      cloudContainer.appendChild(cloud);
+      initializeCloud(cloud);
+      clouds.push(cloud);
+      return cloud;
+    }
+
+    function initializeCloud(cloud) {
+      const cloudWidth = 10 + Math.random() * 20;
+      const cloudHeight = 3 + Math.random() * 5;
+      cloud.style.width = `${cloudWidth}vh`;
+      cloud.style.height = `${cloudHeight}vh`;
+      cloud.style.top = `${10 + Math.random() * 15}vh`;
+      cloud.style.left = `-${cloudWidth + 100}vw`;
+      cloud.speed = 1 + Math.random() * 0.5;
+    }
+
+    function createRainDrop(cloud) {
+      const rainDrop = document.createElement('div');
+      rainDrop.classList.add('rain');
+      rainContainer.appendChild(rainDrop);
+      initializeRainDrop(rainDrop, cloud);
+      return rainDrop;
+    }
+
+    function initializeRainDrop(rainDrop, cloud) {
+      const cloudRect = cloud.getBoundingClientRect();
+      rainDrop.style.top = `${cloudRect.top + cloudRect.height + window.scrollY}px`;
+      rainDrop.style.left = `${cloudRect.left + cloudRect.width * Math.random() + window.scrollX}px`;
+      rainDrop.fallSpeed = 5 + Math.random() * 5;
+    }
+
+    function animateScene() {
+      // --- Cloud Animation ---
+      if (Math.random() < cloudDensity) {
+        createCloud();
+      }
+
+      clouds.forEach(cloud => {
+        let currentLeft = parseFloat(cloud.style.left);
+        cloud.style.left = `${currentLeft + cloud.speed}px`;
+
+        if (currentLeft > window.innerWidth) {
+          cloud.remove();
+          clouds.splice(clouds.indexOf(cloud), 1);
+        }
+      });
+
+      // --- Rain Animation ---
+      if (Math.random() < rainDensity) {
+        if (clouds.length > 0) {
+          const randomCloudIndex = Math.floor(Math.random() * clouds.length);
+          createRainDrop(clouds[randomCloudIndex]);
+        }
+      }
+
+      const rainDrops = document.querySelectorAll('.rain');
+      rainDrops.forEach(rainDrop => {
+        let currentTop = parseFloat(rainDrop.style.top);
+        rainDrop.style.top = `${currentTop + rainDrop.fallSpeed}px`;
+
+        if (currentTop > window.innerHeight) {
+          rainDrop.remove();
+        }
+      });
+
+      requestAnimationFrame(animateScene);
+    }
+
+    function toggleDayNight() {
+      body.classList.remove('daytime');
+      body.classList.add('nighttime');
+      /*isDaytime = !isDaytime;
+      if (isDaytime) {
+        body.classList.remove('nighttime');
+        body.classList.add('daytime');
+      } else {
+        body.classList.remove('daytime');
+        body.classList.add('nighttime');
+      }*/
+    }
+    
+    // Initial Day Mode
+    //body.classList.add('daytime');
+
+    // Set interval for day-night cycle (every 50 seconds)
+    setInterval(toggleDayNight, 6000); // 50000 milliseconds = 50 seconds
+
+    animateScene(); // Start animation
+
+  </script>
+</body>
+</html>
