@@ -1,6 +1,16 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-VBHMN6YSS1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+    gtag('js', new Date());
+    gtag('config', 'G-VBHMN6YSS1');
+  </script>
   <meta http-equiv="content-type" content="text/html; charset=utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Threads</title>
@@ -17,10 +27,47 @@
       flex-direction: column;
       align-items: center;
     }
+    #threadsAccount {
+      display: flex;
+      border-radius: var(--six-px);
+      background: var(--theme-box6);
+      box-shadow: 0 0 5px 3px var(--theme-box7);
+      border: 1px solid var(--theme-color2);
+      width: 100%;
+      direction: rtl;
+    }
+    #threadsAccount .content {
+      flex-grow: 1;
+      padding-inline-end: var(--ten-px);
+    }
+    #username {
+      color: var(--theme-color3);
+      font-weight: bold;
+      letter-spacing: .5px;
+    }
+    #bio {
+      color: var(--theme-box10);
+      font-size: .9rem;
+      text-wrap: wrap;
+      word-break: break-word;
+      overflow-wrap: break-word;
+    }
+    #imageContainer {
+      display: grid;
+      place-items: center;
+      max-width: 50%;
+      padding-inline-start: var(--ten-px);
+    }
+    #imageContainer img {
+      max-width: 120px;
+      height: 120px;
+      max-height: 100%;
+      border-radius: 50%;
+    }
     table {
       margin: var(--twenty-px) auto;
       border-collapse: collapse;
-      width: 90%;
+      width: 100%;
       max-width: 1000px;
       direction: rtl;
     }
@@ -41,12 +88,8 @@
       color: var(--theme-success);
     }
 
-@media (min-width: 600px) {
-  
-}
-@media (max-width: 599px) {
-  
-}
+@media (min-width: 600px) {}
+@media (max-width: 599px) {}
 
     .ds-none {
       display: none !important;
@@ -62,6 +105,15 @@
           <h1 id="h1Title" data-textoptions="title"></h1>
         </header>
         <div id="container">
+          <div id="threadsAccount" class="sxButton">
+            <div class="content">
+              <div id="username"></div>
+              <div id="bio"></div>
+            </div>
+            <div id="imageContainer">
+              <img id="userImage"/>
+            </div>
+          </div>
           <table>
             <thead>
               <th>الدليل</th>
@@ -113,13 +165,17 @@
     const head = document.head;
     const body = document.body;
     const realPage = q("#realPage");
-    
+
     const tableData = q("#tableData");
+    const username = q("#username");
+    const bio = q("#bio");
+    const imageContainer = q("#imageContainer");
+    const userImage = q("#userImage");
 
     const languageManager = new LanguageManager({
       saveAll: true,
       baseUrl: "https://superxnero.github.io/languages-content/threads/",
-      defaultLanguage: localStorage.getItem("language"),
+      defaultLanguage: "ar",
       changeEvents: {
         "language": onLanguageChange
       }
@@ -141,7 +197,7 @@
       threadsId: new OnChange(onThreadsIdChange),
       threads: new OnChange(onThreadsChange)
     };
-    setDatum("availableLanguages", ["ar", "en"]);
+    setDatum("availableLanguages", ["ar"]);
     setDatum("availableThemes", ["light", "dark"]);
 
     const contacts = [{
@@ -168,7 +224,7 @@
           });
         })
     });
-    
+
     function getThreadsIdFromQuery() {
       const urlParams = new URLSearchParams(window.location.search);
       const userId = urlParams.get('user_id');
@@ -179,21 +235,38 @@
     } else {
       setDatum("threadsId", "superxnero");
     }
-    
+
     function onThreadsChange(threads) {
-      tableData.innerHTML = "";
+      username.innerHTML = "@" + getDatum("threadsId");
+      bio.innerText = threads.profile.bio;
+      if (threads.profile.image?.constructor === Object) {
+        if (threads.profile.image.notDirect === true) {
+          threads.profile.image.url = "https://superxnero.github.io/data/threads/images/" + threads.profile.image.url;
+        }
+        userImage.src = threads.profile.image.url;
+        imageContainer.classList.remove("ds-none");
+      } else {
+        imageContainer.classList.add("ds-none");
+      }
+
+      threadsAccount.addEventListener("click", ()=> {
+        window.open(`https://www.threads.net/@${getDatum("threadsId")}`, "_blank");
+      });
       
-      threads.forEach((row, index)=> {
+      const analysis = threads.analysis;
+
+      tableData.innerHTML = "";
+      analysis.forEach((row, index)=> {
         const htmlElement = `<tr data-index="${index}"></tr>`;
         tableData.innerHTML += htmlElement;
         const rowElement = tableData.querySelector(`tr[data-index="${index}"]`);
-        row.forEach((item)=>{
-          const htmlElement = `<td>${item.constructor === Object ? `<a href="${item.url}">${item.text}</a>` : item}</td>`;
+        row.forEach((item)=> {
+          const htmlElement = `<td>${item.constructor === Object ? `<a href="${item.url}">${item.text}</a>`: item}</td>`;
           rowElement.innerHTML += htmlElement;
         });
       });
     }
-    
+
     async function onThreadsIdChange(threadsId) {
       const res = await fetch("https://superxnero.github.io/data/threads/users.json");
       let json = await res.json();
