@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Threads</title>
+  <link rel="stylesheet" href="https://superxnero.github.io/assets/css/sx.css" />
+  <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+  <style class="realStyle" id="importStyle">
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cairo:slnt,wght@-11..11,200..1000&display=swap');
+  </style>
+  <style class="realStyle">
+    /* أنماط إضافية على أنماط knowme */
+    #container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    table {
+      margin: var(--twenty-px) auto;
+      border-collapse: collapse;
+      width: 90%;
+      max-width: 1000px;
+      direction: rtl;
+    }
+    th,
+    td {
+      border: 1px solid var(--theme-color2);
+      padding: var(--eight-px);
+      text-align: center;
+    }
+    th {
+      background-color: var(--theme-box4);
+      cursor: pointer;
+    }
+    td {
+      background-color: var(--theme-box3);
+    }
+    td a {
+      color: var(--theme-success);
+    }
+
+@media (min-width: 600px) {
+  
+}
+@media (max-width: 599px) {
+  
+}
+
+    .ds-none {
+      display: none !important;
+    }
+  </style>
+</head>
+<body>
+  <div id="realPage">
+    <div id="mainSidebar">
+      <div id="main">
+        <header>
+          <div id="openSidebar" data-fetch="https://superxnero.github.io/assets/svgs/burger-menu_506800.svg"></div>
+          <h1 id="h1Title" data-textoptions="title"></h1>
+        </header>
+        <div id="container">
+          <table>
+            <thead>
+              <th>الدليل</th>
+              <th>القيمة</th>
+              <th>المصدر</th>
+            </thead>
+            <tbody id="tableData">
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div id="sidebar">
+        <div class="item">
+          <div class="itemShow" data-textoptions="language"></div>
+          <div id="availableLanguages" class="itemList">
+          </div>
+        </div>
+        <div class="item">
+          <div class="itemShow" data-textoptions="themeText"></div>
+          <div id="availableThemes" class="itemList">
+          </div>
+        </div>
+        <div class="item">
+          <div class="itemShow" data-textoptions="contact"></div>
+          <div id="phoneNumbersList" class="itemList">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script class="realScript" type="module" defer>
+    import {
+      OnChange
+    } from "https://superxnero.github.io/assets/libs/OnChange.js";
+    import {
+      LanguageManager
+    } from "https://superxnero.github.io/assets/libs/LanguageManager.js";
+    import {
+      ThemeManager
+    } from "https://superxnero.github.io/assets/libs/ThemeManager.js";
+    import {
+      FetchToElement
+    } from "https://superxnero.github.io/assets/libs/FetchToElement.js";
+    import * as an from "https://superxnero.github.io/assets/libs/another.js";
+    const q = (e)=> document.querySelector(e);
+    const qA = (e)=> document.querySelectorAll(e);
+    const root = document.documentElement;
+    const head = document.head;
+    const body = document.body;
+    const realPage = q("#realPage");
+    
+    const tableData = q("#tableData");
+
+    const languageManager = new LanguageManager({
+      saveAll: true,
+      baseUrl: "https://superxnero.github.io/languages-content/threads/",
+      defaultLanguage: localStorage.getItem("language"),
+      changeEvents: {
+        "language": onLanguageChange
+      }
+    });
+    const themeManager = new ThemeManager({
+      saveAll: true,
+      baseUrl: "https://superxnero.github.io/themes-content/threads/",
+      defaultTheme: localStorage.getItem("theme"),
+      changeEvents: {
+        "theme": onThemeChange
+      }
+    });
+    const fetchToElement = new FetchToElement(true);
+
+    let mainData = {
+      availableLanguages: new OnChange(onAvailableLanguagesChange),
+      availableThemes: new OnChange(onAvailableThemesChange),
+      contacts: new OnChange(onContactsChange),
+      threadsId: new OnChange(onThreadsIdChange),
+      threads: new OnChange(onThreadsChange)
+    };
+    setDatum("availableLanguages", ["ar", "en"]);
+    setDatum("availableThemes", ["light", "dark"]);
+
+    const contacts = [{
+      "name": "developer",
+      "knowme": "superxnero"
+    }];
+    setDatum("contacts", contacts);
+
+    openSidebar.addEventListener("click", function() {
+      sidebar.classList.add("show");
+      sidebar.offclick(()=> {
+        sidebar.classList.remove("show");
+      });
+    });
+
+    sidebar.querySelectorAll("& > .item").forEach((item)=> {
+      const itemShow = item.querySelector("& > .itemShow");
+      const itemList = item.querySelector("& > .itemList");
+      itemShow.addEventListener("click",
+        function() {
+          itemList.classList.add("show");
+          itemList.offclick(()=> {
+            itemList.classList.remove("show");
+          });
+        })
+    });
+    
+    function getThreadsIdFromQuery() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const userId = urlParams.get('user_id');
+      return userId;
+    }
+    if (getThreadsIdFromQuery()) {
+      setDatum("threadsId", getThreadsIdFromQuery());
+    } else {
+      setDatum("threadsId", "superxnero");
+    }
+    
+    function onThreadsChange(threads) {
+      tableData.innerHTML = "";
+      
+      threads.forEach((row, index)=> {
+        const htmlElement = `<tr data-index="${index}"></tr>`;
+        tableData.innerHTML += htmlElement;
+        const rowElement = tableData.querySelector(`tr[data-index="${index}"]`);
+        row.forEach((item)=>{
+          const htmlElement = `<td>${item.constructor === Object ? `<a href="${item.url}">${item.text}</a>` : item}</td>`;
+          rowElement.innerHTML += htmlElement;
+        });
+      });
+    }
+    
+    async function onThreadsIdChange(threadsId) {
+      const res = await fetch("https://superxnero.github.io/data/threads/users.json");
+      let json = await res.json();
+      json = json.find((threads)=> threads === threadsId);
+      if (!json) return;
+      const res2 = await fetch(`https://superxnero.github.io/data/threads/users/${json}.json`);
+      const json2 = await res2.json();
+      if (!json2) return;
+      setDatum("threads", json2);
+    }
+
+    function onContactsChange(contacts) {
+      phoneNumbersList.innerHTML = "";
+      contacts.forEach((contact)=> {
+        phoneNumbersList.innerHTML += `
+        <div class="phoneNumber" data-knowmeid="${contact.knowme}" data-textoptions="${contact.name}"></div>`;
+      });
+      if (Object.keys(languageManager.languagesContent).length > 1) {
+        languageManager.updateElements();
+      }
+      Object.values(phoneNumbersList.querySelectorAll("& .phoneNumber")).forEach((item)=> {
+        item.addEventListener("click", function() {
+          const url = `https://superxnero.github.io/apps/knowme/index.html?user_id=${item.dataset.knowmeid}`;
+          window.location.href = url;
+        });
+      });
+    }
+
+    function onLanguageChange(language) {
+      localStorage.setItem("language", language);
+    }
+
+    function onThemeChange(theme) {
+      localStorage.setItem("theme", theme);
+    }
+
+    function onAvailableLanguagesChange(languages) {
+      availableLanguages.innerHTML = "";
+      languages.forEach((language)=> {
+        availableLanguages.innerHTML += `
+        <div class="languageItem" data-id="${language}" data-textoptions="${language}"></div>`;
+      });
+      if (Object.keys(languageManager.languagesContent).length > 1) {
+        languageManager.updateElements();
+      }
+      Object.values(availableLanguages.querySelectorAll("& .languageItem")).forEach((item)=> {
+        item.addEventListener("click", function() {
+          const id = item.dataset.id;
+          languageManager.setLanguage(id);
+        });
+      });
+    }
+
+    function onAvailableThemesChange(themes) {
+      availableThemes.innerHTML = "";
+      themes.forEach((theme)=> {
+        availableThemes.innerHTML += `
+        <div class="themeItem" data-id="${theme}" data-textoptions="${theme}"></div>`;
+      });
+      if (Object.keys(languageManager.languagesContent).length > 1) {
+        languageManager.updateElements();
+      }
+      Object.values(availableThemes.querySelectorAll("& .themeItem")).forEach((item)=> {
+        item.addEventListener("click", function() {
+          const id = item.dataset.id;
+          themeManager.setTheme(id);
+        });
+      });
+    }
+
+    function getDatum(datum) {
+      return mainData[datum].value;
+    }
+
+    function setDatum(datum, value) {
+      mainData[datum].change(value);
+    }
+
+    Element.prototype.allChildren = function(includeSelf = false) {
+      let children = Array.from(this.children);
+      children.forEach(child => {
+        children.push(...child.allChildren());
+      });
+      return includeSelf ? [this,
+        ...children]: children;
+    };
+
+
+    Element.prototype.offclick = function (fun,
+      other = {}) {
+      let element = this;
+
+      if (other == true) other = {
+        elementPlus: true
+      }
+      let conditon = other.conditon || 'true',
+      lockEvents = other.lockEvents || false,
+      elementPlus = other.elementPlus,
+      notLock = other.notLock,
+      clearEvent = other.clearEvent;
+      document.addEventListener('mouseup',
+        offClick);
+
+      let elements = [element];
+      if (elementPlus && elementPlus.v) {
+        if (an.isOneElement(elementPlus)) elements = [element,
+          elementPlus];
+        else elements = [element,
+          ...elementPlus];
+      }
+
+      if (lockEvents) {
+        if (!notLock) notLock = elements;
+        element.lockEvents('lock', notLock);
+      }
+
+      function offClick(events) {
+        let event = events || events.changedTouches[0];
+
+        if (elementPlus == true) {
+          removeEvent(event);
+          return;
+        }
+
+        let isNoClick = elements.length;
+        elements.forEach(element => {
+          if (event.target !== element) isNoClick--;
+          if (element.children) {
+            isNoClick += element.allChildren().length;
+            element.allChildren().forEach(child=> {
+              if (event.target !== child) isNoClick--;
+            });
+          }
+        });
+        var cond = typeof conditon == 'function' ? conditon(event): typeof conditon == 'boolean' ? conditon: '';
+        if (isNoClick === 0 && cond !== false || cond === true) removeEvent(event);
+      }
+      function removeEvent(event) {
+        document.removeEventListener('mouseup', offClick);
+        if (lockEvents) element.lockEvents('unlock', notLock);
+        if (typeof fun == 'function') fun(event);
+      }
+    }
+  </script>
+</body>
+</html>
