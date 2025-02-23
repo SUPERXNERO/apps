@@ -1,7 +1,9 @@
 <?php
     date_default_timezone_set('Asia/Riyadh'); // تحديد المنطقة الزمنية
     $current_time = date('H:i:s'); // الحصول على الوقت الحالي
-?><!DOCTYPE html><html lang="ar">
+?>
+<!DOCTYPE html>
+<html lang="ar">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
