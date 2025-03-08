@@ -559,6 +559,9 @@
       ThemeManager
     } from "https://superxnero.github.io/assets/libs/ThemeManager.js";
     import {
+      GitHubManager
+    } from "https://superxnero.github.io/assets/libs/GitHubManager.js";
+    import {
       FetchToElement
     } from "https://superxnero.github.io/assets/libs/FetchToElement.js";
     import * as an from "https://superxnero.github.io/assets/libs/another.js";
@@ -613,6 +616,8 @@
       }
     });
     const fetchToElement = new FetchToElement(true);
+    
+    const gitHubManager = new GitHubManager("", "superxnero", "apps");
 
     let mainData = {
       availableLanguages: new OnChange(onAvailableLanguagesChange),
