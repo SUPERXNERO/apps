@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>عرض القرآن الكريم</title>
+  <style>
+    * {
+      padding: 0;
+      margin: 0;
+      box-sizing: border-box;
+    }
+@font-face {
+      font-family: 'MushafNew';
+      src: url('https://superxnero.github.io/data/quran/KFGQPCAnLight.ttf') format('truetype');
+    }
+    body {
+      font-family: 'MushafNew', sans-serif;
+      background-color: #000;
+      color: #eee;
+      max-height: 100vh;
+    }
+    #header {
+      position: fixed;
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+      padding: 8px;
+      border-bottom: 10px solid #222;
+      background: #333;
+      opacity: 0;
+      pointer-events: none;
+      transition: .2s;
+    }
+    #header.show {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    #surahName {
+      flex-grow: 1;
+      text-align: center;
+      font-size: 70px;
+      pointer-events: none;
+    }
+    .menu-btn {
+      background: transparent;
+      color: white;
+      border: none;
+      padding: 4px;
+      font-size: 50px;
+      cursor: pointer;
+    }
+    .burger-menu {
+      position: fixed;
+      top: 0;
+      right: -250px;
+      width: 250px;
+      height: 100%;
+      background-color: #333;
+      border-inline-end: 10px solid #222;
+      color: white;
+      transition: 0.3s;
+      overflow: scroll;
+    }
+    .burger-menu.show {
+      right: 0;
+    }
+    .burger-menu ul {
+      list-style-type: none;
+      padding: 0;
+    }
+    .burger-menu ul li {
+      margin: 10px 0;
+      cursor: pointer;
+      font-size: 40px;
+      padding: 15px;
+      border-bottom: 1px solid #555;
+    }
+    .burger-menu ul li:last-child {
+      border-bottom: none;
+    }
+    .burger-menu ul li:hover {
+      background-color: #555;
+    }
+    .container {
+      width: 100%;
+      max-height: 100%;
+      overflow-x: hidden;
+      overflow-y: scroll;
+    }
+    #ayahText {
+      color: #eee;
+      line-height: 1.8;
+      padding: 10px 8px;
+      text-align: center;
+      transition: .1s;
+    }
+    .ayah {
+      border-bottom: 3px solid #444;
+      margin: 20px 0;
+      overflow-x: scroll;
+    }
+    .ayah:last-child {
+      border-bottom: 0;
+      margin-bottom: 0;
+    }
+    #footer {
+      position: fixed;
+      left: 0;
+      bottom: 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      background: #444;
+      border-top-left-radius: 10px;
+      border-top-right-radius: 10px;
+      overflow: hidden;
+      pointer-events: none;
+      opacity: 0;
+      transition: .2s;
+    }
+    #footer.show {
+      pointer-events: auto;
+      opacity: 1;
+    }
+    #fontSizeNumber {
+      padding: 15px;
+      font-size: 25px;
+      background: #343434;
+      min-width: 60px;
+      text-align: center;
+    }
+    /* تخصيص الـ Range */
+    #fontSize {
+      flex-grow: 1;
+      position: relative;
+      -webkit-appearance: none;
+      width: 100%;
+      height: 15px;
+      background: #232323;
+      margin-inline: 25px;
+      border-radius: 10px;
+      outline: none;
+      transition: 0.2s;
+    }
+    #fontSize::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 25px;
+      height: 25px;
+      background: #4CAF50;
+      border-radius: 50%;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    #fontSize::-webkit-slider-thumb:hover {
+      background: #45a049;
+    }
+    #fontSize::-moz-range-thumb {
+      width: 25px;
+      height: 25px;
+      background: #4CAF50;
+      border-radius: 50%;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    #fontSize::-moz-range-thumb:hover {
+      background: #45a049;
+    }
+    #fontSize::-ms-thumb {
+      width: 25px;
+      height: 25px;
+      background: #4CAF50;
+      border-radius: 50%;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    #fontSize::-ms-thumb:hover {
+      background: #45a049;
+    }
+    .bismillah {
+      color: #4CAF50;
+      /* لون أخضر مميز */
+      font-style: italic;
+      margin-bottom: 10px;
+      font-size: 1.2em;
+      /* حجم أكبر قليلاً */
+    }
+  </style>
+</head>
+<body>
+  <div id="header">
+    <button class="menu-btn">☰</button>
+    <div id="surahName"></div>
+  </div>
+
+  <div class="burger-menu" id="burgerMenu">
+    <ul id="surahList">
+      <!-- قائمة السور ستظهر هنا -->
+    </ul>
+  </div>
+
+  <div class="container">
+    <div id="ayahText">
+      <!-- نص الآية سيتم تحميله هنا -->
+    </div>
+    <div class="ayah-divider"></div>
+  </div>
+
+  <div id="footer">
+    <input type="range" id="fontSize" min="25" max="250" />
+    <span id="fontSizeNumber"></span>
+  </div>
+
+  <script type="module">
+    let currentSurahIndex = 0;
+    let surahsData = {};
+    const surahNames = ["الفاتحة", "البقرة", "آل عمران", "النساء", "المائدة", "الأنعام", "الأعراف", "الأنفال", "التوبة", "يونس", "هود", "يوسف", "الرعد", "إبراهيم", "الحجر", "النحل", "الإسراء", "الكهف", "مريم", "طه", "الأنبياء", "الحج", "المؤمنون", "النور", "الفرقان", "الشعراء", "النمل", "القصص", "العنكبوت", "الروم", "لقمان", "السجدة", "الأحزاب", "سبأ", "فاطر", "يس", "الصافات", "ص", "الزمر", "غافر", "فصلت", "الشورى", "الزخرف", "الدخان", "الجاثية", "الأحقاف", "محمد", "الفتح", "الحجرات", "ق", "الذاريات", "الطور", "النجم", "القمر", "الرحمن", "الواقعة", "الحديد", "المجادلة", "الحشر", "الممتحنة", "الصف", "الجمعة", "المنافقون", "التغابن", "الطلاق", "التحريم", "الملك", "القلم", "الحاقة", "المعارج", "نوح", "الجن", "المزمل", "المدثر", "القيامة", "الإنسان", "المرسلات", "النبأ", "النازعات", "عبس", "التكوير", "الانفطار", "المطففين", "الانشقاق", "البروج", "الطارق", "الأعلى", "الغاشية", "الفجر", "البلد", "الشمس", "الليل", "الضحى", "الشرح", "التين", "العلق", "القدر", "البينة", "الزلزلة", "العاديات", "القارعة", "التكاثر", "العصر", "الهمزة", "الفيل", "قريش", "الماعون", "الكوثر", "الكافرون", "النصر", "المسد", "الإخلاص", "الفلق", "الناس"];
+
+    surahNames.forEach((surahName, i) => {
+      const li = document.createElement('li');
+      li.textContent = (i+1) + ". " + surahName;
+      li.onclick = () => {
+        loadSurah(i);
+        toggleMenu(true);
+      }
+      document.getElementById('surahList').appendChild(li);
+    });
+
+    let burgerMenuOpened = false;
+    let fontSize = 120;
+
+    function updateFontSize(value) {
+      fontSize = value;
+      document.getElementById("fontSizeNumber").textContent = value;
+      document.getElementById("ayahText").style.fontSize = `${value}px`;
+    }
+
+    document.getElementById("fontSize").value = fontSize;
+    updateFontSize(document.getElementById("fontSize").value);
+
+    document.getElementById("fontSize").addEventListener("input", function() {
+      const value = document.getElementById("fontSize").value;
+      
+      updateFontSize(value);
+
+      //document.getElementById("header").classList.remove("show");
+    });
+
+    document.body.addEventListener("click", function() {
+      setTimeout(() => {
+        document.getElementById("footer").classList.toggle("show");
+        if (burgerMenuOpened) {
+          return;
+        }
+        document.getElementById("header").classList.toggle("show");
+      },
+        100);
+    });
+
+    document.querySelector(".menu-btn").addEventListener("click", toggleMenu);
+
+    // دالة لتحميل نص السورة
+    async function loadSurah(index) {
+      if (!surahsData[index]) {
+        try {
+          const response = await fetch(`https://superxnero.github.io/data/quran/surah/surah_${index+1}.json`);
+          const data = await response.json();
+          surahsData[index] = data;
+        } catch (err) {
+          console.error(`خطأ في تحميل السورة ${index}: ${err}`);
+          return;
+        }
+      }
+      document.getElementById("surahName").textContent = surahNames[index];
+      const surah = surahsData[index];
+      let verseKeys = Object.keys(surah.verse);
+      let versesText = '';
+      // إضافة البسملة إذا لم تكن السورة هي التوبة (index = 8)
+      if (index !== 8 && index !== 0) {
+        versesText += `<div class="ayah bismillah">بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ</div>`;
+        verseKeys = verseKeys.slice(1);
+      }
+      verseKeys.forEach(verseKey => {
+        versesText += `<div class="ayah">${surah.verse[verseKey]}</div>`;
+      });
+
+      document.getElementById('ayahText').innerHTML = versesText;
+      currentSurahIndex = index;
+      
+      updateFontSize(fontSize);
+    }
+
+    // دالة لتبديل قائمة البرجر
+    function toggleMenu() {
+      document.getElementById('burgerMenu').classList.add("show");
+      burgerMenuOpened = true;
+      document.getElementById('burgerMenu').offclick(() => {
+        document.getElementById('burgerMenu').classList.remove("show");
+        burgerMenuOpened = false;
+      });
+    }
+
+    // تحميل أول سورة عند فتح الصفحة
+    window.onload = function () {
+      loadSurah(0); // تحميل السورة الأولى
+    }
+
+    Element.prototype.allChildren = function(includeSelf = false) {
+      let children = Array.from(this.children);
+      children.forEach(child => {
+        children.push(...child.allChildren());
+      });
+      return includeSelf ? [this,
+        ...children]: children;
+    };
+
+
+    Element.prototype.offclick = function (fun,
+      other = {}) {
+      let element = this;
+
+      if (other == true) other = {
+        elementPlus: true
+      }
+      let conditon = other.conditon || 'true',
+      lockEvents = other.lockEvents || false,
+      elementPlus = other.elementPlus,
+      notLock = other.notLock,
+      clearEvent = other.clearEvent;
+      document.addEventListener('mouseup',
+        offClick);
+
+      function isOneElement(element) {
+        if (element instanceof Elementt) {
+          return true;
+        } else {
+          return false;
+        }
+      }
+
+      let elements = [element];
+      if (elementPlus && elementPlus.v) {
+        if (isOneElement(elementPlus)) elements = [element,
+          elementPlus];
+        else elements = [element,
+          ...elementPlus];
+      }
+
+      if (lockEvents) {
+        if (!notLock) notLock = elements;
+        element.lockEvents('lock', notLock);
+      }
+
+      function offClick(events) {
+        let event = events || events.changedTouches[0];
+
+        if (elementPlus == true) {
+          removeEvent(event);
+          return;
+        }
+
+        let isNoClick = elements.length;
+        elements.forEach(element => {
+          if (event.target !== element) isNoClick--;
+          if (element.children) {
+            isNoClick += element.allChildren().length;
+            element.allChildren().forEach(child=> {
+              if (event.target !== child) isNoClick--;
+            });
+          }
+        });
+        var cond = typeof conditon == 'function' ? conditon(event): typeof conditon == 'boolean' ? conditon: '';
+        if (isNoClick === 0 && cond !== false || cond === true) removeEvent(event);
+      }
+      function removeEvent(event) {
+        document.removeEventListener('mouseup', offClick);
+        if (lockEvents) element.lockEvents('unlock', notLock);
+        if (typeof fun == 'function') fun(event);
+      }
+    }
+  </script>
+</body>
+</html>
