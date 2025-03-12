@@ -12,7 +12,7 @@
     }
 @font-face {
       font-family: 'MushafNew';
-      src: url('https://superxnero.github.io/data/quran/fonts/UthmanicHafs_V22.ttf') format('truetype');
+      src: url('/storage/5A67-DF85/GitHub/data/quran/fonts/UthmanicHafs_V22.ttf') format('truetype');
     }
     body {
       font-family: 'MushafNew', sans-serif;
@@ -266,7 +266,7 @@
     async function loadSurah(index) {
       if (!surahsData[index]) {
         try {
-          const response = await fetch(`https://superxnero.github.io/data/quran/surah/surah_${index+1}.json`);
+          const response = await fetch(`/storage/5A67-DF85/GitHub/data/quran/surah/surah_${index+1}.json`);
           const data = await response.json();
           surahsData[index] = data;
         } catch (err) {
