@@ -240,6 +240,10 @@
     <input type="range" id="fontSize" min="18" max="250" />
     <span id="fontSizeNumber"></span>
   </div>
+  
+  <script>
+    (function () {var script=document.createElement('script');script.src="//cdn.jsdelivr.net/npm/eruda";document.body.appendChild(script); script.onload = function () { eruda.init() } })();
+  </script>
 
   <script type="module">
     import {
@@ -822,10 +826,6 @@
         if (typeof fun == 'function') fun(event);
       }
     }
-  </script>
-  
-  <script>
-    (function () {var script=document.createElement('script');script.src="//cdn.jsdelivr.net/npm/eruda";document.body.appendChild(script); script.onload = function () { eruda.init() } })();
   </script>
 </body>
 </html>
