@@ -221,11 +221,11 @@
 </head>
 <body>
   <div id="header">
-    <button class="menu-btn">☰</button>
+    <button id="menuBtn" class="menu-btn">☰</button>
     <div id="surahName"></div>
   </div>
 
-  <div class="burger-menu" id="burgerMenu">
+  <div id="burgerMenu"> class="burger-menu">
     <ul id="surahList">
       <!-- قائمة السور ستظهر هنا -->
     </ul>
@@ -258,7 +258,7 @@
 
     const header = q("#header");
     const surahName = q("#surahName");
-    const menuBtn = q(".menu-btn");
+    const menuBtn = q("#menuBtn");
     const burgerMenu = q("#burgerMenu");
     const surahList = q("#surahList");
     const container = q("#container");
