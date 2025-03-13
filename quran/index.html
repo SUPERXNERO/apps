@@ -703,13 +703,13 @@
       }
 
       function run(key, type) {
+        if (type === "save") {
+          mainData[key].value = data[key];
+        }
         if ((excludeOrInclude === "exclude" && excluded_included.includes(key)) || (excludeOrInclude === "include" && !excluded_included.includes(key))) {
           return;
         }
-
-        if (type === "save") {
-          mainData[key].value = data[key];
-        } else if (type === "set") {
+        if (type === "set") {
           setDatum(key, getDatum(key), false);
         }
       }
