@@ -585,7 +585,7 @@
       //
     }
 
-    function onSurahIndexChange(surahIndex) {
+    async function onSurahIndexChange(surahIndex) {
       if (getDatum("surahOrPage") === "surah") {
         setDatum("activeSurahs", [surahIndex]);
         const ayahsText = surahs.querySelector(`[data-id="${surahIndex}"]`);
@@ -608,7 +608,7 @@
 
       surahName.textContent = surahNames[surahIndex];
 
-      loadSurah(surahIndex,
+      await loadSurah(surahIndex,
         getDatum("surahOrPage") === "surah" ? true: false);
     }
 
