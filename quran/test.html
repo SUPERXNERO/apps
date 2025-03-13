@@ -13,12 +13,13 @@
     }
     @font-face {
       font-family: 'MushafNew';
-      src: url('https://superxnero.github.io/data/quran/fonts/KFGQPCAnLight.ttf') format('truetype');
+      src: url('/storage/5A67-DF85/GitHub/data/quran/fonts/UthmanicHafs_V22.ttf') format('truetype');
     }
     body {
       font-family: 'MushafNew', sans-serif;
       background: var(--theme-background);
-      max-height: 100% !important;
+      height: 100vh;
+      overflow: hidden;
     }
     #header {
       position: fixed;
@@ -93,7 +94,7 @@
     }
     #surahs, #pages {
       display: flex;
-      overflow-x: hidden;
+      overflow: hidden;
       min-width: 100%;
       min-height: 100%;
       scroll-behavior: smooth;
