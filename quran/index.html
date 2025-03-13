@@ -271,10 +271,7 @@
     const themeManager = new ThemeManager({
       saveAll: true,
       baseUrl: "https://superxnero.github.io/themes-content/quran/",
-      defaultTheme: "dark",
-      changeEvents: {
-        "theme": onThemeChange
-      }
+      defaultTheme: "dark"
     });
 
     let mainData = {
@@ -664,6 +661,9 @@
     }
 
     function onActiveSurahsChange(activeSurahs) {
+      if (activeSurahs?.constructor !== Array) {
+        return;
+      }
       const children = Object.values(surahList.children);
       if (children.length > 0) {
         children.forEach((child)=> {
@@ -685,11 +685,6 @@
 
     function onAutoFontSizeChange(autoFontSize) {
       //
-    }
-
-    function onThemeChange(theme) {
-      localStorage.setItem("theme",
-        theme);
     }
 
     function setDataFromLocalStorage(fun) {
