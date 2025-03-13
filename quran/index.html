@@ -391,7 +391,6 @@
 
     const handleTouchEnd = (isSurah) => {
       let diff = startX - endX;
-      console.log(startX, endX);
       if (isNaN(diff)) return;
       if (Math.abs(diff) > threshold) {
         if (diff < 0) {
