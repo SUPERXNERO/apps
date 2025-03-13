@@ -457,7 +457,7 @@
           surahsData[index] = data;
           setDatum("surahsData", surahsData);
         } catch (err) {
-          console.error(`خطأ في تحميل السورة ${index}: ${err}`);
+          alert(`خطأ في تحميل السورة ${index}: ${err}`);
           return;
         }
       }
@@ -495,7 +495,7 @@
           const data = await response.json();
           setDatum("pagesData", data);
         } catch (err) {
-          console.error(`خطأ في تحميل بيانات الصفحات: ${err}`);
+          alert(`خطأ في تحميل بيانات الصفحات: ${err}`);
           return;
         }
       }
