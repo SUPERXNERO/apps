@@ -452,7 +452,7 @@
     }
 
     async function loadSurah(index, insert) {
-      alert(index)-
+      alert(index);
       if (!getDatum("surahsData")[index]) {
         try {
           const response = await fetch(`https://superxnero.github.io/data/quran/surah/surah_${index+1}.json`);
