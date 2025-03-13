@@ -369,6 +369,7 @@
 
     const handleTouchStart = (e) => {
       startX = e.touches[0].clientX;
+      endX = undefined;
       if (getDatum("surahOrPage") === "surah") {
         scrollLeft = surahs.scrollLeft;
       } else if (getDatum("surahOrPage") === "page") {
@@ -420,9 +421,13 @@
         ayahsText.classList.remove("smooth-behavior");
       } else {
         if (isSurah) {
-          setDatum("surahIndex", getDatum("surahIndex"));
+          const ayahsText = surahs.querySelector(`[data-id="${getDatum("surahIndex")}"]`);
+          surahs.style.scrollBehavior = "smooth";
+          surahs.scrollLeft = ayahsText.offsetLeft;
         } else {
-          setDatum("pageIndex", getDatum("pageIndex"));
+          const ayahsText = pages.querySelector(`[data-id="${getDatum("pageIndex")}"]`);
+          pages.style.scrollBehavior = "smooth";
+          pages.scrollLeft = ayahsText.offsetLeft;
         }
       }
     };
