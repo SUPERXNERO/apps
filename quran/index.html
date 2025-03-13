@@ -615,8 +615,8 @@
         getDatum("surahOrPage") === "surah" ? true: false);
     }
 
-    function onPageIndexChange(pageIndex) {
-      loadPages(pageIndex);
+    async function onPageIndexChange(pageIndex) {
+      await loadPages(pageIndex);
       if (getDatum("surahOrPage") === "page") {
         insertPage(pageIndex);
         if (pageIndex > 0) {
