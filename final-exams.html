@@ -1,0 +1,1550 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-VBHMN6YSS1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+    gtag('js', new Date());
+    gtag('config', 'G-VBHMN6YSS1');
+  </script>
+  
+  <title>جدول الامتحانات النهائية</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Cairo', sans-serif;
+      background-color: #111827;
+      color: #d1d5db;
+    }
+    th {
+      position: sticky;
+      top: 0;
+      background-color: #1f2937;
+      z-index: 10;
+    }
+    .btn-3d {
+      position: relative;
+      background-color: #10b981;
+      color: white;
+      border: none;
+      border-radius: 0.5rem;
+      padding: 0.75rem 1.5rem;
+      font-weight: 700;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.1s ease-in-out;
+      box-shadow: 0 4px #047857;
+    }
+    .btn-3d:hover {
+      background-color: #059669;
+    }
+    .btn-3d:active {
+      transform: translateY(2px);
+      box-shadow: 0 2px #047857;
+    }
+    td {
+      text-wrap: nowrap;
+    }
+    /* Styles for the Modal */
+    .modal-backdrop {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 50;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s ease, visibility 0.3s ease;
+    }
+    .modal-backdrop.visible {
+      opacity: 1;
+      visibility: visible;
+    }
+    .modal-content {
+      background-color: #1f2937;
+      padding: 2rem;
+      border-radius: 0.75rem;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+      width: 90%;
+      max-width: 400px;
+      text-align: center;
+    }
+    /* Hide main content initially */
+    #main-container.hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body class="bg-gray-900 text-gray-300">
+
+  <div id="info-modal" class="modal-backdrop">
+    <div class="modal-content">
+      <h2 class="text-2xl font-bold text-white mb-3">مرحباً بك</h2>
+      <p class="text-gray-400 mb-6">من أجل عرض جدول الامتحانات الخاص بك، يرجى إدخال البيانات التالية.</p>
+      <form id="student-form" class="space-y-4">
+        <div id="student-id-field">
+          <label for="studentId" class="block text-right mb-1 text-gray-300">الرقم الجامعي</label>
+          <input type="text" id="studentId" name="studentId" class="w-full bg-gray-700 border border-gray-600 text-white rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-500" required>
+        </div>
+        <div>
+          <label for="studentClass" class="block text-right mb-1 text-gray-300">اختر الفصل</label>
+          <select id="studentClass" name="studentClass" class="w-full bg-gray-700 border border-gray-600 text-white rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-500" required>
+            <option value="" disabled selected>-- اختر فصلك الدراسي --</option>
+            </select>
+        </div>
+        <button type="submit" class="w-full btn-3d mt-4">عرض الجدول</button>
+      </form>
+    </div>
+  </div>
+
+  <div id="main-container" class="container mx-auto p-4 sm:p-6 lg:p-8 hidden">
+    <header class="text-center mb-8">
+      <div class="inline-block bg-gray-800 p-4 rounded-full mb-4">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+        </svg>
+      </div>
+      <h1 class="text-3xl md:text-4xl font-bold text-white">جدول الامتحانات النهائية</h1>
+      <p class="text-lg text-gray-400 mt-2">
+        العام الجامعي 2024-2025 | <span id="current-class-display" class="font-bold text-emerald-400"></span>
+        <button id="change-class-btn" class="text-sm text-gray-500 hover:text-emerald-400 transition-colors underline ml-2">[تغيير الفصل]</button>
+      </p>
+    </header>
+
+    <main class="bg-gray-800 rounded-lg shadow-lg overflow-hidden">
+      <div class="overflow-x-auto">
+        <table class="min-w-full text-sm text-center">
+          <thead class="bg-gray-700 text-gray-300 uppercase text-xs tracking-wider">
+            <tr>
+              <th class="py-3 px-4">اليوم والتاريخ</th>
+              <th class="py-3 px-4">الوقت</th>
+              <th class="py-3 px-4">القاعة</th>
+              <th class="py-3 px-4">المادة</th>
+              <th class="py-3 px-4">المحاضر</th>
+            </tr>
+          </thead>
+          <tbody id="schedule-body" class="divide-y divide-gray-700">
+            </tbody>
+        </table>
+      </div>
+    </main>
+
+    <section class="mt-10 bg-gray-800 p-6 rounded-lg shadow-lg border-r-4 border-emerald-500">
+      <h2 class="text-2xl font-bold text-white mb-4">إرشادات هامة للطلاب</h2>
+      <ul id="instructions-list" class="space-y-3 list-decimal list-inside text-gray-300">
+        </ul>
+    </section>
+  </div>
+
+  <script>
+    const scheduleData = [{
+      "dayDate": "7/09/2025 Sunday",
+      "time": "08:30-10:30",
+      "class": "B1M/E",
+      "subject": "Mathematics II",
+      "lecturer": "Dr. Maysoon"
+    },
+      {
+        "dayDate": "7/09/2025 Sunday",
+        "time": "08:30-10:30",
+        "class": "B1E/E",
+        "subject": "Mathematics II",
+        "lecturer": "Dr. Maysoon"
+      },
+      {
+        "dayDate": "7/09/2025 Sunday",
+        "time": "08:30-10:30",
+        "class": "B1C/E",
+        "subject": "Mathematics II",
+        "lecturer": "Dr. Salem Barahma"
+      },
+      {
+        "dayDate": "7/09/2025 Sunday",
+        "time": "08:30-10:30",
+        "class": "B1CS/E",
+        "subject": "Mathematics II",
+        "lecturer": "Dr. Maysoon"
+      },
+      {
+        "dayDate": "7/09/2025 Sunday",
+        "time": "08:30-10:30",
+        "class": "B1EC/E",
+        "subject": "Mathematics II",
+        "lecturer": "Miss. Abeer Ahmed"
+      },
+      {
+        "dayDate": "7/09/2025 Sunday",
+        "time": "08:30-10:30",
+        "class": "B1IT/E",
+        "subject": "Mathematics II",
+        "lecturer": "Dr. Fadhel Alsarahi"
+      },
+      {
+        "dayDate": "7/09/2025 Sunday",
+        "time": "08:30-10:30",
+        "class": "B1MAR/E",
+        "subject": "Mathematics II",
+        "lecturer": ""
+      },
+      {
+        "dayDate": "7/09/2025 Sunday",
+        "time": "08:30-10:30",
+        "class": "B1MI/E",
+        "subject": "Mathematics II",
+        "lecturer": "Dr. Salem Barahma"
+      },
+      {
+        "dayDate": "7/09/2025 Sunday",
+        "time": "11:30-01:30",
+        "class": "B3M/E",
+        "subject": "Mechanics of Machines",
+        "lecturer": "Dr. Al-Hunishi"
+      },
+      {
+        "dayDate": "7/09/2025 Sunday",
+        "time": "11:30-01:30",
+        "class": "B3E/E",
+        "subject": "Digital Electronics",
+        "lecturer": "Dr. Farial"
+      },
+      {
+        "dayDate": "7/09/2025 Sunday",
+        "time": "11:30-01:30",
+        "class": "B3C/E",
+        "subject": "Reinforced Concrete Design I",
+        "lecturer": "Mr. Marwan Alowdi"
+      },
+      {
+        "dayDate": "7/09/2025 Sunday",
+        "time": "11:30-01:30",
+        "class": "B3CS/E",
+        "subject": "Electronic Instrumentation",
+        "lecturer": "Dr. Galal Awadh"
+      },
+      {
+        "dayDate": "7/09/2025 Sunday",
+        "time": "11:30-01:30",
+        "class": "B3EC/E",
+        "subject": "Control Systems",
+        "lecturer": "Dr. Aidaroos Adas"
+      },
+      {
+        "dayDate": "7/09/2025 Sunday",
+        "time": "11:30-01:30",
+        "class": "B3IT/E",
+        "subject": "Digital Signal Processing",
+        "lecturer": "Mr. Moh'd Naser"
+      },
+      {
+        "dayDate": "7/09/2025 Sunday",
+        "time": "11:30-01:30",
+        "class": "B3A/E",
+        "subject": "Reinforced Concrete Structure",
+        "lecturer": "Dr. K. Alshamsi"
+      },
+      {
+        "dayDate": "7/09/2025 Sunday",
+        "time": "11:30-01:30",
+        "class": "B3MAR/E",
+        "subject": "Fundamental of Machine Design",
+        "lecturer": "Mr. Erfan"
+      },
+      {
+        "dayDate": "7/09/2025 Sunday",
+        "time": "11:30-01:30",
+        "class": "B3MI/E",
+        "subject": "Machine Element Design",
+        "lecturer": "Mr. Erfan"
+      },
+      {
+        "dayDate": "7/09/2025 Sunday",
+        "time": "11:30-01:30",
+        "class": "B5EC/E",
+        "subject": "Digital Video and Audio",
+        "lecturer": "Dr. Musa"
+      },
+      {
+        "dayDate": "8/09/2025 Monday",
+        "time": "08:30-10:30",
+        "class": "B2M/E",
+        "subject": "Mathematics IV",
+        "lecturer": "Mr. Yasser Hitare"
+      },
+      {
+        "dayDate": "8/09/2025 Monday",
+        "time": "08:30-10:30",
+        "class": "B2E/E",
+        "subject": "Electronics I",
+        "lecturer": "Mr. Ahmed Moh'd"
+      },
+      {
+        "dayDate": "8/09/2025 Monday",
+        "time": "08:30-10:30",
+        "class": "B2C/E",
+        "subject": "Mechanics of Solids",
+        "lecturer": "Dr. A. Barahim"
+      },
+      {
+        "dayDate": "8/09/2025 Monday",
+        "time": "08:30-10:30",
+        "class": "B2CS/E",
+        "subject": "Mathematics IV",
+        "lecturer": "Mr.Yasser Hitare"
+      },
+      {
+        "dayDate": "8/09/2025 Monday",
+        "time": "08:30-10:30",
+        "class": "B2EC/E",
+        "subject": "Mathematics IV",
+        "lecturer": "Mr.Yasser Hitare"
+      },
+      {
+        "dayDate": "8/09/2025 Monday",
+        "time": "08:30-10:30",
+        "class": "B2IT/E",
+        "subject": "Mathematics IV",
+        "lecturer": "Dr. Alaa Obad"
+      },
+      {
+        "dayDate": "8/09/2025 Monday",
+        "time": "08:30-10:30",
+        "class": "B2A/E",
+        "subject": "Architectural Construction II",
+        "lecturer": "Dr. Ahmed Alhadad"
+      },
+      {
+        "dayDate": "8/09/2025 Monday",
+        "time": "08:30-10:30",
+        "class": "B2MAR/E",
+        "subject": "Electronic Fundamentals.",
+        "lecturer": "Miss. Shada"
+      },
+      {
+        "dayDate": "8/09/2025 Monday",
+        "time": "08:30-10:30",
+        "class": "B2MI/E",
+        "subject": "Electronic Fundamentals",
+        "lecturer": "Mr. Ahmed Moh'd"
+      },
+      {
+        "dayDate": "8/09/2025 Monday",
+        "time": "11:30-01:30",
+        "class": "B4M/E",
+        "subject": "Dynamic of Machinery",
+        "lecturer": "Dr. Seraj"
+      },
+      {
+        "dayDate": "8/09/2025 Monday",
+        "time": "11:30-01:30",
+        "class": "B4M/E",
+        "subject": "Energy Conversion",
+        "lecturer": "Dr. M. Mukbel"
+      },
+      {
+        "dayDate": "8/09/2025 Monday",
+        "time": "11:30-01:30",
+        "class": "B4E/E",
+        "subject": "Computer Aided Power System Analysis",
+        "lecturer": "Dr. A. Hazza"
+      },
+      {
+        "dayDate": "8/09/2025 Monday",
+        "time": "11:30-01:30",
+        "class": "B4CS/E",
+        "subject": "Operating Systems",
+        "lecturer": "Dr. K. Obood"
+      },
+      {
+        "dayDate": "8/09/2025 Monday",
+        "time": "11:30-01:30",
+        "class": "B4EC/E",
+        "subject": "Electronic Communication Circuits",
+        "lecturer": "Dr. Yasser Mahmood"
+      },
+      {
+        "dayDate": "8/09/2025 Monday",
+        "time": "11:30-01:30",
+        "class": "B4IT/E",
+        "subject": "Selected Topics in IT",
+        "lecturer": "Dr. Wadah"
+      },
+      {
+        "dayDate": "8/09/2025 Monday",
+        "time": "11:30-01:30",
+        "class": "B4A/E",
+        "subject": "Quantity Surveying & Estimation",
+        "lecturer": "Dr. K. Alshamsi"
+      },
+      {
+        "dayDate": "8/09/2025 Monday",
+        "time": "11:30-01:30",
+        "class": "B4MI/E",
+        "subject": "Digital Signal Processing",
+        "lecturer": "Mr. Adel A.Rhman"
+      },
+      {
+        "dayDate": "10/09/2025 Wednesday",
+        "time": "08:30-10:30",
+        "class": "B1M/E",
+        "subject": "Arabic Language II",
+        "lecturer": "Mr. Saleh Qassem"
+      },
+      {
+        "dayDate": "10/09/2025 Wednesday",
+        "time": "08:30-10:30",
+        "class": "B1E/E",
+        "subject": "Arabic Language II",
+        "lecturer": "Mr. Ali"
+      },
+      {
+        "dayDate": "10/09/2025 Wednesday",
+        "time": "08:30-10:30",
+        "class": "B1C/E",
+        "subject": "Arabic Language II",
+        "lecturer": "Mr. Saleh Qassem"
+      },
+      {
+        "dayDate": "10/09/2025 Wednesday",
+        "time": "08:30-10:30",
+        "class": "B1CS/E",
+        "subject": "Arabic Language II",
+        "lecturer": "Mr. Ali"
+      },
+      {
+        "dayDate": "10/09/2025 Wednesday",
+        "time": "08:30-10:30",
+        "class": "B1EC/E",
+        "subject": "Arabic Language II",
+        "lecturer": "Mr. Ali"
+      },
+      {
+        "dayDate": "10/09/2025 Wednesday",
+        "time": "08:30-10:30",
+        "class": "B1IT/E",
+        "subject": "Arabic Language II",
+        "lecturer": "Dr. Ahmed Ba-abad"
+      },
+      {
+        "dayDate": "10/09/2025 Wednesday",
+        "time": "08:30-10:30",
+        "class": "B1A/E",
+        "subject": "Arabic Language II",
+        "lecturer": "Dr. Ahmed Ba-abad"
+      },
+      {
+        "dayDate": "10/09/2025 Wednesday",
+        "time": "08:30-10:30",
+        "class": "B1MAR/E",
+        "subject": "Arabic Language II",
+        "lecturer": "Mr. Saleh Qassem"
+      },
+      {
+        "dayDate": "10/09/2025 Wednesday",
+        "time": "08:30-10:30",
+        "class": "B1MI/E",
+        "subject": "Arabic Language II",
+        "lecturer": "Dr. Ahmed Ba-abad"
+      },
+      {
+        "dayDate": "10/09/2025 Wednesday",
+        "time": "11:30-01:30",
+        "class": "B3M/E",
+        "subject": "Strength of Materials II",
+        "lecturer": "Dr. H. Gubran"
+      },
+      {
+        "dayDate": "10/09/2025 Wednesday",
+        "time": "11:30-01:30",
+        "class": "B3E/E",
+        "subject": "Control Systems I",
+        "lecturer": "Dr. Hanan Buhani"
+      },
+      {
+        "dayDate": "10/09/2025 Wednesday",
+        "time": "11:30-01:30",
+        "class": "B3C/E",
+        "subject": "Structural Analysis II",
+        "lecturer": "Mr. Bassam"
+      },
+      {
+        "dayDate": "10/09/2025 Wednesday",
+        "time": "11:30-01:30",
+        "class": "B3CS/E",
+        "subject": "Software Engineering",
+        "lecturer": "Mr. Amgad Fahmi"
+      },
+      {
+        "dayDate": "10/09/2025 Wednesday",
+        "time": "11:30-01:30",
+        "class": "B3EC/E",
+        "subject": "Electromagnetic Waves",
+        "lecturer": "Mr. Adel A.Rhman"
+      },
+      {
+        "dayDate": "10/09/2025 Wednesday",
+        "time": "11:30-01:30",
+        "class": "B3IT/E",
+        "subject": "Network and Internet Technology",
+        "lecturer": "Dr. Gamal Moh'd"
+      },
+      {
+        "dayDate": "10/09/2025 Wednesday",
+        "time": "11:30-01:30",
+        "class": "B3MAR/E",
+        "subject": "Digital Electronics & Microprocessors",
+        "lecturer": "Miss. Hend Ali"
+      },
+      {
+        "dayDate": "10/09/2025 Wednesday",
+        "time": "11:30-01:30",
+        "class": "B3MI/E",
+        "subject": "Engineering Probability & Statistics",
+        "lecturer": "Mr. Fares"
+      },
+      {
+        "dayDate": "10/09/2025 Wednesday",
+        "time": "11:30-01:30",
+        "class": "B5CS/E",
+        "subject": "Elective II: Network Security",
+        "lecturer": "Dr. K. Obood"
+      },
+      {
+        "dayDate": "10/09/2025 Wednesday",
+        "time": "11:30-01:30",
+        "class": "B5C/E",
+        "subject": "Elective II: Coastal Engineering",
+        "lecturer": "Dr. Z. Othman"
+      },
+      {
+        "dayDate": "10/09/2025 Wednesday",
+        "time": "11:30-01:30",
+        "class": "B5C/E",
+        "subject": "Elective II: Traffic Engineering",
+        "lecturer": "Dr. Ali Abdo"
+      },
+      {
+        "dayDate": "11/09/2025 Thursday",
+        "time": "08:30-10:30",
+        "class": "B2M/E",
+        "subject": "Manufacturing Sciences",
+        "lecturer": "Dr. Fawaz Ahmed"
+      },
+      {
+        "dayDate": "11/09/2025 Thursday",
+        "time": "08:30-10:30",
+        "class": "B2E/E",
+        "subject": "Thermodynamics",
+        "lecturer": "Mr. Tareq"
+      },
+      {
+        "dayDate": "11/09/2025 Thursday",
+        "time": "08:30-10:30",
+        "class": "B2C/E",
+        "subject": "Surveying I",
+        "lecturer": "Dr. Fahmi Hekmet"
+      },
+      {
+        "dayDate": "11/09/2025 Thursday",
+        "time": "08:30-10:30",
+        "class": "B2CS/E",
+        "subject": "Electronic Circuits",
+        "lecturer": "Dr. Awadh Bawazeer"
+      },
+      {
+        "dayDate": "11/09/2025 Thursday",
+        "time": "08:30-10:30",
+        "class": "B2EC/E",
+        "subject": "Engineering Mechanics",
+        "lecturer": "Mr. Emad Alwali"
+      },
+      {
+        "dayDate": "11/09/2025 Thursday",
+        "time": "08:30-10:30",
+        "class": "B2IT/E",
+        "subject": "Object Oriented Programming (using C++)",
+        "lecturer": "Dr. Subhi Bahudaila"
+      },
+      {
+        "dayDate": "11/09/2025 Thursday",
+        "time": "08:30-10:30",
+        "class": "B2A/E",
+        "subject": "Electrical Installations",
+        "lecturer": "Mr. Moh'd Alsayed"
+      },
+      {
+        "dayDate": "11/09/2025 Thursday",
+        "time": "08:30-10:30",
+        "class": "B2MAR/E",
+        "subject": "Dynamics",
+        "lecturer": "Dr. F. Alabbadi"
+      },
+      {
+        "dayDate": "11/09/2025 Thursday",
+        "time": "08:30-10:30",
+        "class": "B2MI/E",
+        "subject": "Thermal Science",
+        "lecturer": "Dr. M. Garada"
+      },
+      {
+        "dayDate": "11/09/2025 Thursday",
+        "time": "11:30-01:30",
+        "class": "B4M/E",
+        "subject": "Fracture Mechanics",
+        "lecturer": "Mr. Emad Alwali"
+      },
+      {
+        "dayDate": "11/09/2025 Thursday",
+        "time": "11:30-01:30",
+        "class": "B4M/E",
+        "subject": "Fluid Machinery",
+        "lecturer": "Dr. Fawaz Ahmed"
+      },
+      {
+        "dayDate": "11/09/2025 Thursday",
+        "time": "11:30-01:30",
+        "class": "B4E/E",
+        "subject": "Electrical Machines III",
+        "lecturer": "Mr. Akram Alsharif"
+      },
+      {
+        "dayDate": "11/09/2025 Thursday",
+        "time": "11:30-01:30",
+        "class": "B4C/E",
+        "subject": "Transportation Engineering II",
+        "lecturer": "Dr. Farid A.karim"
+      },
+      {
+        "dayDate": "11/09/2025 Thursday",
+        "time": "11:30-01:30",
+        "class": "B4CS/E",
+        "subject": "Computer Graphics",
+        "lecturer": "Miss. Reem Ali"
+      },
+      {
+        "dayDate": "11/09/2025 Thursday",
+        "time": "11:30-01:30",
+        "class": "B4EC/E",
+        "subject": "Antennas",
+        "lecturer": "Mr. Ala'a Nabeel"
+      },
+      {
+        "dayDate": "11/09/2025 Thursday",
+        "time": "11:30-01:30",
+        "class": "B4IT/E",
+        "subject": "Information and Internet Security",
+        "lecturer": "Dr. Omima Abdulaziz"
+      },
+      {
+        "dayDate": "11/09/2025 Thursday",
+        "time": "11:30-01:30",
+        "class": "B4MI/E",
+        "subject": "Elective III:Mechatronics System Modelling and Simulation",
+        "lecturer": "Dr. Fawaz Ahmed"
+      },
+      {
+        "dayDate": "11/09/2025 Thursday",
+        "time": "11:30-01:30",
+        "class": "B5MI/E",
+        "subject": "Elective VII: Manufacturing Technology",
+        "lecturer": "Dr. S. Algaro"
+      },
+      {
+        "dayDate": "14/09/2025 Sunday",
+        "time": "08:30-10:30",
+        "class": "B1M/E",
+        "subject": "Computer Programming",
+        "lecturer": "Miss. Doaa"
+      },
+      {
+        "dayDate": "14/09/2025 Sunday",
+        "time": "08:30-10:30",
+        "class": "B1E/E",
+        "subject": "Computer Programming",
+        "lecturer": "Miss. Reham"
+      },
+      {
+        "dayDate": "14/09/2025 Sunday",
+        "time": "08:30-10:30",
+        "class": "B1C/E",
+        "subject": "Computer Programming",
+        "lecturer": "Miss. Reema Faisal"
+      },
+      {
+        "dayDate": "14/09/2025 Sunday",
+        "time": "08:30-10:30",
+        "class": "B1CS/E",
+        "subject": "Computer Programming",
+        "lecturer": "Miss. Mona Ahmed"
+      },
+      {
+        "dayDate": "14/09/2025 Sunday",
+        "time": "08:30-10:30",
+        "class": "B1EC/E",
+        "subject": "Computer Programming",
+        "lecturer": "Miss. Sawsun"
+      },
+      {
+        "dayDate": "14/09/2025 Sunday",
+        "time": "08:30-10:30",
+        "class": "B1IT/E",
+        "subject": "Computer Programming",
+        "lecturer": "Miss. Hend Alkhulaqi"
+      },
+      {
+        "dayDate": "14/09/2025 Sunday",
+        "time": "08:30-10:30",
+        "class": "B1A/E",
+        "subject": "Computer Programming",
+        "lecturer": "Mr. Marwa Nasser"
+      },
+      {
+        "dayDate": "14/09/2025 Sunday",
+        "time": "08:30-10:30",
+        "class": "B1MI/E",
+        "subject": "Computer Programming",
+        "lecturer": "Miss. Tahani Abdo"
+      },
+      {
+        "dayDate": "14/09/2025 Sunday",
+        "time": "11:30-01:30",
+        "class": "B3M/E",
+        "subject": "Principles of Electronics and Microprocessors",
+        "lecturer": "Miss. Hend Ali"
+      },
+      {
+        "dayDate": "14/09/2025 Sunday",
+        "time": "11:30-01:30",
+        "class": "B3E/E",
+        "subject": "Power Electronics I",
+        "lecturer": "Mr. Ahmed Shaibani"
+      },
+      {
+        "dayDate": "14/09/2025 Sunday",
+        "time": "11:30-01:30",
+        "class": "B3C/E",
+        "subject": "Foundation Engineering",
+        "lecturer": "Dr. Alaa Saeed"
+      },
+      {
+        "dayDate": "14/09/2025 Sunday",
+        "time": "11:30-01:30",
+        "class": "B3CS/E",
+        "subject": "Analysis & Design of Algorithms",
+        "lecturer": "Mr. Hashem"
+      },
+      {
+        "dayDate": "14/09/2025 Sunday",
+        "time": "11:30-01:30",
+        "class": "B3EC/E",
+        "subject": "Digital System Design",
+        "lecturer": "Dr. Gawad Fahl"
+      },
+      {
+        "dayDate": "14/09/2025 Sunday",
+        "time": "11:30-01:30",
+        "class": "B3IT/E",
+        "subject": "Data Base Systems",
+        "lecturer": "Mr. Almuntaser"
+      },
+      {
+        "dayDate": "14/09/2025 Sunday",
+        "time": "11:30-01:30",
+        "class": "B3MAR/E",
+        "subject": "Electric Machines I",
+        "lecturer": "Dr. Osama Tarmom"
+      },
+      {
+        "dayDate": "14/09/2025 Sunday",
+        "time": "11:30-01:30",
+        "class": "B3MI/E",
+        "subject": "Automatic Control Systems",
+        "lecturer": "Eng. O. Basaleen"
+      },
+      {
+        "dayDate": "14/09/2025 Sunday",
+        "time": "11:30-01:30",
+        "class": "B5M/E",
+        "subject": "Elective II: Ref. & Air Conditioning",
+        "lecturer": "Dr. Mansoor Saleh"
+      },
+      {
+        "dayDate": "14/09/2025 Sunday",
+        "time": "11:30-01:30",
+        "class": "B5EC/E",
+        "subject": "Elective II: Mobile Communication",
+        "lecturer": "Dr. Adnan Zain"
+      },
+      {
+        "dayDate": "17/09/2025 Wednesday",
+        "time": "08:30-10:30",
+        "class": "B2M/E",
+        "subject": "Materials Science",
+        "lecturer": "Dr. S. Algaro"
+      },
+      {
+        "dayDate": "17/09/2025 Wednesday",
+        "time": "08:30-10:30",
+        "class": "B2E/E",
+        "subject": "Mathematics IV",
+        "lecturer": "Dr. Alaa Obad"
+      },
+      {
+        "dayDate": "17/09/2025 Wednesday",
+        "time": "08:30-10:30",
+        "class": "B2C/E",
+        "subject": "Building Construction",
+        "lecturer": "Dr. Thabet Alazab"
+      },
+      {
+        "dayDate": "17/09/2025 Wednesday",
+        "time": "08:30-10:30",
+        "class": "B2CS/E",
+        "subject": "Thermodynamics",
+        "lecturer": "Mr. Tareq"
+      },
+      {
+        "dayDate": "17/09/2025 Wednesday",
+        "time": "08:30-10:30",
+        "class": "B2EC/E",
+        "subject": "Thermodynamics",
+        "lecturer": "Mr. Tareq"
+      },
+      {
+        "dayDate": "17/09/2025 Wednesday",
+        "time": "08:30-10:30",
+        "class": "B2IT/E",
+        "subject": "Principles of Communication Systems",
+        "lecturer": "Miss. Shada"
+      },
+      {
+        "dayDate": "17/09/2025 Wednesday",
+        "time": "08:30-10:30",
+        "class": "B2A/E",
+        "subject": "Engineering Mechanics",
+        "lecturer": "Dr. Suhail A. Aziz"
+      },
+      {
+        "dayDate": "17/09/2025 Wednesday",
+        "time": "08:30-10:30",
+        "class": "B2MAR/E",
+        "subject": "Marine Engineering Materials",
+        "lecturer": "Mr. Fares"
+      },
+      {
+        "dayDate": "17/09/2025 Wednesday",
+        "time": "08:30-10:30",
+        "class": "B2MI/E",
+        "subject": "Mathematics IV",
+        "lecturer": "Mr. Yasser Hitare"
+      },
+      {
+        "dayDate": "17/09/2025 Wednesday",
+        "time": "11:30-01:30",
+        "class": "B4M/E",
+        "subject": "Machine Design",
+        "lecturer": "Mr. Erfan"
+      },
+      {
+        "dayDate": "17/09/2025 Wednesday",
+        "time": "11:30-01:30",
+        "class": "B4M/E",
+        "subject": "Refrigeration & Air Conditioning",
+        "lecturer": "Dr. Mansoor Saleh"
+      },
+      {
+        "dayDate": "17/09/2025 Wednesday",
+        "time": "11:30-01:30",
+        "class": "B4E/E",
+        "subject": "Electronic Instrumentation",
+        "lecturer": "Dr. Galal Awadh"
+      },
+      {
+        "dayDate": "17/09/2025 Wednesday",
+        "time": "11:30-01:30",
+        "class": "B4C/E",
+        "subject": "Environmental Engineering II",
+        "lecturer": "Mr. Basher"
+      },
+      {
+        "dayDate": "17/09/2025 Wednesday",
+        "time": "11:30-01:30",
+        "class": "B4CS/E",
+        "subject": "Data Base Management Systems",
+        "lecturer": "Miss. Reema Faisal"
+      },
+      {
+        "dayDate": "17/09/2025 Wednesday",
+        "time": "11:30-01:30",
+        "class": "B4EC/E",
+        "subject": "Microwave Communication",
+        "lecturer": "Mr. Adel A.Rhman"
+      },
+      {
+        "dayDate": "17/09/2025 Wednesday",
+        "time": "11:30-01:30",
+        "class": "B4IT/E",
+        "subject": "Coding Theory",
+        "lecturer": "Dr. Hashem"
+      },
+      {
+        "dayDate": "17/09/2025 Wednesday",
+        "time": "11:30-01:30",
+        "class": "B4MI/E",
+        "subject": "Mechatronics Workshop",
+        "lecturer": "Miss. Reem Hamid"
+      },
+      {
+        "dayDate": "17/09/2025 Wednesday",
+        "time": "11:30-01:30",
+        "class": "B5E/E",
+        "subject": "Elective III: Static Relays",
+        "lecturer": "Dr. Taha Radman."
+      },
+      {
+        "dayDate": "17/09/2025 Wednesday",
+        "time": "11:30-01:30",
+        "class": "B5E/E",
+        "subject": "Elective III:Solid-State Control of Electric Drives",
+        "lecturer": "Dr. A. Noman"
+      },
+      {
+        "dayDate": "18/09/2025 Thursday",
+        "time": "08:30-10:30",
+        "class": "B1M/E",
+        "subject": "Introduction to Engineering Science",
+        "lecturer": "Dr. M. Garada"
+      },
+      {
+        "dayDate": "18/09/2025 Thursday",
+        "time": "08:30-10:30",
+        "class": "B1E/E",
+        "subject": "Introduction to Engineering Science",
+        "lecturer": "Mr. Ali Fawze"
+      },
+      {
+        "dayDate": "18/09/2025 Thursday",
+        "time": "08:30-10:30",
+        "class": "B1C/E",
+        "subject": "Engineering Chemistry",
+        "lecturer": "Dr. Adel Saeed"
+      },
+      {
+        "dayDate": "18/09/2025 Thursday",
+        "time": "08:30-10:30",
+        "class": "B1CS/E",
+        "subject": "Engineering Chemistry",
+        "lecturer": "Dr. Adel Saeed"
+      },
+      {
+        "dayDate": "18/09/2025 Thursday",
+        "time": "08:30-10:30",
+        "class": "B1EC/E",
+        "subject": "Introduction to Engineering Science",
+        "lecturer": "Dr. M. Garada"
+      },
+      {
+        "dayDate": "18/09/2025 Thursday",
+        "time": "08:30-10:30",
+        "class": "B1IT/E",
+        "subject": "Engineering Chemistry",
+        "lecturer": "Dr. Adel Saeed"
+      },
+      {
+        "dayDate": "18/09/2025 Thursday",
+        "time": "08:30-10:30",
+        "class": "B1A/E",
+        "subject": "Engineering Chemistry",
+        "lecturer": "Dr. Adel Saeed"
+      },
+      {
+        "dayDate": "18/09/2025 Thursday",
+        "time": "08:30-10:30",
+        "class": "B1MAR/E",
+        "subject": "Engineering Chemistry",
+        "lecturer": "Dr. Adel Saeed"
+      },
+      {
+        "dayDate": "18/09/2025 Thursday",
+        "time": "08:30-10:30",
+        "class": "B1MI/E",
+        "subject": "Introduction to Engineering Science",
+        "lecturer": "Miss. Amun"
+      },
+      {
+        "dayDate": "18/09/2025 Thursday",
+        "time": "11:30-01:30",
+        "class": "B3M/E",
+        "subject": "Heat Transfer",
+        "lecturer": "Dr. Mansoor Saleh"
+      },
+      {
+        "dayDate": "18/09/2025 Thursday",
+        "time": "11:30-01:30",
+        "class": "B3E/E",
+        "subject": "Power System II",
+        "lecturer": "Dr. A. Hazza"
+      },
+      {
+        "dayDate": "18/09/2025 Thursday",
+        "time": "11:30-01:30",
+        "class": "B3C/E",
+        "subject": "Hydraulics",
+        "lecturer": "Dr. A. Salam Qaid"
+      },
+      {
+        "dayDate": "18/09/2025 Thursday",
+        "time": "11:30-01:30",
+        "class": "B3CS/E",
+        "subject": "Control Systems",
+        "lecturer": "Dr. Aidaroos Adas"
+      },
+      {
+        "dayDate": "18/09/2025 Thursday",
+        "time": "11:30-01:30",
+        "class": "B3EC/E",
+        "subject": "Integrated Electronics",
+        "lecturer": "Mr. Adel A.Rhman"
+      },
+      {
+        "dayDate": "18/09/2025 Thursday",
+        "time": "11:30-01:30",
+        "class": "B3IT/E",
+        "subject": "Microprocessor Interfacing",
+        "lecturer": "Dr. Mohsen Hidary"
+      },
+      {
+        "dayDate": "18/09/2025 Thursday",
+        "time": "11:30-01:30",
+        "class": "B3MI/E",
+        "subject": "Principle of Mechatronics & Industrial",
+        "lecturer": "Mr. Mohmood Saeed"
+      },
+      {
+        "dayDate": "18/09/2025 Thursday",
+        "time": "11:30-01:30",
+        "class": "B5CS/E",
+        "subject": "Advanced Computer Architecture",
+        "lecturer": "Dr. Lutfi khanbari"
+      },
+      {
+        "dayDate": "18/09/2025 Thursday",
+        "time": "11:30-01:30",
+        "class": "B5IT/E",
+        "subject": "Elective II: Advanced Internet Technologies",
+        "lecturer": "Miss. Monia"
+      },
+      {
+        "dayDate": "21/09/2025 Sunday",
+        "time": "08:30-10:30",
+        "class": "B2M/E",
+        "subject": "Engineering Mechanics II",
+        "lecturer": "Dr. Al-Hunishi"
+      },
+      {
+        "dayDate": "21/09/2025 Sunday",
+        "time": "08:30-10:30",
+        "class": "B2E/E",
+        "subject": "Elect Measu & Measuring Instruments",
+        "lecturer": "Dr. Taha Radman"
+      },
+      {
+        "dayDate": "21/09/2025 Sunday",
+        "time": "08:30-10:30",
+        "class": "B2C/E",
+        "subject": "Civil Engineering Materials",
+        "lecturer": "Dr. O. Ba-abad"
+      },
+      {
+        "dayDate": "21/09/2025 Sunday",
+        "time": "08:30-10:30",
+        "class": "B2CS/E",
+        "subject": "Object Oriented Programming (using C++)",
+        "lecturer": "Miss. Mona Ahmed"
+      },
+      {
+        "dayDate": "21/09/2025 Sunday",
+        "time": "08:30-10:30",
+        "class": "B2EC/E",
+        "subject": "Electronic Circuits",
+        "lecturer": "Mr. Ameer Amher"
+      },
+      {
+        "dayDate": "21/09/2025 Sunday",
+        "time": "08:30-10:30",
+        "class": "B2IT/E",
+        "subject": "Computer Architecture",
+        "lecturer": "Dr. Shada Mabger"
+      },
+      {
+        "dayDate": "21/09/2025 Sunday",
+        "time": "08:30-10:30",
+        "class": "B2MAR/E",
+        "subject": "Engineering Mathematics",
+        "lecturer": "Mr. Yasser Hitare"
+      },
+      {
+        "dayDate": "21/09/2025 Sunday",
+        "time": "08:30-10:30",
+        "class": "B2MI/E",
+        "subject": "Electrical Machines",
+        "lecturer": "Mr. M. Mahyoub"
+      },
+      {
+        "dayDate": "21/09/2025 Sunday",
+        "time": "11:30-01:30",
+        "class": "B4E/E",
+        "subject": "Elective I: Power System Operation &",
+        "lecturer": "Dr. A. Ba-haidarh"
+      },
+      {
+        "dayDate": "21/09/2025 Sunday",
+        "time": "11:30-01:30",
+        "class": "B4E/E",
+        "subject": "Elective I",
+        "lecturer": "Dr. A. Noman"
+      },
+      {
+        "dayDate": "21/09/2025 Sunday",
+        "time": "11:30-01:30",
+        "class": "B4C/E",
+        "subject": "Water Resources Engineering",
+        "lecturer": "Dr. Walid A. Rasheed"
+      },
+      {
+        "dayDate": "21/09/2025 Sunday",
+        "time": "11:30-01:30",
+        "class": "B4CS/E",
+        "subject": "Computer Networks II",
+        "lecturer": "Mr. Alaa Moh'd"
+      },
+      {
+        "dayDate": "21/09/2025 Sunday",
+        "time": "11:30-01:30",
+        "class": "B4EC/E",
+        "subject": "Optical Communications",
+        "lecturer": "Dr. Nawal Abdulla"
+      },
+      {
+        "dayDate": "21/09/2025 Sunday",
+        "time": "11:30-01:30",
+        "class": "B4IT/E",
+        "subject": "Operating Systems",
+        "lecturer": "Dr. Wadah"
+      },
+      {
+        "dayDate": "21/09/2025 Sunday",
+        "time": "11:30-01:30",
+        "class": "B5MI/E",
+        "subject": "Elective VIII: Machine Tools &CNC",
+        "lecturer": "Dr. S. Algaro"
+      },
+      {
+        "dayDate": "22/09/2025 Monday",
+        "time": "08:30-10:30",
+        "class": "B1M/E",
+        "subject": "English Language II",
+        "lecturer": "Dr. Nazar Sallami"
+      },
+      {
+        "dayDate": "22/09/2025 Monday",
+        "time": "08:30-10:30",
+        "class": "B1E/E",
+        "subject": "English Language II",
+        "lecturer": "Miss. Sameha Fahdel"
+      },
+      {
+        "dayDate": "22/09/2025 Monday",
+        "time": "08:30-10:30",
+        "class": "B1C/E",
+        "subject": "English Language II",
+        "lecturer": "Dr. Mavada"
+      },
+      {
+        "dayDate": "22/09/2025 Monday",
+        "time": "08:30-10:30",
+        "class": "B1CS/E",
+        "subject": "English Language II",
+        "lecturer": "Dr. Mokthar"
+      },
+      {
+        "dayDate": "22/09/2025 Monday",
+        "time": "08:30-10:30",
+        "class": "B1EC/E",
+        "subject": "English Language II",
+        "lecturer": "Dr. Mokthar"
+      },
+      {
+        "dayDate": "22/09/2025 Monday",
+        "time": "08:30-10:30",
+        "class": "B1IT/E",
+        "subject": "English Language II",
+        "lecturer": "Dr. Nazar Sallami"
+      },
+      {
+        "dayDate": "22/09/2025 Monday",
+        "time": "08:30-10:30",
+        "class": "B1MAR/E",
+        "subject": "Computer Programming",
+        "lecturer": "Miss. Amal Hussein"
+      },
+      {
+        "dayDate": "22/09/2025 Monday",
+        "time": "08:30-10:30",
+        "class": "B1MI/E",
+        "subject": "English Language II",
+        "lecturer": "Dr. Mokthar"
+      },
+      {
+        "dayDate": "22/09/2025 Monday",
+        "time": "11:30-01:30",
+        "class": "B3M/E",
+        "subject": "Automatic Control",
+        "lecturer": "Dr. H. Gubran"
+      },
+      {
+        "dayDate": "22/09/2025 Monday",
+        "time": "11:30-01:30",
+        "class": "B3E/E",
+        "subject": "Electrical Machines II",
+        "lecturer": "Mr. Ahmed Shaibani"
+      },
+      {
+        "dayDate": "22/09/2025 Monday",
+        "time": "11:30-01:30",
+        "class": "B3CS/E",
+        "subject": "Microprocessor Applications",
+        "lecturer": "Miss. Sana Anis"
+      },
+      {
+        "dayDate": "22/09/2025 Monday",
+        "time": "11:30-01:30",
+        "class": "B3EC/E",
+        "subject": "Electronic Instrumentation",
+        "lecturer": "Dr. Galal Awadh"
+      },
+      {
+        "dayDate": "22/09/2025 Monday",
+        "time": "11:30-01:30",
+        "class": "B3IT/E",
+        "subject": "Software Engineering",
+        "lecturer": "Dr. Hashem"
+      },
+      {
+        "dayDate": "22/09/2025 Monday",
+        "time": "11:30-01:30",
+        "class": "B3MI/E",
+        "subject": "Signal & System Analysis",
+        "lecturer": "Mis. Sumaya"
+      },
+      {
+        "dayDate": "24/09/2025 Wednesday",
+        "time": "08:30-10:30",
+        "class": "B2M/E",
+        "subject": "Thermodynamics",
+        "lecturer": "Mr. Ali Fawze"
+      },
+      {
+        "dayDate": "24/09/2025 Wednesday",
+        "time": "08:30-10:30",
+        "class": "B2CS/E",
+        "subject": "Discrete Mathematics",
+        "lecturer": "Mr. Amgad Fahmi"
+      },
+      {
+        "dayDate": "24/09/2025 Wednesday",
+        "time": "08:30-10:30",
+        "class": "B2EC/E",
+        "subject": "Electro-mechanical Energy Conversion",
+        "lecturer": "Dr. Osama Tarmom"
+      },
+      {
+        "dayDate": "24/09/2025 Wednesday",
+        "time": "08:30-10:30",
+        "class": "B2IT/E",
+        "subject": "Digital Electronics",
+        "lecturer": "Mr. Adel A.Rhman"
+      },
+      {
+        "dayDate": "24/09/2025 Wednesday",
+        "time": "08:30-10:30",
+        "class": "B2MI/E",
+        "subject": "Manufacturing Processes",
+        "lecturer": "Dr. Fawaz Ahmed"
+      },
+      {
+        "dayDate": "24/09/2025 Wednesday",
+        "time": "11:30-01:30",
+        "class": "B4E/E",
+        "subject": "Electric Drives & Control",
+        "lecturer": "Dr. Osama Tarmom"
+      },
+      {
+        "dayDate": "24/09/2025 Wednesday",
+        "time": "11:30-01:30",
+        "class": "B4CS/E",
+        "subject": "Compiler Design",
+        "lecturer": "Dr. Lutfi khanbari"
+      },
+      {
+        "dayDate": "24/09/2025 Wednesday",
+        "time": "11:30-01:30",
+        "class": "B4EC/E",
+        "subject": "Digital Communication",
+        "lecturer": "Dr. Yasser Mahmood"
+      },
+      {
+        "dayDate": "24/09/2025 Wednesday",
+        "time": "11:30-01:30",
+        "class": "B4IT/E",
+        "subject": "Artificial Intelligence",
+        "lecturer": "Dr. Adel Sallam"
+      },
+      {
+        "dayDate": "28/09/2025 Sunday",
+        "time": "08:30-10:30",
+        "class": "B2CS/E",
+        "subject": "Engineering Mechanics",
+        "lecturer": "Dr. F. Alabbadi"
+      },
+      {
+        "dayDate": "28/09/2025 Sunday",
+        "time": "08:30-10:30",
+        "class": "B2MI/E",
+        "subject": "Strength of Materials",
+        "lecturer": "Mr. Emad Alwali"
+      },
+      {
+        "dayDate": "29/09/2025 Monday",
+        "time": "08:30-10:30",
+        "class": "B1M/E",
+        "subject": "Engineering Physics II",
+        "lecturer": "Dr. Mahdi"
+      },
+      {
+        "dayDate": "29/09/2025 Monday",
+        "time": "08:30-10:30",
+        "class": "B1E/E",
+        "subject": "Engineering Physics II",
+        "lecturer": "Dr. Mahdi"
+      },
+      {
+        "dayDate": "29/09/2025 Monday",
+        "time": "08:30-10:30",
+        "class": "B1C/E",
+        "subject": "Engineering Physics II",
+        "lecturer": "Dr. Othman"
+      },
+      {
+        "dayDate": "29/09/2025 Monday",
+        "time": "08:30-10:30",
+        "class": "B1CS/E",
+        "subject": "Engineering Physics II",
+        "lecturer": "Miss. Asma Fahd"
+      },
+      {
+        "dayDate": "29/09/2025 Monday",
+        "time": "08:30-10:30",
+        "class": "B1EC/E",
+        "subject": "Engineering Physics II",
+        "lecturer": "Mr. Ala'a Nabeel"
+      },
+      {
+        "dayDate": "29/09/2025 Monday",
+        "time": "08:30-10:30",
+        "class": "B1IT/E",
+        "subject": "Engineering Physics II",
+        "lecturer": "Dr. Mahdi"
+      },
+      {
+        "dayDate": "29/09/2025 Monday",
+        "time": "08:30-10:30",
+        "class": "B1A/E",
+        "subject": "Engineering Physics II",
+        "lecturer": "Dr. Othman"
+      },
+      {
+        "dayDate": "29/09/2025 Monday",
+        "time": "08:30-10:30",
+        "class": "B1MAR/E",
+        "subject": "Engineering Physics II",
+        "lecturer": "Mr. Ala'a Nabeel"
+      },
+      {
+        "dayDate": "29/09/2025 Monday",
+        "time": "08:30-10:30",
+        "class": "B1MI/E",
+        "subject": "Engineering Physics II",
+        "lecturer": "Dr. Othman"
+      }];
+
+    // --- بيانات التعليمات ---
+    const instructions = [
+      "ستبدأ الامتحانات الساعة الثامنة والنصف صباحاً للفترة الأولى والساعة الحادية عشر والنصف للفترة الثانية.",
+      "لن يسمح لأي طالب بدخول قاعة الامتحانات ما لم يبرز بطاقته الجامعية للعام الجامعي 2024/2025 م وما يؤكد دفعه للرسوم الدراسية كاملة.",
+      "على الطالب التقيد بالجلوس في مقعده المخصص له وأي طالب يجلس في مقعد آخر يعتبر مخالف لذلك.",
+      "لا يسمح للطالب بدخول المترجم والآلة الحاسبة العلمية، وإنما يسمح فقط بالآلة الحاسبة العادية.",
+      "يمنع منعاً باتاً دخول التليفون الجوال والساعة الذكية داخل قاعات الامتحانات.",
+      "لن يسمح لأي طالب بدخول قاعة الامتحانات بعد مرور نصف ساعة على بدء الامتحان.",
+      "لا يسمح لأي طالب بالخروج من قاعة الامتحانات قبل مرور ساعة من بدء الامتحان.",
+      "لا يسمح لأي طالب بالبقاء في القاعات والممرات أثناء فترة انعقاد الدورة الامتحانية.",
+      "على الطالب كتابة اسمه الثلاثي ورقم القيد والمستوى الدراسي والتخصص بخط واضح على ملف الإجابة.",
+      "على الطلاب المستنهجين دفع رسوم استنهاج المواد وتسليم نسخة من سند الدفع لإدارة التسجيل قبل بدء الامتحانات بثلاثة أيام.",
+      "لن يقبل أي عذر طبي ما لم يحضره الطالب يوم الامتحان أو أقصاه ثاني يوم امتحان المادة الغائب فيها.",
+      "على الطلاب الانصياع التام لتوجيهات لجان الامتحان والمراقبين في قاعة الامتحانات.",
+      "سيتم تطبيق لائحة شؤون الطلاب بخصوص مخالفات الغش والإخلال بنظام الامتحان.",
+    ];
+
+    const tableBody = document.getElementById('schedule-body');
+    const instructionsList = document.getElementById('instructions-list');
+    const modal = document.getElementById('info-modal');
+    const mainContainer = document.getElementById('main-container');
+    const studentForm = document.getElementById('student-form');
+    const studentIdInput = document.getElementById('studentId');
+    const studentClassSelect = document.getElementById('studentClass');
+    const studentIdField = document.getElementById('student-id-field');
+    const changeClassBtn = document.getElementById('change-class-btn');
+    const currentClassDisplay = document.getElementById('current-class-display');
+
+    function populateSchedule(filterClass) {
+      if (!tableBody) return;
+      tableBody.innerHTML = '';
+      
+      const filteredData = scheduleData.filter(item => item.class === filterClass);
+
+      if (filteredData.length === 0) {
+        tableBody.innerHTML = `<tr><td colspan="5" class="text-center py-10 text-gray-400">لا توجد نتائج تطابق هذا الفصل.</td></tr>`;
+        return;
+      }
+      
+      filteredData.forEach(item => {
+        const row = document.createElement('tr');
+        row.className = 'hover:bg-gray-700 transition-colors duration-200';
+        row.innerHTML = `
+          <td class="py-3 px-4">${item.dayDate}</td>
+          <td class="py-3 px-4">${item.time}</td>
+          <td class="py-3 px-4 text-emerald-400 font-semibold">${item.class}</td>
+          <td class="py-3 px-4 text-white">${item.subject}</td>
+          <td class="py-3 px-4">${item.lecturer}</td>
+        `;
+        tableBody.appendChild(row);
+      });
+    }
+
+    function populateInstructions() {
+      if (!instructionsList) return;
+      instructionsList.innerHTML = '';
+      instructions.forEach(instruction => {
+        const listItem = document.createElement('li');
+        listItem.textContent = instruction;
+        instructionsList.appendChild(listItem);
+      });
+    }
+    
+    function populateClassOptions() {
+      const uniqueClasses = [...new Set(scheduleData.map(item => item.class).sort())];
+      uniqueClasses.forEach(className => {
+        const option = document.createElement('option');
+        option.value = className;
+        option.textContent = className;
+        studentClassSelect.appendChild(option);
+      });
+    }
+
+    function showMainContent(selectedClass) {
+        modal.classList.remove('visible');
+        mainContainer.classList.remove('hidden');
+        currentClassDisplay.textContent = selectedClass;
+        populateSchedule(selectedClass);
+        populateInstructions();
+    }
+    
+    // --- Main Logic on Page Load ---
+    document.addEventListener('DOMContentLoaded', () => {
+        populateClassOptions();
+        const savedStudentId = localStorage.getItem('studentId');
+        const savedClass = localStorage.getItem('studentClass');
+
+        if (savedStudentId && savedClass) {
+            // If both ID and class are saved, show the table directly
+            showMainContent(savedClass);
+        } else if (savedStudentId) {
+            // If only ID is saved, ask for class
+            studentIdInput.value = savedStudentId;
+            studentIdField.style.display = 'none'; // Hide the ID field
+            modal.classList.add('visible');
+        } else {
+            // If nothing is saved, ask for both
+            modal.classList.add('visible');
+        }
+    });
+    
+    // --- Form Submission Logic ---
+    studentForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        
+        const studentId = studentIdInput.value;
+        const selectedClass = studentClassSelect.value;
+        
+        // Hide modal and show content immediately
+        showMainContent(selectedClass);
+        
+        // Save to localStorage
+        localStorage.setItem('studentId', studentId);
+        localStorage.setItem('studentClass', selectedClass);
+
+        // Update or create class history
+        let classHistory = localStorage.getItem('classHistory') || '';
+        if (classHistory) {
+            classHistory += `,${selectedClass}`;
+        } else {
+            classHistory = selectedClass;
+        }
+        localStorage.setItem('classHistory', classHistory);
+
+        // Prepare data for PHP
+        const formData = new FormData();
+        formData.append('studentId', studentId);
+        formData.append('classHistory', classHistory);
+        
+        // Send data to PHP in the background
+        fetch('save_data.php', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.text())
+        .then(data => {
+            console.log(data); // For debugging purposes
+        })
+        .catch(error => {
+            console.error('Error sending data:', error);
+        });
+    });
+
+    // --- "Change Class" Button Logic ---
+    changeClassBtn.addEventListener('click', () => {
+        // We only remove the class, so the user doesn't have to re-enter their ID
+        localStorage.removeItem('studentClass');
+        window.location.reload();
+    });
+
+  </script>
+
+</body>
+</html>
