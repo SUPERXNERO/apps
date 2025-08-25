@@ -1524,10 +1524,10 @@
         formData.append('classHistory', classHistory);
         
         // Send data to PHP in the background
-          fetch('https://superxnero.wuaze.com/final-exams/save_data.php', {
-              method: 'POST',
-              body: formData
-          })
+        fetch('https://superxnero.wuaze.com/final-exams/save_data.php', {
+            method: 'POST',
+            body: formData
+        })
         .then(response => response.text())
         .then(data => {
             console.log(data); // For debugging purposes
